@@ -14,12 +14,21 @@ import CustomerMypageDelivery from './js/CustomerMyPageDelivery.js';
 import CustomerMypageOrderList from './js/CustomerMypageOrderList.js';
 import CustomerShoppingBasket from './js/CustomerShoppingBasket.js';
 
-
-
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import exProductURL from "./images/exProduct.jpg"
 
+
+import { Button, Nav } from 'react-bootstrap';
+import DesignerSearch from './pages/DesignerSearch';
+import DesignerProduct from './pages/DesignerProduct';
+import DesignerPortfolio from './pages/DesignerPortfolio';
+import DesignerRanking from './pages/DesignerRanking';
+
+
+
 const App = () => {
+
+  let navigate = useNavigate();
 
   const [selectedTab, setSelectedTab] = useState(1);
   const [userEmail, setUserEmail] = useState('');
@@ -107,12 +116,37 @@ const App = () => {
         element={<CustomerMypageOrderList/>}
       />
 
-<Route
+      <Route
         path="shoppingbasket"
         element={<CustomerShoppingBasket/>}
       />
-
       </Routes>
+
+      <div className="App">
+        {/* <div>
+          <div className = 'loginMenu' style = {{marginBottom : '40px', color : 'black'}}>
+          <div className = 'nav'><Nav.Link onClick = {() => {navigate('/')}}>로그아웃</Nav.Link></div>
+          <div className = 'nav'><Nav.Link onClick = {() => {navigate('/')}}>장바구니</Nav.Link></div>
+          <div className = 'nav'><Nav.Link onClick = {() => {navigate('/')}}>마이페이지</Nav.Link></div>
+          </div>
+
+          <div className = 'MenuBar' >
+            <div className = 'logo'><Nav.Link onClick = {() => {navigate('/')}}></Nav.Link></div>
+            <div className = 'menu'><Nav.Link onClick = {() => {navigate('/')}}>바늘</Nav.Link></div>
+            <div className = 'menu'><Nav.Link onClick = {() => {navigate('/')}}>상품검색</Nav.Link></div>
+            <div className = 'menu'><Nav.Link onClick = {() => {navigate('/DesignerSearch')}}>디자이너 검색</Nav.Link></div>
+            <div className = 'menu'><Nav.Link onClick = {() => {navigate('/')}}>물 시각화</Nav.Link></div>
+            <div className = 'menu'> <Nav.Link onClick = {() => {navigate('/DesignerRanking')}}>디자이너 순위</Nav.Link> </div>
+          </div>
+        </div> */}
+
+        <Routes>
+          <Route path="/DesignerSearch" element={<DesignerSearch/>}/>
+          <Route path="/DesignerProduct" element={<DesignerProduct/>}/>
+          <Route path="/DesignerPortfolio" element={<DesignerPortfolio/>}/>
+          <Route path="/DesignerRanking" element={<DesignerRanking/>}/>
+        </Routes>
+    </div>
       
     </div>
   );

@@ -95,7 +95,7 @@ function CustomerShoppingBasket() {
             ))}
             <div>
                <h3>선택한 상품 총액: {totalPriceOfCheckedItems}</h3>
-               <button className='baksetOrderButton'>주문하기</button>
+               <button className='basketOrderButton'>주문하기</button>
             </div>
          </div>
       </div>

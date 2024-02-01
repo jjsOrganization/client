@@ -40,7 +40,7 @@ function CustomerDelivery() {
    //    customerDeliveryState = selectedCustomerDeliveryState;
    // };
 
-    // DB에서 데이터를 가져오는 함수 (예시) chat GPT 이용
+    // DB에서 데이터를 가져오는 함수
    //  useEffect(() => {
    //      // 예시: fetch를 사용하여 서버에서 데이터를 가져옴
    //      fetch('URL')
