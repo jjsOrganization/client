@@ -12,7 +12,7 @@ function DesignerPortfolio() {
     </div>
     <div className="portfolioPrice">
         <p>디자이너 가격표</p>
-        <table>
+        <table className='designerPortfolio'>
         <tr>
             <th>리폼부분</th><th>가격</th><th>리폼부분</th><th>가격</th>
         </tr>
