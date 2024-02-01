@@ -13,9 +13,11 @@ import { ProductList, ProductDetail} from './js/ProductList.js';
 import CustomerMypageDelivery from './js/CustomerMyPageDelivery.js';
 import CustomerMypageOrderList from './js/CustomerMypageOrderList.js';
 import CustomerShoppingBasket from './js/CustomerShoppingBasket.js';
-
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import exProductURL from "./images/exProduct.jpg"
+
+
+
 
 
 import { Button, Nav } from 'react-bootstrap';
@@ -26,9 +28,33 @@ import DesignerRanking from './pages/DesignerRanking';
 
 
 
+
+
+import data from './data.js';
+import Detail from './pages/Detail.js'
+import ProductUpdate from './pages/productRegistration.js';
+import StockList from './pages/stockList.js'
+import StockUpdater from './pages/stockUpdater.js';
+import MyPages from './pages/mypages.js';
+import Main from './pages/main.js';
+
+
+
 const App = () => {
 
+  let [onOff, setOnOff] = useState(false);
+  
+  let [shoes, setShoes] = useState(data)
   let navigate = useNavigate();
+
+  //서버에서 받은 데이터 이용해 메인 상품 추가 
+  let [serverMainImage,setServerMainImage] = useState()
+
+  let [mainImage, setMainImage] = useState([
+    'https://i.postimg.cc/zfrVFgNL/1.png',
+    'https://i.postimg.cc/zv6fbLpG/2.png',
+    'https://i.postimg.cc/6QfTjp6M/3.png'
+  ])
 
   const [selectedTab, setSelectedTab] = useState(1);
   const [userEmail, setUserEmail] = useState('');
@@ -123,28 +149,54 @@ const App = () => {
       </Routes>
 
       <div className="App">
-        {/* <div>
-          <div className = 'loginMenu' style = {{marginBottom : '40px', color : 'black'}}>
-          <div className = 'nav'><Nav.Link onClick = {() => {navigate('/')}}>로그아웃</Nav.Link></div>
-          <div className = 'nav'><Nav.Link onClick = {() => {navigate('/')}}>장바구니</Nav.Link></div>
-          <div className = 'nav'><Nav.Link onClick = {() => {navigate('/')}}>마이페이지</Nav.Link></div>
-          </div>
-
-          <div className = 'MenuBar' >
-            <div className = 'logo'><Nav.Link onClick = {() => {navigate('/')}}></Nav.Link></div>
-            <div className = 'menu'><Nav.Link onClick = {() => {navigate('/')}}>바늘</Nav.Link></div>
-            <div className = 'menu'><Nav.Link onClick = {() => {navigate('/')}}>상품검색</Nav.Link></div>
-            <div className = 'menu'><Nav.Link onClick = {() => {navigate('/DesignerSearch')}}>디자이너 검색</Nav.Link></div>
-            <div className = 'menu'><Nav.Link onClick = {() => {navigate('/')}}>물 시각화</Nav.Link></div>
-            <div className = 'menu'> <Nav.Link onClick = {() => {navigate('/DesignerRanking')}}>디자이너 순위</Nav.Link> </div>
-          </div>
-        </div> */}
-
         <Routes>
           <Route path="/DesignerSearch" element={<DesignerSearch/>}/>
           <Route path="/DesignerProduct" element={<DesignerProduct/>}/>
           <Route path="/DesignerPortfolio" element={<DesignerPortfolio/>}/>
           <Route path="/DesignerRanking" element={<DesignerRanking/>}/>
+        </Routes>
+
+        <Routes>
+          <Route path = '/' element = {
+          <>
+            <div className="main-bg">
+              <Main />
+            </div>
+          </>}>
+
+        </Route>
+            <Route path = '/detail/:id' element = {
+            <>
+            <Detail shoes = {shoes}/>
+            </>}/>
+            <Route />
+
+            <Route path = '/productupdate' element = {
+            <div>
+            <ProductUpdate/>
+            </div>
+            }>
+        </Route>
+
+        <Route path = '/stockList' element = {
+          <div>
+            <StockList data = {data} mainImage = {mainImage}/>
+          </div>}>
+        </Route>
+
+        <Route path = '/stockupdater/:id' element = {
+            <>
+          <StockUpdater/>
+          </>}/>
+        <Route />
+
+        <Route path = '/mypage2' element = {
+          <>
+          <MyPages data = {data}/> 
+          </>
+        }>
+        </Route>
+
         </Routes>
     </div>
       
