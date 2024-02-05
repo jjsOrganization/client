@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+.App{
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+.main-bg {
+  margin-bottom: 5%;
+  height: 400px;
+  width: 100%;
+}
+
+.topBar{
+  width: 100%;
+  height: 100%;
+  line-height: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2%;
+  margin-right: 3%;
+}
+
+
+.menu{
+  margin-right: 1%;
+  font-size: 120%;
+  font-family: 'Gowun Batang', sans-serif;
+  font-weight: 500;
+  margin-left: 7%;
+}
+
+.loginMenu{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.loginMenu > * {
+  margin-right: 1%;
+}
+
+.dropdown > *{
+  margin-right: 7%;
+}
+
+
+.mainProduct{
+  margin-bottom: 10%;
+}
+
+.designerCarousel{
+  height: 300px;
+  width : 100%
+}
+
+
+.productField{
+  width: 100%;
+  height : 100%;
+  margin-top: 5%;
+}
+
+.productField{
+  border: 3px solid black;
+  border-radius: 10px;
+  padding : 10px
+}
+
+.user-choice{
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 2px;
+  clear: both;
+}
+
+.choice-cancel{
+  float: right;
+  
+}
+
+@media screen and (max-width: 968px) {
+  .topBar {
+    margin-top: 1%; 
+    font-size: 10px;
+    margin-right:5px;
+  }
+
+  .App {
+    margin-left: 0%;
+    margin-right: 0%;
+  }
+
+}

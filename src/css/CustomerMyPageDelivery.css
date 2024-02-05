@@ -1,0 +1,94 @@
+body {
+   margin: 0 auto; /* 페이지를 수평 가운데 정렬*/
+   max-width: 1200px; /* 페이지의 최대 가로 너비를 1200px로 제한 */
+}
+
+.customerSelectedProduct {
+   margin-top: 50px;
+   position: relative;
+   left: 25%;
+}
+
+.customerSelectedProduct img {
+   width: 100%;
+   max-width: 150px;
+}
+
+.customerSelectedProduct hr {
+   width: 50%;
+}
+
+.customerDeliveryLastHr {
+   position: relative;
+   top:-150px;
+}
+
+.customerSelectedProduct h5 {
+   width: 50%;
+   background-color: rgb(183, 183, 183);
+   padding-top: 10px;
+   padding-bottom: 10px;
+   margin-top: -10px;
+}
+
+.customerSelectedProduct p {
+   position: relative;
+   top: -150px;
+   left: 200px;
+}
+
+
+.customerDeliveryStateImg img {
+   display: flex;
+   width: 80%;
+   max-width: 100px;
+}
+
+.customerDeliveryStateImg {
+   display: flex;
+   align-items: center;
+   justify-content: center; /* 요소를 수평으로 가운데 정렬 */
+   margin-top: -80px;
+   overflow-x: hidden; /* 옆으로 이동하는 스크롤을 숨김. */
+}
+
+/* .deliveryStatus {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.deliveryStatus h2 {
+   writing-mode: sideways-lr; /* 텍스트를 가로로 표시 */
+
+.customerDeliveryStateImg .receiptImages img{
+   margin-left: 15px;
+}
+
+.customerDeliveryStateImg .terminalImages img{
+   margin-left: 30px;
+}
+
+.customerDeliveryStateImg .arrivalImages img{
+   margin-left: 55px;
+   margin-bottom: 30px;
+}
+
+.customerDeliveryStateImg .departureImages img{
+   margin-left: 15px;
+}
+
+.customerDeliveryStateImg .finishImages img{
+   margin-left: 15px;
+}
+
+.customerStateTable {
+   border-collapse: separate; /* 테이블 셀을 분리 */
+   border-spacing: 10px; /* 셀 사이의 간격을 10px로 지정 */
+   text-align: center; /* 테이블을 가운데 정렬 */
+}
+
+.customerStateTable th, .customerStateTable td {
+   padding: 8px; /* 각 셀의 내부 여백을 조절. */
+   text-align: center; /* 테이블 셀의 텍스트를 가운데 정렬 */
+}
