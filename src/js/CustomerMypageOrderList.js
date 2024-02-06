@@ -88,6 +88,7 @@ function CustomerOrderList() {
                   <p>{product.name}</p>
                   <p>{product.price}원</p>
                   <p>{product.options}</p>
+                  {/* 배송현황 페이지로 이동하는 버튼 없길래 새로 만들고 연결 시켜둠 */}
                   <p>배송현황 : {product.state} <BasicBtn onClick = {()=> {navigate("/mypage/delivery")}} >자세히</BasicBtn></p>
                   <hr className='customerOrderLastHr'></hr>
                </div>

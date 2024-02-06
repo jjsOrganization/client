@@ -110,8 +110,8 @@ const App = () => {
 
   return (
     <div>
-
-
+      
+      {/* 상단바 CSS없이 일단 만들어서 연결만 시켜놓음 */}
       <div className = '로그인 메뉴 ㅋㅋ' style = {{display : 'flex'}}>
         <p onClick = {() => {navigate("login")}} >로그인</p>
         <p onClick = {() => {navigate('mypage2')}}>마이페이지</p>

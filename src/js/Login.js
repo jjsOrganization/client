@@ -72,6 +72,7 @@ function Login({
                <button onClick={handleLogin}>Login</button>
            </div>
            <div className="buttons">
+            {/* 회원가입 버튼 클릭시 회원가입 페이지로 이동 시키려고 넣어놓긴 했는데 회원가입 페이지 누락돼서 링크는 못적음 */}
              <button onClick = {() => {navigate("")}}>회원가입</button>
              <button>아이디 찾기</button>
              <button>비밀번호 찾기</button>
