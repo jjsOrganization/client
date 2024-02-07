@@ -5,6 +5,9 @@ import axios from 'axios'
 import data from '../data';
 import { Routes, Route, useNavigate } from 'react-router-dom'
 
+import "../js/TopBar.js";
+import TopBar from "../js/TopBar.js";
+
 function Main(){
 
     
@@ -69,7 +72,8 @@ const data2 = {
 
     return(
     <div className = 'mainContainer'>
-        <div >
+        <TopBar />
+        <div>
             <CarouselC carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
         </div>
         <div class="mainProduct">
