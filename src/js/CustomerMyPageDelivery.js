@@ -50,7 +50,7 @@ function CustomerDelivery() {
    //  }, []);
 
    return (
-      <div>
+      <div className='customerD'>
 
          {/* <select value={selectedCustomerDeliveryState} onChange={(e) => handleDeliveryStateChange(e.target.value)}>
          {customerDeliveryState.map((state, index) => (
