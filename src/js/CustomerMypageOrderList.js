@@ -4,6 +4,9 @@ import exProductURL from "../images/exProduct.jpg"
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
+import "./TopBar.js";
+import TopBar from "./TopBar.js";
+
 let BasicBtn = styled.button`
    background : black;
    color : white;
@@ -77,6 +80,7 @@ function CustomerOrderList() {
 
    return (
       <div className='customerOrderReformProduct'>
+         <TopBar />
          <h1>마이페이지</h1>
          <div className='customerOrederedProduct'>
             <h4>주문내역</h4>

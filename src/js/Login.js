@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "../css/Login.css";
 import axiosInstance from "./jwt.js";
+import { useNavigate } from "react-router-dom";
 
 function Login({ selectedTab, setSelectedTab }) {
+  let navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,7 +22,7 @@ function Login({ selectedTab, setSelectedTab }) {
         localStorage.setItem("accessToken", response.data.data.accessToken);
         document.cookie = `accessToken=${response.data.data.accessToken}; path=/;`;
         console.log("로그인 성공");
-        console.log(document.cookie);
+        navigate("/");
       } else {
         console.error("로그인 실패");
       }
@@ -42,8 +44,6 @@ function Login({ selectedTab, setSelectedTab }) {
         return "";
     }
   };
-
-  let navigate = useNavigate();
 
   return (
     <div className="Login">

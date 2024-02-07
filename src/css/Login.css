@@ -23,7 +23,7 @@
 }
 
 .Login {
-  margin: 0; /* 조정으로 로고와 아이템 위치 조정 */
+  margin: 0;
   padding: 0;
   height: 100vh;
   overflow: hidden;

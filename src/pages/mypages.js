@@ -6,6 +6,9 @@ import Kakao from '../component/kakaoMap';
 import DaumPostcode from "react-daum-postcode";
 import Modal from "react-modal"; 
 
+import "../js/TopBar.js";
+import TopBar from "../js/TopBar.js";
+
 const StockBtn = styled.button`
     color: white;
     background: black;
@@ -83,6 +86,7 @@ function MyPages(){
 
     return(
 <div className = 'mypageContainer'>
+    <TopBar />
     <h3 >마이페이지</h3>
     <div className='mypageProductList' style={{ display: 'flex', marginBottom: '-28px' }}>
     <p style={{ display: 'inline' }}>상품목록</p>
