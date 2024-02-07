@@ -110,6 +110,20 @@ const App = () => {
 
   return (
     <div>
+      
+      {/* 상단바 CSS없이 일단 만들어서 연결만 시켜놓음 */}
+      <div className = '로그인 메뉴 ㅋㅋ' style = {{display : 'flex'}}>
+        <p onClick = {() => {navigate("login")}} >로그인</p>
+        <p onClick = {() => {navigate('mypage2')}}>마이페이지</p>
+        <p onClick = {() => {navigate('shoppingbasket')}}>장바구니</p>
+      </div>
+      <div className = '상단바' style = {{display : 'flex'}}>
+        <p onClick = {() => {navigate("products/:page?")}}>상품검색</p>
+        <p onClick = {() => {navigate('DesignerSearch')}}>디자이너검색</p>
+        <p onClick = {() => {navigate('/')}}>메인페이지</p>
+        <p onClick = {() => {navigate("visual")}}>물 시각화</p>
+        <p onClick = {() => {navigate('DesignerPortfolio')}}>포트폴리오</p>
+      </div>
       <Routes>
 
       <Route
@@ -157,46 +171,17 @@ const App = () => {
         </Routes>
 
         <Routes>
-          <Route path = '/' element = {
-          <>
-            <div className="main-bg">
-              <Main />
-            </div>
-          </>}>
+          <Route path = '/' element = {<div className="main-bg"><Main /></div>}></Route>
 
-        </Route>
-            <Route path = '/detail/:id' element = {
-            <>
-            <Detail shoes = {shoes}/>
-            </>}/>
-            <Route />
-
-            <Route path = '/productupdate' element = {
-            <div>
-            <ProductUpdate/>
-            </div>
-            }>
-        </Route>
-
-        <Route path = '/stockList' element = {
-          <div>
-            <StockList data = {data} mainImage = {mainImage}/>
-          </div>}>
-        </Route>
-
-        <Route path = '/stockupdater/:id' element = {
-            <>
-          <StockUpdater/>
-          </>}/>
-        <Route />
-
-        <Route path = '/mypage2' element = {
-          <>
-          <MyPages data = {data}/> 
-          </>
-        }>
-        </Route>
-
+          <Route path = '/detail/:id' element = {<Detail shoes = {shoes}/>}/><Route />
+          
+          <Route path = '/productupdate' element = {<ProductUpdate/>}></Route>
+          
+          <Route path = '/stockList' element = {<StockList data = {data} mainImage = {mainImage}/>}></Route>
+          
+          <Route path = '/stockupdater/:id' element = { <StockUpdater/>}/><Route />
+          
+          <Route path = '/mypage2' element = {<MyPages data = {data}/>}></Route>
         </Routes>
     </div>
       

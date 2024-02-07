@@ -69,7 +69,6 @@ function ProductUpdate(props){
         return new Promise((resolve) => {
             reader.onload = () => {
                 setThumbnailImage(reader.result)
-
                 resolve();
             }
         })
@@ -94,12 +93,12 @@ const [productRegister, setProductRegister] = useState([])
             <div style = {{marginTop : '5%', marginLeft : '7%'}}ClassName = 'title'>
                 <h3>상품등록</h3>
             </div>
-            <div className = 'image' style = {{display : 'flex', justifyContent : 'center'}}>
-        <img src = {thumbnailImage}></img>
+            <div className = 'image' style = {{height : '300px',border : '1px solid black',display : 'flex', justifyContent : 'center'}}>
+                <img src = {thumbnailImage} height = '90%' style = {{marginTop : '1.8%'}}></img>
             </div>
 
-        <div className ='container' >
-            <div className = 'image-update' style = {{justifyItems : 'end',display: 'grid',marginBottom : '30px'}}>
+        <div className ='productRegisterContainer'>
+            <div className = 'productRegisterImageUpdate' style = {{justifyItems : 'end',display: 'grid',marginBottom : '30px'}}>
             <label 
         htmlFor="fileInput" 
         className="inputLabel" 
@@ -112,10 +111,8 @@ const [productRegister, setProductRegister] = useState([])
         display: 'inline-block',
         border: '1px solid red'
     }}>사진 업로드</label>
-    <input id="fileInput" type="file" multiple onChange = {(event) => {
-        encodeImageFile(event.target.files[0])
-    }} style={{ display: 'none' }}/>
-            
+
+    <input id="fileInput" type="file" multiple onChange = {(event) => {encodeImageFile(event.target.files[0])}} style={{ display: 'none' }}/>
             </div>
             <div className = 'title'>
             <p style = {{fontWeight : '700',margin : '0'}}>{test.map(function(k,i){return(<>{test[i].title}</>)})} 상품 제목</p>

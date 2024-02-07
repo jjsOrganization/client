@@ -25,7 +25,7 @@ function Login({ selectedTab, setSelectedTab }) {
         console.error("로그인 실패");
       }
     } catch (error) {
-      window.alert('이메일 혹은 비밀번호가 틀렸습니다. 다시 입력하세요.');
+      window.alert("이메일 혹은 비밀번호가 틀렸습니다. 다시 입력하세요.");
       console.error("Error :", error);
     }
   };
@@ -42,6 +42,8 @@ function Login({ selectedTab, setSelectedTab }) {
         return "";
     }
   };
+
+  let navigate = useNavigate();
 
   return (
     <div className="Login">
@@ -72,7 +74,8 @@ function Login({ selectedTab, setSelectedTab }) {
         <div className="loginInputs">
           <label>
             이메일 :
-            <input className="loginEmail"
+            <input
+              className="loginEmail"
               type="text"
               value={userEmail}
               onChange={(e) => setUserEmail(e.target.value)}
@@ -91,7 +94,14 @@ function Login({ selectedTab, setSelectedTab }) {
           <button onClick={handleLogin}>Login</button>
         </div>
         <div className="findButtons">
-          <button>회원가입</button>
+          {/* 회원가입 버튼 클릭시 회원가입 페이지로 이동 시키려고 넣어놓긴 했는데 회원가입 페이지 누락돼서 링크는 못적음 */}
+          <button
+            onClick={() => {
+              navigate("");
+            }}
+          >
+            회원가입
+          </button>
           <button>아이디 찾기</button>
           <button>비밀번호 찾기</button>
         </div>

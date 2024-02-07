@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {useEffect,useState} from 'react';
 import Dropdown from '../component/dropdown';
 import copyType from '../component/dropdown';
+import { Routes, Route, useNavigate } from 'react-router-dom'
 
 //useEffect 사용 관련내용 리액트3강의 34분 부터
 
@@ -31,6 +32,8 @@ function Detail(props){
     let [total, setTotal] = useState(0);
     const [dropdownVisibility, setDropdownVisibility] = React.useState(false);
 
+    const pagesTestId = [...id];
+
     //Dropdown 관련 변수
     const SizeList = ['S', 'M','L','XL'];
     const ColorList = ['검정', '아이보리','그레이','챠콜'];
@@ -39,6 +42,7 @@ function Detail(props){
     const test = total * salePrice;
     const [choiceSize, setChoiceSize] = useState(null);
     const [choiceColor,setChoiceColor] = useState(null);
+
 
     const addValue = () => {
         setMyArray(prevArray => [
@@ -49,6 +53,7 @@ function Detail(props){
         setChoiceSize(null);
     };
 
+
     useEffect(() => {
         if (choiceSize  && choiceColor) {
             addValue();
@@ -56,6 +61,9 @@ function Detail(props){
         }
         
     }, [choiceSize, choiceColor]);
+
+    
+
 
 const handleUpdateAmount = () => {
     // 입력값 업데이트 로직
@@ -72,7 +80,7 @@ const handleUpdateAmount = () => {
         <p style={{ fontWeight: '800', color : 'red'}}>{sale * 100}%</p>
         <p style={{ fontWeight: 'bold'}}>할인가 : {salePrice.toLocaleString()}</p>
         <div className = 'btn' style={{display: 'flex',justifyContent: 'space-between',position : 'absolute', bottom : '0', width : '100%'}}>
-        <BasicBtn>구매하기</BasicBtn>
+        <BasicBtn onClick = {() => {total === 0 ? alert('사이즈와 색상을 선택해 주세요'):alert('구매 완료'); window.location.replace(`/detail/${id}`) }}>구매하기</BasicBtn>
         <BasicBtn>의뢰하기</BasicBtn>
         <BasicBtn>장바구니</BasicBtn>
         </div>

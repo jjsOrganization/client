@@ -3,8 +3,35 @@ import { useEffect, useState } from 'react';
 import { Carousel } from 'antd';
 import axios from 'axios'
 import data from '../data';
+import { Routes, Route, useNavigate } from 'react-router-dom'
 
 function Main(){
+
+    
+// 요청할 데이터
+const data2 = {
+    memberId: 'wjswhdtjf5',
+    password: 'wjswhdtjf5'
+};
+
+// POST 요청 보내기
+/*axios({
+    method: 'post',
+    url: 'http://3.38.128.50:8080/auth/login',
+    data: {
+        memberId: 'wjswhdtjf5',
+        password: 'wjswhdtjf5'
+    },
+})
+.then(response => {
+    console.log(response.data);
+})
+.catch(error => {
+    console.error(' 에러 발생')
+})
+    */
+
+
 
     const contentStyle = {
         height: '400px', 
@@ -18,13 +45,7 @@ function Main(){
         height : '40%'
     };
 
-    useEffect(() => {
-        axios.get('https://codingapple1.github.io/shop/data2.json').then((data)=>
-    {setServerMainImage(data.data);})
-    .catch((error) => {
-        console.error('Data Error',error)
-    })
-    })
+
 
     let [serverMainImage,setServerMainImage] = useState()
 
@@ -58,7 +79,7 @@ function Main(){
 
         <div className = 'designerCarousel'>
         <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
-        <CarouselC carouselImage = {carouselImage} carouselStyle = {carouselStyle}/>
+        <CarouselC  carouselImage = {carouselImage} carouselStyle = {carouselStyle}/>
         </div>
     </div>
     )
@@ -66,15 +87,16 @@ function Main(){
 
 
 function MainProduct(props){
+    let navigate = useNavigate();
     return(
     <div className = 'row'>
     {
         props.product.map(function(a, i){
         return(
             <div class="col-6 col-md-4" key={i}>
-            <img src = {props.mainImage[i]} alt = '이미지 준비중'style = {{width : '100%'}}></img>
+            <img src = {props.mainImage[i]} alt = '이미지 준비중'style = {{width : '100%'}} onClick = {() => {navigate(`detail/${props.product[i].id}`)}}></img>
             <h4>{props.product[i].title}</h4>
-            <p>{props.product[i].content}</p>
+            <p></p>
             </div>
         )
         }
@@ -87,12 +109,13 @@ function MainProduct(props){
 
 function CarouselC(props)
 {
+    let navigate = useNavigate();
     return(
     <Carousel autoplay speed>
         {props.carouselImage.map((image, index) => (
         <div key={index}>
             <h3 style={props.carouselStyle}>
-            <img src={image} style={{ width: '100%', height: '100%' }} />
+            <img src={image} style={{ width: '100%', height: '100%' }} onClick = {() => { navigate('detail/1')}} />
             </h3>
         </div>
         ))}
