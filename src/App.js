@@ -23,6 +23,9 @@ import DesignerSearch from "./pages/DesignerSearch";
 import DesignerProduct from "./pages/DesignerProduct";
 import DesignerPortfolio from "./pages/DesignerPortfolio";
 import DesignerRanking from "./pages/DesignerRanking";
+import DesignerMypage from "./pages/DesignerMypage.js";
+import DesignerReformState from "./pages/DesignerReformState.js";
+import Signup from "./pages/Signup.js";
 
 import data from "./data.js";
 import Detail from "./pages/Detail.js";
@@ -140,10 +143,13 @@ const App = () => {
 
       <div className="App">
         <Routes>
+          <Route path="Signup" element={<Signup />} />
           <Route path="/DesignerSearch" element={<DesignerSearch />} />
           <Route path="/DesignerProduct" element={<DesignerProduct />} />
           <Route path="/DesignerPortfolio" element={<DesignerPortfolio />} />
           <Route path="/DesignerRanking" element={<DesignerRanking />} />
+          <Route path="/DesignerMypage" element={<DesignerMypage />} />
+          <Route path="/DesignerMypage/ReformState" element={<DesignerReformState />} />
         </Routes>
 
         <Routes>
