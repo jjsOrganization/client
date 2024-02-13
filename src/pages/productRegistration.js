@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-
+import axios from "axios";
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
 
@@ -39,6 +39,7 @@ function ProductUpdate(props) {
   const [priceValue, setPriceValue] = useState();
   const [amountValue, setAmountValue] = useState();
   const [thumbnailImage, setThumbnailImage] = useState();
+  const [thumbnailImageFile, setThumbnailImageFile] = useState();
 
   const savecontent = (event) => {
     setContentValue(event.target.value);
@@ -57,25 +58,58 @@ function ProductUpdate(props) {
   };
 
   const encodeImageFile = (event) => {
+    const file = event.target.files[0]; // 파일을 가져옵니다.
     const reader = new FileReader();
-    reader.readAsDataURL(event);
-
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setThumbnailImage(reader.result);
-        resolve();
-      };
-    });
+    reader.readAsDataURL(file); // 파일을 URL로 변환합니다.
+  
+    reader.onload = () => {
+      setThumbnailImage(reader.result); // URL을 상태 변수에 저장합니다.
+      setThumbnailImageFile(file); // 파일을 상태 변수에 저장합니다.
+    };
   };
 
-  const register = () => {
-    setTest((prevArray) => [
-      ...prevArray,
-      { title: titleValue, content: contentValue, price: priceValue },
-    ]);
-    setTitleValue("");
-    setContentValue("");
-    setPriceValue("");
+
+
+
+
+
+  const axiosInstance = axios.create({
+    baseURL: 'http://localhost:8080',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+      'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
+    }
+  });
+
+
+  const registerHandler = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("id", 1);
+      formData.append("productName", titleValue);
+      formData.append("price", 50000);
+      formData.append("itemDetail", contentValue);
+      formData.append("productStock", 50);
+      formData.append("productSellStatus", 'SELL');
+      formData.append("productImgDtoList[0].id", 1);
+      formData.append("productImgDtoList[0].imgName", 'test');
+      formData.append("productImgDtoList[0].oriImgName", "string");
+      formData.append("productImgDtoList[0].imgUrl", "https://i.postimg.cc/zfrVFgNL/1.png");
+      formData.append("productImgDtoList[0].repImgYn", "test");
+      formData.append("itemImgFile", thumbnailImageFile);
+  
+      const response = await axiosInstance.post("/product/seller/register", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
+        }
+      });
+  
+      console.log("상품 등록 성공:", response.data);
+    } catch (error) {
+      console.error("상품 등록 실패:", error);
+    }
   };
 
   const [productRegister, setProductRegister] = useState([]);
@@ -124,14 +158,12 @@ function ProductUpdate(props) {
           </label>
 
           <input
-            id="fileInput"
-            type="file"
-            multiple
-            onChange={(event) => {
-              encodeImageFile(event.target.files[0]);
-            }}
-            style={{ display: "none" }}
-          />
+  id="fileInput"
+  type="file"
+  multiple
+  onChange={(event) => encodeImageFile(event)}
+  style={{ display: "none" }}
+/>
         </div>
         <div className="title">
           <p style={{ fontWeight: "700", margin: "0" }}>
@@ -177,7 +209,7 @@ function ProductUpdate(props) {
         <div className="register" style={{ textAlign: "right" }}>
           <RegisterBtn
             onClick={() => {
-              register();
+              registerHandler();
             }}
           >
             상품등록

@@ -20,6 +20,8 @@ function Login({ selectedTab, setSelectedTab }) {
       });
       if (response.data && response.data.data.accessToken) {
         localStorage.setItem("accessToken", response.data.data.accessToken);
+        localStorage.setItem('csrfToken', response.data.data.csrfToken);
+        document.cookie = `csrfToken'=${response.data.data.csrfToken}; path = /;`;
         document.cookie = `accessToken=${response.data.data.accessToken}; path=/;`;
         console.log("로그인 성공");
         navigate("/");
