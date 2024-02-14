@@ -58,20 +58,15 @@ function ProductUpdate(props) {
   };
 
   const encodeImageFile = (event) => {
-    const file = event.target.files[0]; // 파일을 가져옵니다.
+    const file = event.target.files[0]; 
     const reader = new FileReader();
-    reader.readAsDataURL(file); // 파일을 URL로 변환합니다.
+    reader.readAsDataURL(file); 
   
     reader.onload = () => {
-      setThumbnailImage(reader.result); // URL을 상태 변수에 저장합니다.
-      setThumbnailImageFile(file); // 파일을 상태 변수에 저장합니다.
+      setThumbnailImage(reader.result); 
+      setThumbnailImageFile(file); 
     };
   };
-
-
-
-
-
 
   const axiosInstance = axios.create({
     baseURL: 'http://localhost:8080',
@@ -85,17 +80,12 @@ function ProductUpdate(props) {
   const registerHandler = async () => {
     try {
       const formData = new FormData();
-      formData.append("id", 1);
+      
       formData.append("productName", titleValue);
-      formData.append("price", 50000);
+      formData.append("price", priceValue);
       formData.append("itemDetail", contentValue);
-      formData.append("productStock", 50);
-      formData.append("productSellStatus", 'SELL');
-      formData.append("productImgDtoList[0].id", 1);
-      formData.append("productImgDtoList[0].imgName", 'test');
-      formData.append("productImgDtoList[0].oriImgName", "string");
-      formData.append("productImgDtoList[0].imgUrl", "https://i.postimg.cc/zfrVFgNL/1.png");
-      formData.append("productImgDtoList[0].repImgYn", "test");
+      formData.append("productStock", amountValue);
+      formData.append("productImgDtoList[0].imgUrl", thumbnailImage);
       formData.append("itemImgFile", thumbnailImageFile);
   
       const response = await axiosInstance.post("/product/seller/register", formData, {
