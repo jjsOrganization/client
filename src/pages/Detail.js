@@ -5,17 +5,10 @@ import { useEffect, useState } from "react";
 import Dropdown from "../component/dropdown";
 import copyType from "../component/dropdown";
 import { Routes, Route, useNavigate } from "react-router-dom";
-
+import axios from 'axios';
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
 
-//useEffect 사용 관련내용 리액트3강의 34분 부터
-
-let YellowBtn = styled.button`
-    background : yellow;
-    color : black
-    padding : 10px
-`;
 
 let BasicBtn = styled.button`
   padding: 1%;
@@ -26,14 +19,12 @@ let BasicBtn = styled.button`
 
 function Detail(props) {
   const [myArray, setMyArray] = useState([]);
-
   let [sale, setSale] = useState(0.25);
-  let { id } = useParams();
-  let salePrice = props.shoes[id].price * (1 - sale);
+  let { productid } = useParams();
+  let salePrice = props.productDetailInfo[productid].price * (1 - sale);
   let [total, setTotal] = useState(0);
   const [dropdownVisibility, setDropdownVisibility] = React.useState(false);
 
-  const pagesTestId = [...id];
 
   //Dropdown 관련 변수
   const SizeList = ["S", "M", "L", "XL"];
@@ -43,6 +34,7 @@ function Detail(props) {
   const test = total * salePrice;
   const [choiceSize, setChoiceSize] = useState(null);
   const [choiceColor, setChoiceColor] = useState(null);
+  
 
   const addValue = () => {
     setMyArray((prevArray) => [
@@ -60,9 +52,23 @@ function Detail(props) {
     }
   }, [choiceSize, choiceColor]);
 
-  const handleUpdateAmount = () => {
-    // 입력값 업데이트 로직
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/product/all/detail/${productid}`, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+            'X-CSRF-TOKEN': localStorage.getItem('csrfToken'),
+          }
+        });
+        props.setproductDetailInfo(response.data); // 수정된 부분
+      } catch(error) {
+        console.log('데이터 로드 실패', error);
+      }
+    }
+    fetchData();
+  }, [])
 
   return (
     <div className="Detail">
@@ -91,8 +97,8 @@ function Detail(props) {
             marginLeft: "2%",
           }}
         >
-          <h4 className="title">{props.shoes[id].title}</h4>
-          <p>{props.shoes[id].content}</p>
+          <h4 className="title">{props.productDetailInfo[productid].title}</h4>
+          <p>{props.productDetailInfo[productid].content}</p>
           <p
             style={{
               fontWeight: "bold",
@@ -100,7 +106,7 @@ function Detail(props) {
               color: "darkgray",
             }}
           >
-            {props.shoes[id].price.toLocaleString()}
+            {props.productDetailInfo[productid].price.toLocaleString()}
           </p>
           <p style={{ fontWeight: "800", color: "red" }}>{sale * 100}%</p>
           <p style={{ fontWeight: "bold" }}>
@@ -113,7 +119,8 @@ function Detail(props) {
               justifyContent: "space-between",
               position: "absolute",
               bottom: "0",
-              width: "100%",
+              wproductidth: "100%",
+              width : '100%'
             }}
           >
             <BasicBtn
@@ -121,11 +128,8 @@ function Detail(props) {
                 total === 0
                   ? alert("사이즈와 색상을 선택해 주세요")
                   : alert("구매 완료");
-                window.location.replace(`/detail/${id}`);
-              }}
-            >
-              구매하기
-            </BasicBtn>
+                window.location.replace(`/detail/${productid}`);
+              }}>구매하기</BasicBtn>
             <BasicBtn>의뢰하기</BasicBtn>
             <BasicBtn>장바구니</BasicBtn>
           </div>
@@ -154,7 +158,7 @@ function Detail(props) {
           />
         </div>
         <div className="buy-info" style={{ marginLeft: "7%" }}>
-          <h3>제품명 : {props.shoes[id].title}</h3>
+          <h3>제품명 : {props.productDetailInfo[productid].title}</h3>
           <p style={{ marginBottom: "2%" }}>
             결제 예정 금액 : {test.toLocaleString()}{" "}
           </p>
@@ -164,7 +168,7 @@ function Detail(props) {
               return (
                 <div
                   className="user-choice"
-                  style={{ width: "180px", marginBottom: "10px" }}
+                  style={{ wproductidth: "180px", marginBottom: "10px" }}
                 >
                   {choice.size + choice.color}{" "}
                   <button className="choice-cancel">✖</button>
@@ -178,15 +182,8 @@ function Detail(props) {
   );
 }
 
-/*<div className = 'dropdown' style = {{display : 'flex'}}>
-<Dropdown setArticleType = {setchoiceSize} articleType = {choiceSize} articleTypeList = {ColorList}/>
-<Dropdown setArticleType = {setchoiceColor} articleType = {choiceColor} articleTypeList = {SizeList}/>
-</div>*/
+
 
 export default Detail;
 
-//강의에서 얘기하는 id값에 따른 상품을 보여주는 방식 아마
-//먼저 정렬기능을 갖춘 버튼을 만든 후 해당 기능을 통해 배열이 정렬이 될 것이고
-//정렬된 배열의 0번째 인덱스 정보가 기존 3번째 인덱스 정보가 될 수 있으니
-//정렬된 상품의 key값을 기준으로 상품의 정보를 표시
-//나중에 볼 떄 잘 이해 안가면 일단 정렬기능부터 만들기
+

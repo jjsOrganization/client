@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import StockList from "./stockList";
+import axios from 'axios'
 
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
@@ -40,6 +41,7 @@ function StockUpdater() {
   const [priceValue, setPriceValue] = useState();
   const [amountValue, setAmountValue] = useState();
   const [thumbnailImage, setThumbnailImage] = useState();
+  const [thumbnailImageFile, setThumbnailImageFile] = useState();
 
   const savecontent = (event) => {
     setContentValue(event.target.value);
@@ -57,27 +59,47 @@ function StockUpdater() {
     setTitleValue(event.target.value);
   };
 
-  const register = () => {
-    setTest((prevArray) => [
-      ...prevArray,
-      { title: titleValue, content: contentValue, price: priceValue },
-    ]);
-    setTitleValue("");
-    setContentValue("");
-    setPriceValue("");
+  const axiosInstance = axios.create({
+    baseURL: 'http://localhost:8080',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+      'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
+    }
+  });
+
+  const stockHandler = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("productName", titleValue);
+      formData.append("price", priceValue);
+      formData.append("itemDetail", contentValue);
+      formData.append("productStock", amountValue);
+      formData.append("productImgDtoList[0].imgUrl", thumbnailImage);
+      formData.append("itemImgFile", thumbnailImageFile);
+  
+      const response = await axiosInstance.put(`product/seller/register/1`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
+        }
+      });
+  
+      console.log("상품 수정 성공:", response.data);
+    } catch (error) {
+      console.error("상품 수정 실패:", error);
+    }
   };
 
   const encodeImageFile = (event) => {
+    const file = event.target.files[0]; 
     const reader = new FileReader();
-    reader.readAsDataURL(event);
-
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setThumbnailImage(reader.result);
-
-        resolve();
-      };
-    });
+    reader.readAsDataURL(file); 
+  
+    reader.onload = () => {
+      setThumbnailImage(reader.result); 
+      setThumbnailImageFile(file); 
+    };
   };
 
   const [productRegister, setProductRegister] = useState([]);
@@ -134,7 +156,7 @@ function StockUpdater() {
               type="file"
               multiple
               onChange={(event) => {
-                encodeImageFile(event.target.files[0]);
+                encodeImageFile(event);
               }}
               style={{ display: "none" }}
             />
@@ -182,7 +204,7 @@ function StockUpdater() {
         <div className="register" style={{ textAlign: "right" }}>
           <RegisterBtn
             onClick={() => {
-              register();
+              stockHandler()
             }}
           >
             상품 수정

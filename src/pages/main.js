@@ -3,38 +3,39 @@ import { useEffect, useState } from 'react';
 import { Carousel } from 'antd';
 import axios from 'axios'
 import data from '../data';
-import { Routes, Route, useNavigate } from 'react-router-dom'
-
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
 
 function Main(){
 
+    const axiosInstance = axios.create({
+        baseURL: 'http://localhost:8080',
+        headers: {
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+        'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
+        }
+    });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('/product/all', {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
+                    }
+                });
+                setProductInfo(response.data);
+                console.log(response.data); // 데이터 확인용
+            } catch(error) {
+                console.log('데이터 로드 실패', error);
+            }
+        };
     
-// 요청할 데이터
-const data2 = {
-    memberId: 'wjswhdtjf5',
-    password: 'wjswhdtjf5'
-};
-
-// POST 요청 보내기
-/*axios({
-    method: 'post',
-    url: 'http://3.38.128.50:8080/auth/login',
-    data: {
-        memberId: 'wjswhdtjf5',
-        password: 'wjswhdtjf5'
-    },
-})
-.then(response => {
-    console.log(response.data);
-})
-.catch(error => {
-    console.error(' 에러 발생')
-})
-    */
-
-
+        fetchData();
+    }, []);
 
     const contentStyle = {
         height: '400px', 
@@ -47,8 +48,6 @@ const data2 = {
         width : '100%',
         height : '40%'
     };
-
-
 
     let [serverMainImage,setServerMainImage] = useState()
 
@@ -68,7 +67,7 @@ const data2 = {
         ])
     
     const [index, setIndex] = useState(0);
-
+    const [productInfo,setProductInfo] = useState([{}])
 
     return(
     <div className = 'mainContainer'>
@@ -77,18 +76,17 @@ const data2 = {
             <CarouselC carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
         </div>
         <div class="mainProduct">
-        <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
-        <MainProduct product = {data} mainImage = {mainImage}></MainProduct>
+            <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
+            <MainProduct product = {productInfo} mainImage = {mainImage}></MainProduct>
         </div>
-
+            
         <div className = 'designerCarousel'>
-        <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
-        <CarouselC  carouselImage = {carouselImage} carouselStyle = {carouselStyle}/>
+            <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
+            <CarouselC  carouselImage = {carouselImage} carouselStyle = {carouselStyle}/>
         </div>
     </div>
     )
 }
-
 
 function MainProduct(props){
     let navigate = useNavigate();
@@ -99,7 +97,7 @@ function MainProduct(props){
         return(
             <div class="col-6 col-md-4" key={i}>
             <img src = {props.mainImage[i]} alt = '이미지 준비중'style = {{width : '100%'}} onClick = {() => {navigate(`detail/${props.product[i].id}`)}}></img>
-            <h4>{props.product[i].title}</h4>
+            <h4>{props.product[i].productName}</h4>
             <p></p>
             </div>
         )
@@ -109,7 +107,6 @@ function MainProduct(props){
 </div>
     )
 }
-
 
 function CarouselC(props)
 {
@@ -126,6 +123,5 @@ function CarouselC(props)
     </Carousel>
     )
 }
-
 
 export default Main;
