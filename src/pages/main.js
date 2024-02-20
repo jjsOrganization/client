@@ -8,29 +8,6 @@ import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
 
 function Main(){
-    
-// 요청할 데이터
-const data2 = {
-    memberId: 'wjswhdtjf5',
-    password: 'wjswhdtjf5'
-};
-
-// POST 요청 보내기
-/*axios({
-    method: 'post',
-    url: 'http://3.38.128.50:8080/auth/login',
-    data: {
-        memberId: 'wjswhdtjf5',
-        password: 'wjswhdtjf5'
-    },
-})
-.then(response => {
-    console.log(response.data);
-})
-.catch(error => {
-    console.error(' 에러 발생')
-})
-    */
 
     const axiosInstance = axios.create({
         baseURL: 'http://localhost:8080',
@@ -40,8 +17,6 @@ const data2 = {
         }
     });
 
-
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -49,7 +24,7 @@ const data2 = {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        'X-CSRF-TOKEN': localStorage.getItem('csrfToken'),
+                        'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
                     }
                 });
                 setProductInfo(response.data);

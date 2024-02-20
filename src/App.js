@@ -17,6 +17,7 @@ import CustomerMypageOrderList from "./js/CustomerMypageOrderList.js";
 import CustomerShoppingBasket from "./js/CustomerShoppingBasket.js";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import exProductURL from "./images/exProduct.jpg";
+import axios from 'axios';
 
 import { Button, Nav } from "react-bootstrap";
 import DesignerSearch from "./pages/DesignerSearch";
@@ -36,7 +37,6 @@ const App = () => {
   
 
   let [onOff, setOnOff] = useState(false);
-  let [shoes, setShoes] = useState(data);
   let navigate = useNavigate();
 
   //서버에서 받은 데이터 이용해 메인 상품 추가
@@ -52,6 +52,7 @@ const App = () => {
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const itemsPerPage = 6; // 페이지당 보여줄 상품 수
+  const [productData,setProductData] = useState();
   const products = [
     {
       id: 1,
@@ -99,6 +100,25 @@ const App = () => {
       images: [exProductURL],
     },
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/product/all`, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+            'X-CSRF-TOKEN': localStorage.getItem('csrfToken'),
+          }
+        });
+        setProductData(response.data); // 수정된 부분
+      } catch(error) {
+        console.log('데이터 로드 실패', error);
+      }
+    }
+    fetchData();
+  }, [])
+  
 
   return (
     <div>
@@ -156,18 +176,15 @@ const App = () => {
             }
           ></Route>
 
-          <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
-          <Route />
+          <Route path="/detail/:productid" element={<Detail productDetailInfo = {productData} />} /><Route />
 
           <Route path="/productupdate" element={<ProductUpdate />}></Route>
 
           <Route
             path="/stockList"
-            element={<StockList data={data} mainImage={mainImage} />}
-          ></Route>
+            element={<StockList data={data} mainImage={mainImage} />}></Route>
 
-          <Route path="/stockupdater/:id" element={<StockUpdater />} />
-          <Route />
+          <Route path="/stockupdater/:id" element={<StockUpdater />} /><Route />
 
           <Route path="/mypage2" element={<MyPages data={data} />}></Route>
         </Routes>
