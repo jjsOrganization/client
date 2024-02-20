@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ButtonGroup, ToggleButton } from "react-bootstrap";
-import style from "./DesignerSearch.module.css";
+import "./DesignerSearch.module.css";
 
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";

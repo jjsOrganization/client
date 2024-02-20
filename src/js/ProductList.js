@@ -1,11 +1,61 @@
 import "../css/ProductList.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import exProductURL from "../images/exProduct.jpg";
 
-import "../js/TopBar.js";
-import TopBar from "../js/TopBar.js";
+import "./TopBar.js";
+import TopBar from "./TopBar.js";
 
-const ProductList = ({ products, itemsPerPage }) => {
+const ProductList = () => {
+  const [products, setProducts] = useState([
+    {
+      id: 1,
+      name: "가나다",
+      images: [exProductURL],
+    },
+    {
+      id: 2,
+      name: "라마바",
+      images: [exProductURL],
+    },
+    {
+      id: 3,
+      name: "가",
+      images: [exProductURL],
+    },
+    {
+      id: 4,
+      name: "마",
+      images: [exProductURL],
+    },
+    {
+      id: 5,
+      name: "가마",
+      images: [exProductURL],
+    },
+    {
+      id: 6,
+      name: "상품 6",
+      images: [exProductURL],
+    },
+    {
+      id: 7,
+      name: "상품 7",
+      images: [exProductURL],
+    },
+    {
+      id: 8,
+      name: "상품 8",
+      images: [exProductURL],
+    },
+    {
+      id: 9,
+      name: "상품 9",
+      images: [exProductURL],
+    },
+  ]);
+  const itemsPerPage = 6; // 페이지당 보여줄 상품 수
+
   const navigate = useNavigate();
   const { page } = useParams();
   const currentPage = page ? parseInt(page, 10) : 1;
@@ -19,28 +69,47 @@ const ProductList = ({ products, itemsPerPage }) => {
     navigate(`/products/${newPage}`);
   };
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("latest"); // 'latest' 또는 'popular'
+  const [filteredProducts, setFilteredProducts] = useState([]); // 검색된 상품 목록
+  const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
+  const [sortBy, setSortBy] = useState(""); // 'latest' 또는 'popular'
+
+  useEffect(() => {
+    setFilteredProducts(products); // 초기에는 전체 상품 목록을 보여줌
+  }, [products]);
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value.toLowerCase()); // 검색어를 소문자로 변환하여 저장
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  const handleSearch = () => {
+    // 검색어가 비어있지 않은 경우 필터링된 상품 목록을 설정
+    if (searchTerm.trim() !== "") {
+      const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm)
+      );
+      setFilteredProducts(filteredProducts);
+    } else {
+      // 검색어가 비어있는 경우 전체 상품 목록을 보여줌
+      setFilteredProducts(products);
+    }
   };
 
   const handleSortByLatest = () => {
     setSortBy("latest");
+    setProducts((prevProducts) =>
+      prevProducts.slice().sort((a, b) => b.id - a.id)
+    );
   };
 
   const handleSortByPopular = () => {
     setSortBy("popular");
   };
-
-  const sortedProducts = currentProducts.slice().sort((a, b) => {
-    if (sortBy === "latest") {
-      return b.id - a.id; // 최신순으로 정렬
-    } else {
-      // 인기순으로 정렬 인기순 로직을 추가
-    }
-  });
 
   return (
     <div>
@@ -56,16 +125,17 @@ const ProductList = ({ products, itemsPerPage }) => {
           placeholder="상품명 검색"
           value={searchTerm}
           onChange={handleSearchChange}
+          onKeyPress={handleKeyPress} // 이 부분 추가
         />
       </div>
 
       <div className="productList">
-        {currentProducts.map((product) => (
-          <div key={product.id} className="productItem">
-            <Link to={`/product/${product.id}`}>
-              <img src={product.images[0]} alt={product.name} />
+        {currentProducts.map((products) => (
+          <div key={products.id} className="productItem">
+            <Link to={`/product/${products.id}`}>
+              <img src={products.images[0]} alt={products.name} />
             </Link>
-            <p>{product.name}</p>
+            <p>{products.name}</p>
             <p>가격</p>
           </div>
         ))}

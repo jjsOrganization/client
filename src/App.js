@@ -51,54 +51,6 @@ const App = () => {
   const [selectedTab, setSelectedTab] = useState(1);
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
-  const itemsPerPage = 6; // 페이지당 보여줄 상품 수
-  const products = [
-    {
-      id: 1,
-      name: "상품 1",
-      images: [exProductURL],
-    },
-    {
-      id: 2,
-      name: "상품 2",
-      images: [exProductURL],
-    },
-    {
-      id: 3,
-      name: "상품 3",
-      images: [exProductURL],
-    },
-    {
-      id: 4,
-      name: "상품 4",
-      images: [exProductURL],
-    },
-    {
-      id: 5,
-      name: "상품 5",
-      images: [exProductURL],
-    },
-    {
-      id: 6,
-      name: "상품 6",
-      images: [exProductURL],
-    },
-    {
-      id: 7,
-      name: "상품 7",
-      images: [exProductURL],
-    },
-    {
-      id: 8,
-      name: "상품 8",
-      images: [exProductURL],
-    },
-    {
-      id: 9,
-      name: "상품 9",
-      images: [exProductURL],
-    },
-  ];
 
   return (
     <div>
@@ -122,13 +74,13 @@ const App = () => {
         <Route
           path="products/:page?"
           element={
-            <ProductList products={products} itemsPerPage={itemsPerPage} />
+            <ProductList/>
           }
         />
 
         <Route
           path="product/:productId"
-          element={<ProductDetail products={products} />}
+          element={<ProductDetail/>}
         />
 
         <Route path="mypage/delivery" element={<CustomerMypageDelivery />} />

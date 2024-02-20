@@ -35,7 +35,7 @@ function TopBar() {
         <p onClick={() => navigate("/shoppingbasket")}>장바구니</p>
       </div>
       <div className="topBarMenu" style={{ display: "flex" }}>
-        <p onClick={() => navigate("/products/:page?")}>상품검색</p>
+        <p onClick={() => navigate("/products/1")}>상품검색</p>
         <p onClick={() => navigate("/DesignerSearch")}>디자이너검색</p>
         <p onClick={() => navigate("/")}>메인페이지</p>
         <p onClick={() => navigate("/visual")}>물 시각화</p>
