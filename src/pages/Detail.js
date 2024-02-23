@@ -20,12 +20,12 @@ let BasicBtn = styled.button`
 function Detail(props) {
   const [myArray, setMyArray] = useState([]);
   let [sale, setSale] = useState(0.25);
-  let { productid } = useParams();
-  let salePrice = props.productDetailInfo[productid].price * (1 - sale);
   let [total, setTotal] = useState(0);
   const [dropdownVisibility, setDropdownVisibility] = React.useState(false);
-
-
+  let { productid } = useParams();
+  const [productidInt,setProductidInt] = useState();
+  const [productDetailInfo,setProductDetailInfo] = useState();
+  let [salePrice, setSalePrice] = useState();
   //Dropdown 관련 변수
   const SizeList = ["S", "M", "L", "XL"];
   const ColorList = ["검정", "아이보리", "그레이", "챠콜"];
@@ -52,23 +52,36 @@ function Detail(props) {
     }
   }, [choiceSize, choiceColor]);
 
+  let testUrl = 11;
+
   useEffect(() => {
+    setProductidInt(parseInt(productid))
     const fetchData = async () => {
-      try {
+    try {
         const response = await axios.get(`/product/all/detail/${productid}`, {
-          headers: {
+        headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
             'X-CSRF-TOKEN': localStorage.getItem('csrfToken'),
-          }
+        }
         });
-        props.setproductDetailInfo(response.data); // 수정된 부분
-      } catch(error) {
-        console.log('데이터 로드 실패', error);
-      }
+        setProductDetailInfo(response.data);
+        if (productDetailInfo) {
+            console.log(productDetailInfo.productName);
+            setSalePrice(productDetailInfo[productid].price * (1 - sale))
+        } else {
+            console.log('상품 데이터가 아직 로드되지 않았습니다.');
+        }
+    } catch(error) {
+        console.log('상품 상세 데이터 로드 실패', error);
+    }
     }
     fetchData();
-  }, [])
+}, [])
+
+if (!productDetailInfo) {
+  return <div>데이터를 로드하는 중입니다...</div>;
+}
 
   return (
     <div className="Detail">
@@ -97,8 +110,7 @@ function Detail(props) {
             marginLeft: "2%",
           }}
         >
-          <h4 className="title">{props.productDetailInfo[productid].title}</h4>
-          <p>{props.productDetailInfo[productid].content}</p>
+          <h4 className="title">{productDetailInfo.productName}</h4>
           <p
             style={{
               fontWeight: "bold",
@@ -106,11 +118,11 @@ function Detail(props) {
               color: "darkgray",
             }}
           >
-            {props.productDetailInfo[productid].price.toLocaleString()}
+            {productDetailInfo.price}
           </p>
           <p style={{ fontWeight: "800", color: "red" }}>{sale * 100}%</p>
           <p style={{ fontWeight: "bold" }}>
-            할인가 : {salePrice.toLocaleString()}
+            할인가 : {}
           </p>
           <div
             className="btn"
@@ -119,7 +131,7 @@ function Detail(props) {
               justifyContent: "space-between",
               position: "absolute",
               bottom: "0",
-              wproductidth: "100%",
+              w0th: "100%",
               width : '100%'
             }}
           >
@@ -128,7 +140,7 @@ function Detail(props) {
                 total === 0
                   ? alert("사이즈와 색상을 선택해 주세요")
                   : alert("구매 완료");
-                window.location.replace(`/detail/${productid}`);
+                window.location.replace(`/detail/${0}`);
               }}>구매하기</BasicBtn>
             <BasicBtn>의뢰하기</BasicBtn>
             <BasicBtn>장바구니</BasicBtn>
@@ -137,9 +149,7 @@ function Detail(props) {
       </div>
 
       <div className="productField">
-        <p>
-          <h1>대충 상품 정보 적혀있는 칸 </h1>
-        </p>
+        <p>{productDetailInfo.itemDetail}</p>
       </div>
 
       <div className="buy-info" style={{ display: "flex" }}>
@@ -158,7 +168,7 @@ function Detail(props) {
           />
         </div>
         <div className="buy-info" style={{ marginLeft: "7%" }}>
-          <h3>제품명 : {props.productDetailInfo[productid].title}</h3>
+          <h3>제품명 : {productDetailInfo.productName}</h3>
           <p style={{ marginBottom: "2%" }}>
             결제 예정 금액 : {test.toLocaleString()}{" "}
           </p>
@@ -168,7 +178,7 @@ function Detail(props) {
               return (
                 <div
                   className="user-choice"
-                  style={{ wproductidth: "180px", marginBottom: "10px" }}
+                  style={{ w0th: "180px", marginBottom: "10px" }}
                 >
                   {choice.size + choice.color}{" "}
                   <button className="choice-cancel">✖</button>

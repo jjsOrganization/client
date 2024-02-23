@@ -176,7 +176,7 @@ const App = () => {
             }
           ></Route>
 
-          <Route path="/detail/:productid" element={<Detail productDetailInfo = {productData} />} /><Route />
+          <Route path="/detail/:productid" element={<Detail />} /><Route />
 
           <Route path="/productupdate" element={<ProductUpdate />}></Route>
 

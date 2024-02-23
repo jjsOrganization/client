@@ -9,6 +9,9 @@ import TopBar from "../js/TopBar.js";
 
 function Main(){
 
+    const testUrl = 21;
+    const [testData,setTestData] = useState();
+
     const axiosInstance = axios.create({
         baseURL: 'http://localhost:8080',
         headers: {
@@ -28,7 +31,7 @@ function Main(){
                     }
                 });
                 setProductInfo(response.data);
-                console.log(response.data); // 데이터 확인용
+                console.log(response.data); 
             } catch(error) {
                 console.log('데이터 로드 실패', error);
             }
@@ -36,6 +39,37 @@ function Main(){
     
         fetchData();
     }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+            const response = await axios.get(`/product/all/detail/${testUrl}`, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                'X-CSRF-TOKEN': localStorage.getItem('csrfToken'),
+            }
+            });
+            setTestData(response.data);
+            if (testData) {
+                console.log(testData.productName);
+            } else {
+                console.log('상품 데이터가 아직 로드되지 않았습니다.');
+            }
+        } catch(error) {
+            console.log('상품 상세 데이터 로드 실패', error);
+        }
+        }
+        fetchData();
+    }, [])
+
+    useEffect(() => {
+    if (testData) {
+        console.log(testData.productName);
+    } else {
+        console.log('상품 데이터가 아직 로드되지 않았습니다.');
+    }
+}, [testData]);
 
     const contentStyle = {
         height: '400px', 
@@ -72,6 +106,7 @@ function Main(){
     return(
     <div className = 'mainContainer'>
         <TopBar />
+        
         <div>
             <CarouselC carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
         </div>
@@ -100,9 +135,7 @@ function MainProduct(props){
             <h4>{props.product[i].productName}</h4>
             <p></p>
             </div>
-        )
-        }
-        )
+        )})
     }
 </div>
     )
