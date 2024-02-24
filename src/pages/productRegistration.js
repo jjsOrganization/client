@@ -85,7 +85,7 @@ function ProductUpdate(props) {
       formData.append("price", priceValue);
       formData.append("itemDetail", contentValue);
       formData.append("productStock", amountValue);
-      formData.append("productImgDtoList[0].imgUrl", 'https://i.postimg.cc/5yvZCPM1/1.png');
+      formData.append("productImgDtoList.imgUrl", 'https://i.postimg.cc/5yvZCPM1/1.png');
       formData.append("itemImgFile", thumbnailImageFile);
   
       const response = await axiosInstance.post("/product/seller/register", formData, {

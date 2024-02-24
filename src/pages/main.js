@@ -40,37 +40,7 @@ function Main(){
         fetchData();
     }, []);
 
-    useEffect(() => {
-        const fetchData = async () => {
-        try {
-            const response = await axios.get(`/product/all/detail/${testUrl}`, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                'X-CSRF-TOKEN': localStorage.getItem('csrfToken'),
-            }
-            });
-            setTestData(response.data);
-            if (testData) {
-                console.log(testData.productName);
-            } else {
-                console.log('상품 데이터가 아직 로드되지 않았습니다.');
-            }
-        } catch(error) {
-            console.log('상품 상세 데이터 로드 실패', error);
-        }
-        }
-        fetchData();
-    }, [])
-
-    useEffect(() => {
-    if (testData) {
-        console.log(testData.productName);
-    } else {
-        console.log('상품 데이터가 아직 로드되지 않았습니다.');
-    }
-}, [testData]);
-
+    
     const contentStyle = {
         height: '400px', 
         width: '100%', 
@@ -108,7 +78,7 @@ function Main(){
         <TopBar />
         
         <div>
-            <CarouselC carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+            <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
         </div>
         <div class="mainProduct">
             <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
@@ -117,7 +87,7 @@ function Main(){
             
         <div className = 'designerCarousel'>
             <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
-            <CarouselC  carouselImage = {carouselImage} carouselStyle = {carouselStyle}/>
+            <CarouselC  product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
         </div>
     </div>
     )
@@ -149,7 +119,7 @@ function CarouselC(props)
         {props.carouselImage.map((image, index) => (
         <div key={index}>
             <h3 style={props.carouselStyle}>
-            <img src={image} style={{ width: '100%', height: '100%' }} onClick = {() => { navigate('detail/1')}} />
+            <img src={image} style={{ width: '100%', height: '100%' }} onClick = {() => { navigate(`detail/${props.product[index].id}`)}} />
             </h3>
         </div>
         ))}
