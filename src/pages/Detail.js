@@ -25,7 +25,8 @@ function Detail(props) {
   let { productid } = useParams();
   const [productidInt,setProductidInt] = useState();
   const [productDetailInfo,setProductDetailInfo] = useState();
-  let [salePrice, setSalePrice] = useState();
+  const [salePrice, setSalePrice] = useState();
+
   //Dropdown 관련 변수
   const SizeList = ["S", "M", "L", "XL"];
   const ColorList = ["검정", "아이보리", "그레이", "챠콜"];
@@ -34,7 +35,6 @@ function Detail(props) {
   const test = total * salePrice;
   const [choiceSize, setChoiceSize] = useState(null);
   const [choiceColor, setChoiceColor] = useState(null);
-  
 
   const addValue = () => {
     setMyArray((prevArray) => [
@@ -52,8 +52,6 @@ function Detail(props) {
     }
   }, [choiceSize, choiceColor]);
 
-  let testUrl = 11;
-
   useEffect(() => {
     setProductidInt(parseInt(productid))
     const fetchData = async () => {
@@ -66,12 +64,6 @@ function Detail(props) {
         }
         });
         setProductDetailInfo(response.data);
-        if (productDetailInfo) {
-            console.log(productDetailInfo.productName);
-            setSalePrice(productDetailInfo[productid].price * (1 - sale))
-        } else {
-            console.log('상품 데이터가 아직 로드되지 않았습니다.');
-        }
     } catch(error) {
         console.log('상품 상세 데이터 로드 실패', error);
     }
@@ -79,11 +71,20 @@ function Detail(props) {
     fetchData();
 }, [])
 
+useEffect(() => {
+  if (productDetailInfo) {
+      console.log(productDetailInfo.productName);
+      setSalePrice(productDetailInfo.price * (1 - sale));
+  } else {
+      console.log('상품 데이터가 아직 로드되지 않았습니다.');
+  }
+}, [productDetailInfo, sale]);
+
 if (!productDetailInfo) {
   return <div>데이터를 로드하는 중입니다...</div>;
 }
 
-  return (
+return (
     <div className="Detail">
       <TopBar />
       <div
@@ -121,9 +122,7 @@ if (!productDetailInfo) {
             {productDetailInfo.price}
           </p>
           <p style={{ fontWeight: "800", color: "red" }}>{sale * 100}%</p>
-          <p style={{ fontWeight: "bold" }}>
-            할인가 : {}
-          </p>
+          <p style={{ fontWeight: "bold" }}>할인가 : {salePrice && salePrice.toLocaleString()} </p>
           <div
             className="btn"
             style={{
@@ -140,7 +139,7 @@ if (!productDetailInfo) {
                 total === 0
                   ? alert("사이즈와 색상을 선택해 주세요")
                   : alert("구매 완료");
-                window.location.replace(`/detail/${0}`);
+                window.location.replace(`/detail/${productid}`);
               }}>구매하기</BasicBtn>
             <BasicBtn>의뢰하기</BasicBtn>
             <BasicBtn>장바구니</BasicBtn>
