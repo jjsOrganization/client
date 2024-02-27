@@ -64,6 +64,7 @@ function CustomerShoppingBasket() {
   const handleOrder = () => {
     // 주문 처리 로직 구현
     // totalPriceOfCheckedItems를 사용하여 주문 처리
+    // 장바구니에서 화살표 이용 수량 증감은 고민중
     console.log("주문 처리 로직 구현");
   };
 

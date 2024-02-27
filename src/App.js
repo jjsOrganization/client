@@ -123,7 +123,7 @@ const App = () => {
 
           <Route path="/mypage2" element={<MyPages data={data} />}></Route>
 
-          <Route path = '/reform/1' element ={ <Reform/>}></Route>
+          <Route path = '/reform' element ={ <Reform/>}></Route>
         </Routes>
       </div>
     </div>
