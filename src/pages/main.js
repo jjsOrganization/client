@@ -9,6 +9,8 @@ import TopBar from "../js/TopBar.js";
 
 function Main(){
 
+    const testUrl = 21;
+    const [testData,setTestData] = useState();
     const axiosInstance = axios.create({
         baseURL: 'http://localhost:8080',
         headers: {
@@ -28,7 +30,7 @@ function Main(){
                     }
                 });
                 setProductInfo(response.data);
-                console.log(response.data); // 데이터 확인용
+                console.log(response.data); 
             } catch(error) {
                 console.log('데이터 로드 실패', error);
             }
@@ -37,6 +39,7 @@ function Main(){
         fetchData();
     }, []);
 
+    
     const contentStyle = {
         height: '400px', 
         width: '100%', 
@@ -66,23 +69,22 @@ function Main(){
         'https://i.postimg.cc/6QfTjp6M/3.png'
         ])
     
-    const [index, setIndex] = useState(0);
     const [productInfo,setProductInfo] = useState([{}])
-
+    
     return(
     <div className = 'mainContainer'>
         <TopBar />
+        
         <div>
-            <CarouselC carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+            <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
         </div>
         <div class="mainProduct">
             <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
             <MainProduct product = {productInfo} mainImage = {mainImage}></MainProduct>
         </div>
-            
         <div className = 'designerCarousel'>
             <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
-            <CarouselC  carouselImage = {carouselImage} carouselStyle = {carouselStyle}/>
+            <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
         </div>
     </div>
     )
@@ -95,14 +97,14 @@ function MainProduct(props){
     {
         props.product.map(function(a, i){
         return(
-            <div class="col-6 col-md-4" key={i}>
-            <img src = {props.mainImage[i]} alt = '이미지 준비중'style = {{width : '100%'}} onClick = {() => {navigate(`detail/${props.product[i].id}`)}}></img>
-            <h4>{props.product[i].productName}</h4>
-            <p></p>
-            </div>
-        )
-        }
-        )
+            <div class="col-6 col-md-4" key={i}>     
+    {   
+        props.product[i].imgUrl ?
+        (<img referrerpolicy="no-referrer" src = {props.product[i].imgUrl} nstyle={{ width: '100%' }} onClick={() => { navigate(`detail/${props.product[i].id}`) }}/>) : 
+        (<p onClick={() => { navigate(`detail/${props.product[i].id}`) }} > 이미지 준비중 </p>)}
+        <h4>{props.product[i].productName}</h4><p></p>
+        </div>
+        )})
     }
 </div>
     )
@@ -116,7 +118,7 @@ function CarouselC(props)
         {props.carouselImage.map((image, index) => (
         <div key={index}>
             <h3 style={props.carouselStyle}>
-            <img src={image} style={{ width: '100%', height: '100%' }} onClick = {() => { navigate('detail/1')}} />
+            <img src={image} style={{ width: '100%', height: '100%' }} onClick = {() => { navigate(`detail/${props.product[index].id}`)}} />
             </h3>
         </div>
         ))}

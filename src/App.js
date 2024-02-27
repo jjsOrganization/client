@@ -31,6 +31,7 @@ import StockList from "./pages/stockList.js";
 import StockUpdater from "./pages/stockUpdater.js";
 import MyPages from "./pages/mypages.js";
 import Main from "./pages/main.js";
+import Reform from './pages/reform.js'
 
 const App = () => {
   
@@ -108,8 +109,7 @@ const App = () => {
             }
           ></Route>
 
-          <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
-          <Route />
+          <Route path="/detail/:productid" element={<Detail />} /><Route />
 
           <Route path="/productupdate" element={<ProductUpdate />}></Route>
 
@@ -122,6 +122,8 @@ const App = () => {
           <Route />
 
           <Route path="/mypage2" element={<MyPages data={data} />}></Route>
+
+          <Route path = '/reform/1' element ={ <Reform/>}></Route>
         </Routes>
       </div>
     </div>

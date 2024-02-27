@@ -22,7 +22,6 @@
   margin-right: 3%;
 }
 
-
 .menu{
   margin-right: 1%;
   font-size: 120%;
@@ -44,7 +43,6 @@
   margin-right: 7%;
 }
 
-
 .mainProduct{
   margin-bottom: 10%;
 }
@@ -53,7 +51,6 @@
   height: 300px;
   width : 100%
 }
-
 
 .productField{
   width: 100%;
@@ -76,7 +73,6 @@
 
 .choice-cancel{
   float: right;
-  
 }
 
 @media screen and (max-width: 968px) {

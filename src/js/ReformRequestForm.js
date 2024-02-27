@@ -11,29 +11,6 @@ let RegisterBtn = styled.button`
 `;
 
 function ProductUpdate(props) {
-  const [test, setTest] = useState([
-    {
-      id: 0,
-      title: "White and Black",
-      content: "Born in France",
-      price: 120000,
-    },
-
-    {
-      id: 1,
-      title: "Red Knit",
-      content: "Born in Seoul",
-      price: 110000,
-    },
-
-    {
-      id: 2,
-      title: "Grey Yordan",
-      content: "Born in the States",
-      price: 130000,
-    },
-  ]);
-
   const [titleValue, setTitleValue] = useState();
   const [contentValue, setContentValue] = useState();
   const [priceValue, setPriceValue] = useState();
@@ -80,11 +57,12 @@ function ProductUpdate(props) {
   const registerHandler = async () => {
     try {
       const formData = new FormData();
+      
       formData.append("productName", titleValue);
       formData.append("price", priceValue);
       formData.append("itemDetail", contentValue);
       formData.append("productStock", amountValue);
-      formData.append("productImgDtoList.imgUrl", thumbnailImage);
+      formData.append("productImgDtoList[0].imgUrl", 'https://i.postimg.cc/5yvZCPM1/1.png');
       formData.append("itemImgFile", thumbnailImageFile);
   
       const response = await axiosInstance.post("/product/seller/register", formData, {
@@ -94,12 +72,10 @@ function ProductUpdate(props) {
           'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
         }
       });
+  
       console.log("상품 등록 성공:", response.data);
-      window.location.replace(`/productupdate`);
-      alert('상품이 등록되었습니다.')
     } catch (error) {
       console.error("상품 등록 실패:", error);
-      alert('상품 등록에 실패했습니다.')
     }
   };
 
@@ -158,6 +134,9 @@ function ProductUpdate(props) {
         </div>
         <div className="title">
           <p style={{ fontWeight: "700", margin: "0" }}>
+            {test.map(function (k, i) {
+              return <>{test[i].title}</>;
+            })}{" "}
             상품 제목
           </p>
           <input
@@ -203,8 +182,6 @@ function ProductUpdate(props) {
             상품등록
           </RegisterBtn>
         </div>
-        {thumbnailImage ? <img referrerpolicy="no-referrer" height="90%" src = {thumbnailImage} ></img> : '이미지준비중'}
-        {thumbnailImage}
       </div>
     </div>
   );

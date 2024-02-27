@@ -1,44 +1,35 @@
 import React, { useState, useEffect } from "react";
-import "../css/CustomerShoppingBasket.css";
-import exProductURL from "../images/exProduct.jpg";
-
-import "./TopBar.js";
+import axios from "axios";
 import TopBar from "./TopBar.js";
+import "../css/CustomerShoppingBasket.css";
 
 function CustomerShoppingBasket() {
-  const [customerShoppingBasket, setCustomerShoppingBasket] = useState([
-    {
-      id: 1,
-      name: "테스트 상품 1",
-      image: [exProductURL],
-      options: "[옵션:단품/블랙/사이즈1 (28~30)/단품구매/단품구매]",
-      price: 15000,
-      count: 2,
-      deliveryPrice: 3000,
-      totalPrice: 0,
-      checked: true, // 체크 여부
-    },
-    {
-      id: 2,
-      name: "테스트 상품 2",
-      image: [exProductURL],
-      options: "[옵션:단품/블랙/사이즈1 (28~30)/단품구매/단품구매]",
-      price: 15000,
-      count: 3,
-      deliveryPrice: 3000,
-      totalPrice: 0,
-      checked: true,
-    },
-    // 나머지 상품 정보들...
-  ]);
+  const [customerShoppingBasket, setCustomerShoppingBasket] = useState([]);
 
   useEffect(() => {
-    // 페이지가 처음 로드될 때 모든 상품의 totalPrice를 계산하여 설정
-    const updatedBasket = customerShoppingBasket.map((product) => ({
-      ...product,
-      totalPrice: product.price * product.count + product.deliveryPrice,
-    }));
-    setCustomerShoppingBasket(updatedBasket);
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("/cart/purchaser", {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        const data = response.data;
+        console.log(data.data);
+        setCustomerShoppingBasket(
+          data.data.map((product) => ({
+            ...product,
+            totalPrice: product.price,
+            checked: false, // 기본적으로 모든 상품은 체크되지 않은 상태로 설정
+          }))
+        );
+      } catch (error) {
+        console.log("데이터 로드 실패", error);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   const setProductCount = (productId, newCount) => {
@@ -70,6 +61,28 @@ function CustomerShoppingBasket() {
     .filter((product) => product.checked)
     .reduce((total, product) => total + product.totalPrice, 0);
 
+  const handleOrder = () => {
+    // 주문 처리 로직 구현
+    // totalPriceOfCheckedItems를 사용하여 주문 처리
+    console.log("주문 처리 로직 구현");
+  };
+
+  const handleDelete = async (productId) => {
+    try {
+      await axios.delete(`/cart/purchaser/delete/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+
+      setCustomerShoppingBasket((prevBasket) =>
+        prevBasket.filter((product) => product.id !== productId)
+      );
+    } catch (error) {
+      console.log("상품 삭제 실패", error);
+    }
+  };
+
   return (
     <div customerShoppingBasketDivTag>
       <TopBar />
@@ -81,28 +94,34 @@ function CustomerShoppingBasket() {
             <hr className="customerBasketFirstHr"></hr>
             <img src={product.image} alt={product.name} />
             <div className="customerBasketPTag">
-              <p>{product.name}</p>
+              <p>{product.productName}</p>
               <p>{product.price}원</p>
-              <p>{product.options}</p>
               <p>
                 갯수 :
-                <button
+                {/* <button
                   className="basketCountButton"
-                  onClick={() => setProductCount(product.id, product.count - 1)}
+                  onClick={() =>
+                    setProductCount(product.id, product.count - 1)
+                  }
                   disabled={product.count <= 0}
                 >
                   -
-                </button>
+                </button> */}
                 {product.count}
-                <button
+                {/* <button
                   className="basketCountButton"
-                  onClick={() => setProductCount(product.id, product.count + 1)}
+                  onClick={() =>
+                    setProductCount(product.id, product.count + 1)
+                  }
                 >
                   +
-                </button>
+                </button> */}
               </p>
               <p>배송비 : {product.deliveryPrice}</p>
               <p>주문금액 : {product.totalPrice}</p>
+              <button onClick={() => handleDelete(product.id)}>
+                장바구니에서 삭제하기
+              </button>
             </div>
             <input
               className="checkBoxForBasket"
@@ -115,7 +134,9 @@ function CustomerShoppingBasket() {
         ))}
         <div>
           <h3>선택한 상품 총액: {totalPriceOfCheckedItems}</h3>
-          <button className="basketOrderButton">주문하기</button>
+          <button className="basketOrderButton" onClick={handleOrder}>
+            주문하기
+          </button>
         </div>
       </div>
     </div>

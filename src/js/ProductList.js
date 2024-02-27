@@ -2,58 +2,13 @@ import "../css/ProductList.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import exProductURL from "../images/exProduct.jpg";
+import axios from "axios"; 
 
 import "./TopBar.js";
 import TopBar from "./TopBar.js";
 
 const ProductList = () => {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "가나다",
-      images: [exProductURL],
-    },
-    {
-      id: 2,
-      name: "라마바",
-      images: [exProductURL],
-    },
-    {
-      id: 3,
-      name: "가",
-      images: [exProductURL],
-    },
-    {
-      id: 4,
-      name: "마",
-      images: [exProductURL],
-    },
-    {
-      id: 5,
-      name: "가마",
-      images: [exProductURL],
-    },
-    {
-      id: 6,
-      name: "상품 6",
-      images: [exProductURL],
-    },
-    {
-      id: 7,
-      name: "상품 7",
-      images: [exProductURL],
-    },
-    {
-      id: 8,
-      name: "상품 8",
-      images: [exProductURL],
-    },
-    {
-      id: 9,
-      name: "상품 9",
-      images: [exProductURL],
-    },
-  ]);
+  const [products, setProducts] = useState([]);
   const itemsPerPage = 6; // 페이지당 보여줄 상품 수
 
   const navigate = useNavigate();
@@ -74,8 +29,23 @@ const ProductList = () => {
   const [sortBy, setSortBy] = useState(""); // 'latest' 또는 'popular'
 
   useEffect(() => {
-    setFilteredProducts(products); // 초기에는 전체 상품 목록을 보여줌
-  }, [products]);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/product/all", {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        setProducts(response.data);
+        console.log(response.data); // 데이터 확인용
+      } catch (error) {
+        console.log("데이터 로드 실패", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value.toLowerCase()); // 검색어를 소문자로 변환하여 저장
@@ -96,7 +66,7 @@ const ProductList = () => {
       setFilteredProducts(filteredProducts);
     } else {
       // 검색어가 비어있는 경우 전체 상품 목록을 보여줌
-      setFilteredProducts(products);
+      setFilteredProducts(products); // setFilteredProducts를 사용하여 필터링된 상품 목록 초기화
     }
   };
 
@@ -129,17 +99,19 @@ const ProductList = () => {
         />
       </div>
 
-      <div className="productList">
-        {currentProducts.map((products) => (
-          <div key={products.id} className="productItem">
-            <Link to={`/product/${products.id}`}>
-              <img src={products.images[0]} alt={products.name} />
-            </Link>
-            <p>{products.name}</p>
-            <p>가격</p>
-          </div>
-        ))}
-      </div>
+      {currentProducts.map((product) => (
+        <div key={product.id} className="productItem">
+          <Link to={`/product/${product.id}`}>
+            {/* 상품 이미지가 있을 경우 화면에 표시 */}
+            {product.images && product.images.length > 0 && (
+              <img src={product.images[0]} alt={product.productName} />
+            )}
+          </Link>
+          {/* 상품 이름이 존재할 경우 화면에 표시 */}
+          {product.productName && <p>{product.productName}</p>}
+          <p>가격 : {product.price}</p>
+        </div>
+      ))}
 
       {/* 페이지네이션 */}
       <Pagination
@@ -154,6 +126,12 @@ const ProductList = () => {
 const ProductDetail = ({ products }) => {
   const { productId } = useParams();
   const product = products.find((p) => p.id === parseInt(productId, 10));
+
+  // 상품을 찾지 못한 경우에 대한 처리
+  if (!product) {
+    return <div>상품을 찾을 수 없습니다.</div>;
+  }
+
   return (
     <div>
       <h2>{product.name} 상세 페이지</h2>
