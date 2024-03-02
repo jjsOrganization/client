@@ -68,9 +68,9 @@ function MyPages(){
         }
     });
 
-    const productDeleteHandler = async () => {
+    const productDeleteHandler = async (i) => {
         try{
-            const response = await axiosInstance.delete(`/product/seller/register`,
+            const response = await axiosInstance.delete(`/product/seller/register/${userData[i].id}`,
             {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -78,6 +78,8 @@ function MyPages(){
                 'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
             }})
             console.log('상품삭제성공')
+            alert('상품 삭제 완료')
+            window.location.replace(`/mypage2`);
         }   
         catch(error){
             console.log('상품삭제실패',error)
@@ -100,16 +102,6 @@ function MyPages(){
             };
             fetchData();
         }, []);
-
-        useEffect(() => {
-            if(userData){
-                console.log('데이터 로드 성공')
-                console.log(userData)
-            }
-            else{
-                console.log('데이터 로드 실패인듯?ㅎㅎ')
-            }
-        })
 
     return(
 <div className = 'mypageContainer'>
@@ -152,7 +144,7 @@ function MypageProductList(props){
                         <hr style= {{marginBottom : '10px'}}></hr>
                         <div className = 'stockItemContainer' key = {i} style = {{display : 'flex', marginBottom : '10px'}}>
             <div className = 'image' style= {{marginBottom : '-16px'}}>
-            <img src = {props.Endpoint + props.userData[i].imgUrl} height = '100px'/>
+            <img src = {props.Endpoint + props.userData[i].imgUrl} width = '100px' height = '100px'/>
             </div>
                 
             <div className = 'productInfoContainer' style = {{width : '400px',fontWeight : '700',marginLeft : '10%',display : 'inline'}}>
@@ -168,7 +160,7 @@ function MypageProductList(props){
                 }} >상품 수정</BtnStyle>
 
                 <BtnStyle onClick = {() =>{
-                    props.productDeleteHandler();
+                    props.productDeleteHandler(i);
                 }} >상품 삭제</BtnStyle>
             </div>
             </div>
