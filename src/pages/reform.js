@@ -50,7 +50,7 @@ function Reform() {
     baseURL: "http://localhost:8080",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
+      
     },
   });
 
@@ -71,7 +71,7 @@ function Reform() {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
+            
           },
         }
       );

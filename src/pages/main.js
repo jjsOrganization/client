@@ -9,24 +9,23 @@ import TopBar from "../js/TopBar.js";
 
 function Main(){
 
-    const testUrl = 21;
     const [testData,setTestData] = useState();
     const axiosInstance = axios.create({
         baseURL: 'http://localhost:8080',
         headers: {
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-        'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
         }
     });
+    const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('/product/all', {
+                const response = await axiosInstance.get('/product/all', {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
+                        
                     }
                 });
                 setProductInfo(response.data);
@@ -35,7 +34,6 @@ function Main(){
                 console.log('데이터 로드 실패', error);
             }
         };
-    
         fetchData();
     }, []);
 
@@ -80,7 +78,7 @@ function Main(){
         </div>
         <div class="mainProduct">
             <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
-            <MainProduct product = {productInfo} mainImage = {mainImage}></MainProduct>
+            <MainProduct Endpoint = {Endpoint} product = {productInfo} mainImage = {mainImage}></MainProduct>
         </div>
         <div className = 'designerCarousel'>
             <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
@@ -100,7 +98,7 @@ function MainProduct(props){
             <div class="col-6 col-md-4" key={i}>     
     {   
         props.product[i].imgUrl ?
-        (<img referrerpolicy="no-referrer" src = {props.product[i].imgUrl} nstyle={{ width: '100%' }} onClick={() => { navigate(`detail/${props.product[i].id}`) }}/>) : 
+        (<img referrerpolicy="no-referrer" src = {props.Endpoint + props.product[i].imgUrl} nstyle={{ width: '100%' }} onClick={() => { navigate(`detail/${props.product[i].id}`) }}/>) : 
         (<p onClick={() => { navigate(`detail/${props.product[i].id}`) }} > 이미지 준비중 </p>)}
         <h4>{props.product[i].productName}</h4><p></p>
         </div>

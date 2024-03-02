@@ -31,8 +31,12 @@ function MyPages(){
         },
     };
 
+    const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
     const [openPostcode, setOpenPostcode] = useState(false);
     const [address, setAddress] = useState('');
+    const StockNavigate = useNavigate();
+    const productupdateNavigate = useNavigate();
+    const [userData,setUserData] = useState([]);
 
     const mapHandler = {
         clickButton() {
@@ -50,32 +54,6 @@ function MyPages(){
         setAddress(e.target.value);
     };
 
-    const StockNavigate = useNavigate();
-    const productupdateNavigate = useNavigate();
-
-    const [test, setTest] = useState([
-        {
-        id : 0,
-        title : "White and Black",
-        content : "Born in France",
-        price : 120000,
-        },
-    
-        {
-        id : 1,
-        title : "Red Knit",
-        content : "Born in Seoul",
-        price : 110000,
-        },
-    
-        {
-        id : 2,
-        title : "Grey Yordan",
-        content : "Born in the States",
-        price : 130000,
-        }
-    ])
-
     const [mypageMainImage, setMypageMainImage] = useState([
         'https://i.postimg.cc/zfrVFgNL/1.png',
         'https://i.postimg.cc/zv6fbLpG/2.png',
@@ -92,7 +70,7 @@ function MyPages(){
 
     const productDeleteHandler = async () => {
         try{
-            const response = await axiosInstance.delete(`/product/seller/register/11`,
+            const response = await axiosInstance.delete(`/product/seller/register`,
             {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -106,33 +84,32 @@ function MyPages(){
         }
         }
 
-    const [userData,setUserData] = useState([]);
-
-    /*  API 수정시 작업 
-    useEffect(()=>{
-        const fetchData = async () => {
-        try{        
-            const response = await axiosInstance.get(`http://product/register/${productid}`,{
-                headers:{
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                    'X-CSRF-TOKEN': localStorage.getItem('csrfToken'),
-                    'memberId' : localStorage.getItem('userEmail')
+        useEffect(() => {
+            const fetchData = async () => {
+                try {        
+                    const response = await axios.get('/product/seller/register', {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        }
+                    });
+                    setUserData(response.data);
+                } catch(error) {
+                    console.log('데이터 로드 실패', error);
                 }
-            });
-            setUserData(fetchData);
-            if('memberId' === userData){
-                return
-            }
-            
-        }catch(error){
-            console.log(error);
+            };
+            fetchData();
+        }, []);
 
-        }
-    };
-    fetchData();
-},[])
-*/
+        useEffect(() => {
+            if(userData){
+                console.log('데이터 로드 성공')
+                console.log(userData)
+            }
+            else{
+                console.log('데이터 로드 실패인듯?ㅎㅎ')
+            }
+        })
 
     return(
 <div className = 'mypageContainer'>
@@ -145,7 +122,7 @@ function MyPages(){
     }}>상품등록</p>
     </div>
     <div>
-        <MypageProductList productDeleteHandler = {productDeleteHandler} test = {test} navigate = {StockNavigate} mypageMainImage = {mypageMainImage}/>
+        <MypageProductList Endpoint = {Endpoint} productDeleteHandler = {productDeleteHandler} userData = {userData} navigate = {StockNavigate} mypageMainImage = {mypageMainImage}/>
     </div>
     <p style = {{ marginBottom : '-12px',display : 'flex'}}>매장정보</p><hr></hr>
 
@@ -169,25 +146,25 @@ function MypageProductList(props){
     return(
         <div >
             {
-                props.mypageMainImage.map(function(image,i){
+                props.userData.map(function(image,i){
                     return(
                         <>
                         <hr style= {{marginBottom : '10px'}}></hr>
                         <div className = 'stockItemContainer' key = {i} style = {{display : 'flex', marginBottom : '10px'}}>
             <div className = 'image' style= {{marginBottom : '-16px'}}>
-            <img src = {props.mypageMainImage[i]} height = '100px'/>
+            <img src = {props.Endpoint + props.userData[i].imgUrl} height = '100px'/>
             </div>
                 
             <div className = 'productInfoContainer' style = {{width : '400px',fontWeight : '700',marginLeft : '10%',display : 'inline'}}>
             <div className = 'title'>
-                <h3>{props.test[i].title}</h3>
+                <h3>{props.userData[i].productName}</h3>
             </div>
             <div className='' style = {{display : 'flex'}}>
-                재고수 : {props.test[i].id}
+                재고수 : {props.userData[i].productStock}
             </div>
             <div className = 'BtnStyle' style = {{display : 'flex',justifyContent : 'flex-end'}}>
                 <BtnStyle style = {{marginRight  :'5%'}}onClick = {() =>{
-                    props.navigate(`/stockupdater/:id`);
+                    props.navigate(`/stockupdater/`);
                 }} >상품 수정</BtnStyle>
 
                 <BtnStyle onClick = {() =>{

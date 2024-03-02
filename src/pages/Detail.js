@@ -72,8 +72,6 @@ function Detail(props) {
 
   useEffect(() => {
     if (productDetailInfo) {
-      console.log(productDetailInfo);
-      console.log(productDetailInfo.productName);
       setSalePrice(productDetailInfo.price * (1 - sale));
     } else {
       console.log("상품 데이터가 아직 로드되지 않았습니다.");
@@ -220,6 +218,9 @@ function Detail(props) {
                 </div>
               );
             })}
+          </div>
+          <div className = 'detail-ShopAddress'>
+            
           </div>
         </div>
       </div>

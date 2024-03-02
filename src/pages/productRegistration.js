@@ -72,7 +72,7 @@ function ProductUpdate(props) {
     baseURL: 'http://localhost:8080',
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-      'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
+      
     }
   });
 
@@ -91,7 +91,7 @@ function ProductUpdate(props) {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-          'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
+          
         }
       });
       console.log("상품 등록 성공:", response.data);
