@@ -2,7 +2,6 @@
   display: flex;
   align-items: center;
   justify-content: left;
-  height: 100vh;
 }
 
 .pipe1 {
@@ -50,9 +49,9 @@
 .waterRise {
   position: absolute;
   left: 0px;
-  bottom: 0;
+  bottom: 0%;
   width: 100%;
-  height: 0;
+  height: 0%;
   background-color: #00f;
   animation: fillUp 3s linear forwards, wave 1s ease-in-out infinite;
   transform-origin: right bottom;
