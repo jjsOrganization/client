@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 .pageInfo {
   text-align: center;
   margin-top: 40px;
@@ -26,7 +22,7 @@
   margin-top: 60px;
 }
 
-.App-logo {
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
@@ -59,4 +55,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

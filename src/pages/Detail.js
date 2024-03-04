@@ -114,112 +114,117 @@ function Detail(props) {
   const reFormLink = `/reform?productId=${productid}`;
 
   return (
-    <div className="Detail">
+    <div>
       <TopBar />
-      <div
-        className="image"
-        style={{
-          display: "flex",
-          marginBottom: "3%",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <img
-          src="https://i.postimg.cc/zfrVFgNL/1.png"
-          width="300px"
-          height="300px"
-        />
+      <div className="Detail" style={{ marginLeft: "20%", marginRight: "20%" }}>
         <div
-          className="productinfo"
+          className="image"
           style={{
-            display: "inline",
-            position: "relative",
-            flexDirection: "column",
-            flexGrow: 1,
-            marginLeft: "2%",
+            display: "flex",
+            marginBottom: "3%",
+            width: "100%",
+            height: "100%",
           }}
         >
-          <h4 className="title">{productDetailInfo.productName}</h4>
-          <p
-            style={{
-              fontWeight: "bold",
-              textDecoration: "line-through",
-              color: "darkgray",
-            }}
-          >
-            {productDetailInfo.price}
-          </p>
-          <p style={{ fontWeight: "800", color: "red" }}>{sale * 100}%</p>
-          <p style={{ fontWeight: "bold" }}>
-            할인가 : {salePrice && salePrice.toLocaleString()}{" "}
-          </p>
+          <img
+            src="https://i.postimg.cc/zfrVFgNL/1.png"
+            width="300px"
+            height="300px"
+          />
           <div
-            className="btn"
+            className="productinfo"
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              position: "absolute",
-              bottom: "0",
-              w0th: "100%",
-              width: "100%",
+              display: "inline",
+              position: "relative",
+              flexDirection: "column",
+              flexGrow: 1,
+              marginLeft: "2%",
             }}
           >
-            <BasicBtn
-              onClick={() => {
-                total === 0
-                  ? alert("사이즈와 색상을 선택해 주세요")
-                  : alert("구매 완료");
-                window.location.replace(`/detail/${productid}`);
+            <h4 className="title">{productDetailInfo.productName}</h4>
+            <p
+              style={{
+                fontWeight: "bold",
+                textDecoration: "line-through",
+                color: "darkgray",
               }}
             >
-              구매하기
-            </BasicBtn>
-            <BasicBtn>
-              <Link to={reFormLink}>의뢰하기</Link>
-            </BasicBtn>
-            <BasicBtn onClick={addToCart}>장바구니</BasicBtn>
+              {productDetailInfo.price}
+            </p>
+            <p style={{ fontWeight: "800", color: "red" }}>{sale * 100}%</p>
+            <p style={{ fontWeight: "bold" }}>
+              할인가 : {salePrice && salePrice.toLocaleString()}{" "}
+            </p>
+            <div
+              className="btn"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                position: "absolute",
+                bottom: "0",
+                w0th: "100%",
+                width: "100%",
+              }}
+            >
+              <BasicBtn
+                onClick={() => {
+                  total === 0
+                    ? alert("사이즈와 색상을 선택해 주세요")
+                    : alert("구매 완료");
+                  window.location.replace(`/detail/${productid}`);
+                }}
+              >
+                구매하기
+              </BasicBtn>
+              <BasicBtn>
+                <Link to={reFormLink}>의뢰하기</Link>
+              </BasicBtn>
+              <BasicBtn onClick={addToCart}>장바구니</BasicBtn>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="productField">
-        <p>{productDetailInfo.itemDetail}</p>
-      </div>
-
-      <div className="buy-info" style={{ display: "flex" }}>
-        <div className="dropdown" style={{ display: "flex", marginTop: "3%" }}>
-          <Dropdown
-            text={size}
-            setArticleType={setChoiceSize}
-            articleType={choiceSize}
-            articleTypeList={SizeList}
-          />
-          <Dropdown
-            text={color}
-            setArticleType={setChoiceColor}
-            articleType={choiceColor}
-            articleTypeList={ColorList}
-          />
+        <div className="productField">
+          <p>{productDetailInfo.itemDetail}</p>
         </div>
-        <div className="buy-info" style={{ marginLeft: "7%" }}>
-          <h3>제품명 : {productDetailInfo.productName}</h3>
-          <p style={{ marginBottom: "2%" }}>
-            결제 예정 금액 : {test.toLocaleString()}{" "}
-          </p>
-          <p>수량 : {total}</p>
-          <div classNale="selectOpt">
-            {myArray.map(function (choice, index) {
-              return (
-                <div
-                  className="user-choice"
-                  style={{ w0th: "180px", marginBottom: "10px" }}
-                >
-                  {choice.size + choice.color}{" "}
-                  <button className="choice-cancel">✖</button>
-                </div>
-              );
-            })}
+
+        <div className="buy-info" style={{ display: "flex" }}>
+          <div
+            className="dropdown"
+            style={{ display: "flex", marginTop: "3%" }}
+          >
+            <Dropdown
+              text={size}
+              setArticleType={setChoiceSize}
+              articleType={choiceSize}
+              articleTypeList={SizeList}
+            />
+            <Dropdown
+              text={color}
+              setArticleType={setChoiceColor}
+              articleType={choiceColor}
+              articleTypeList={ColorList}
+            />
+          </div>
+          <div className="buy-info" style={{ marginLeft: "7%" }}>
+            <h3>제품명 : {productDetailInfo.productName}</h3>
+            <p style={{ marginBottom: "2%" }}>
+              결제 예정 금액 : {test.toLocaleString()}{" "}
+            </p>
+            <p>수량 : {total}</p>
+            <div classNale="selectOpt">
+              {myArray.map(function (choice, index) {
+                return (
+                  <div
+                    className="user-choice"
+                    style={{ w0th: "180px", marginBottom: "10px" }}
+                  >
+                    {choice.size + choice.color}{" "}
+                    <button className="choice-cancel">✖</button>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

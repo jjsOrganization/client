@@ -26,7 +26,6 @@ function Main(){
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
                     }
                 });
                 setProductInfo(response.data);
@@ -35,7 +34,6 @@ function Main(){
                 console.log('데이터 로드 실패', error);
             }
         };
-    
         fetchData();
     }, []);
 
@@ -72,19 +70,22 @@ function Main(){
     const [productInfo,setProductInfo] = useState([{}])
     
     return(
-    <div className = 'mainContainer'>
-        <TopBar />
-        
+    <div>
         <div>
-            <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+            <TopBar />
         </div>
-        <div class="mainProduct">
-            <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
-            <MainProduct product = {productInfo} mainImage = {mainImage}></MainProduct>
-        </div>
-        <div className = 'designerCarousel'>
-            <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
-            <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+        <div className = 'mainContainer' style ={{marginLeft: '20%', marginRight: '20%'}}>
+            <div>
+                <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+            </div>
+            <div class="mainProduct">
+                <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
+                <MainProduct product = {productInfo} mainImage = {mainImage}></MainProduct>
+            </div>
+            <div className = 'designerCarousel'>
+                <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
+                <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+            </div>
         </div>
     </div>
     )
