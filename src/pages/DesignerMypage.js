@@ -82,7 +82,7 @@ return (
             </Row>
         </Container>
     </div>
-    <div className='ModifyBtn'><ModifyBtn onClick = {()=> {navigate("/DesignerMypage/Modifyportfolio")}}>포트폴리오 수정</ModifyBtn></div>
+    <div className='ModifyBtn'><ModifyBtn onClick = {()=> {navigate("/DesignerMypage/ModifyPortfolio")}}>포트폴리오 수정</ModifyBtn></div>
 </div>
 );
 }
