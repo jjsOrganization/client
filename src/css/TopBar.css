@@ -1,0 +1,19 @@
+.loginMenu {
+   margin-left: 60%; 
+   max-width: 1200px; /* 페이지의 최대 가로 너비를 1200px로 제한 */
+   overflow-x: hidden; /* 옆으로 이동하는 스크롤을 숨김 */
+}
+
+.loginMenu p {
+   margin-left: 6%;
+}
+
+.topBarMenu {
+   margin-left: 22%;
+}
+
+.topBarMenu p {
+   margin-left: 6%;
+   font-size: 1.2em;
+}
+

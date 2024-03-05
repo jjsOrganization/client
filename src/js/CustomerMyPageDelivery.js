@@ -19,6 +19,9 @@ import 배송완료선택 from "../images/배송완료선택.png"
 
 import next from "../images/next.png"
 
+import "./TopBar.js";
+import TopBar from "./TopBar.js";
+
 function CustomerDelivery() {
    const [customerDeliveryData, setCustomerDeliveryData] = useState([
       { date: '2023-11-25', time: '18:05', location: '대전성남(집)', state: '고객님의 상품을 접수하였습니다.' },
@@ -50,7 +53,8 @@ function CustomerDelivery() {
    //  }, []);
 
    return (
-      <div>
+      <div className='customerD'>
+         <TopBar />
 
          {/* <select value={selectedCustomerDeliveryState} onChange={(e) => handleDeliveryStateChange(e.target.value)}>
          {customerDeliveryState.map((state, index) => (

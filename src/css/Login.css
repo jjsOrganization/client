@@ -1,113 +1,112 @@
 @keyframes gradientAnimation {
-   0% {
-     background: linear-gradient(to right, #6AD8A0, #8DE1B6);
-   }
-   16.7% {
-     background: linear-gradient(to right, #6AD8A0, #9FE5C1);
-   }
-   33.3% {
-     background: linear-gradient(to right, #6AD8A0, #B0EACC);
-   }
-   50% {
-     background: linear-gradient(to right, #6AD8A0, #C2EED7);
-   }
-   66.7% {
-     background: linear-gradient(to right, #6AD8A0, #D4F3E3);
-   }
-   83.3% {
-     background: linear-gradient(to right, #6AD8A0, #D4F3E3);
-   }
-   100% {
-     background: linear-gradient(to right, #6AD8A0, #ffffff);
-   }
- }
- 
- .Login {
-   margin: 0;/* 조정으로 로고와 아이템 위치 조정 */
-   padding: 0;
-   height: 100vh;
-   overflow: hidden;
-   animation: gradientAnimation 0.5s linear 1 forwards;
-   background: #6AD8A0;
- 
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   height: 100vh;
- }
- 
- .rectangle {
-   display: flex;
-   margin-bottom: 20px;
- }
- 
- .logo{
-   display: flex;
-   color: #000000;
-   margin-bottom: 30px;
- }
- 
- .tab {
-   padding: 10px 20px;
-   cursor: pointer;
-   border: 1px solid #000000;
-   border-radius: 5px;
-   margin-right: 10px;
- }
- 
- .tab.active {
-   background-color: #000000;
-   color: #ffffff;
- }
- 
- .loginForm {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
- }
- 
- .loginInputs {
-   display: flex;
-   flex-direction: column;
-   align-items: flex-end;
-   margin-bottom: 10px;
- }
- 
- .loginButton{
-   display: flex;
-   margin-bottom: 10px;
- }
- 
- .loginButton button {
-   padding: 10px;
-   border-radius: 5px;
-   cursor: pointer;
-   width: 300px;
- }
- 
- 
- .buttons {
-   display: flex;
-   justify-content: space-between;
-   width: 100%;
-   margin-left: 5px;
-   margin-right: 5px;
- }
- 
- label {
-   margin: 10px 0;
- }
- 
- input {
-   padding: 8px;
-   border-radius: 8px;
-   border: 1px solid #000000;
-   margin-left: 5px;
- }
- 
- button {
-   padding: 10px;
-   border-radius: 5px;
-   cursor: pointer;
- }
+  0% {
+    background: linear-gradient(to right, #6ad8a0, #8de1b6);
+  }
+  16.7% {
+    background: linear-gradient(to right, #6ad8a0, #9fe5c1);
+  }
+  33.3% {
+    background: linear-gradient(to right, #6ad8a0, #b0eacc);
+  }
+  50% {
+    background: linear-gradient(to right, #6ad8a0, #c2eed7);
+  }
+  66.7% {
+    background: linear-gradient(to right, #6ad8a0, #d4f3e3);
+  }
+  83.3% {
+    background: linear-gradient(to right, #6ad8a0, #d4f3e3);
+  }
+  100% {
+    background: linear-gradient(to right, #6ad8a0, #ffffff);
+  }
+}
+
+.Login {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  animation: gradientAnimation 0.5s linear 1 forwards;
+  background: #6ad8a0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.rectangle {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.logo {
+  display: flex;
+  color: #000000;
+  margin-bottom: 30px;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.tab.active {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loginInputs {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+
+.loginEmail {
+  margin-right: 15px;
+}
+
+.loginButton {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.loginButton button {
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 300px;
+}
+
+.findButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.loginInputs input {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #6AD8A0;
+  margin-left: 5px;
+}
+
+.findButtons button {
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
