@@ -1,11 +1,16 @@
 import "../css/ProductList.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import exProductURL from "../images/exProduct.jpg";
+import axios from "axios"; 
 
-import "../js/TopBar.js";
-import TopBar from "../js/TopBar.js";
+import "./TopBar.js";
+import TopBar from "./TopBar.js";
 
-const ProductList = ({ products, itemsPerPage }) => {
+const ProductList = () => {
+  const [products, setProducts] = useState([]);
+  const itemsPerPage = 6; // 페이지당 보여줄 상품 수
+
   const navigate = useNavigate();
   const { page } = useParams();
   const currentPage = page ? parseInt(page, 10) : 1;
@@ -19,28 +24,62 @@ const ProductList = ({ products, itemsPerPage }) => {
     navigate(`/products/${newPage}`);
   };
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("latest"); // 'latest' 또는 'popular'
+  const [filteredProducts, setFilteredProducts] = useState([]); // 검색된 상품 목록
+  const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
+  const [sortBy, setSortBy] = useState(""); // 'latest' 또는 'popular'
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/product/all", {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        setProducts(response.data);
+        console.log(response.data); // 데이터 확인용
+      } catch (error) {
+        console.log("데이터 로드 실패", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value.toLowerCase()); // 검색어를 소문자로 변환하여 저장
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  const handleSearch = () => {
+    // 검색어가 비어있지 않은 경우 필터링된 상품 목록을 설정
+    if (searchTerm.trim() !== "") {
+      const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm)
+      );
+      setFilteredProducts(filteredProducts);
+    } else {
+      // 검색어가 비어있는 경우 전체 상품 목록을 보여줌
+      setFilteredProducts(products); // setFilteredProducts를 사용하여 필터링된 상품 목록 초기화
+    }
   };
 
   const handleSortByLatest = () => {
     setSortBy("latest");
+    setProducts((prevProducts) =>
+      prevProducts.slice().sort((a, b) => b.id - a.id)
+    );
   };
 
   const handleSortByPopular = () => {
     setSortBy("popular");
   };
-
-  const sortedProducts = currentProducts.slice().sort((a, b) => {
-    if (sortBy === "latest") {
-      return b.id - a.id; // 최신순으로 정렬
-    } else {
-      // 인기순으로 정렬 인기순 로직을 추가
-    }
-  });
 
   return (
     <div>
@@ -56,20 +95,23 @@ const ProductList = ({ products, itemsPerPage }) => {
           placeholder="상품명 검색"
           value={searchTerm}
           onChange={handleSearchChange}
+          onKeyPress={handleKeyPress} // 이 부분 추가
         />
       </div>
 
-      <div className="productList">
-        {currentProducts.map((product) => (
-          <div key={product.id} className="productItem">
-            <Link to={`/product/${product.id}`}>
-              <img src={product.images[0]} alt={product.name} />
-            </Link>
-            <p>{product.name}</p>
-            <p>가격</p>
-          </div>
-        ))}
-      </div>
+      {currentProducts.map((product) => (
+        <div key={product.id} className="productItem">
+          <Link to={`/product/${product.id}`}>
+            {/* 상품 이미지가 있을 경우 화면에 표시 */}
+            {product.images && product.images.length > 0 && (
+              <img src={product.images[0]} alt={product.productName} />
+            )}
+          </Link>
+          {/* 상품 이름이 존재할 경우 화면에 표시 */}
+          {product.productName && <p>{product.productName}</p>}
+          <p>가격 : {product.price}</p>
+        </div>
+      ))}
 
       {/* 페이지네이션 */}
       <Pagination
@@ -84,6 +126,12 @@ const ProductList = ({ products, itemsPerPage }) => {
 const ProductDetail = ({ products }) => {
   const { productId } = useParams();
   const product = products.find((p) => p.id === parseInt(productId, 10));
+
+  // 상품을 찾지 못한 경우에 대한 처리
+  if (!product) {
+    return <div>상품을 찾을 수 없습니다.</div>;
+  }
+
   return (
     <div>
       <h2>{product.name} 상세 페이지</h2>

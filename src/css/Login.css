@@ -98,18 +98,14 @@
   margin-right: 5px;
 }
 
-label {
-  margin: 10px 0;
-}
-
-input {
+.loginInputs input {
   padding: 8px;
   border-radius: 8px;
-  border: 1px solid #000000;
+  border: 1px solid #6AD8A0;
   margin-left: 5px;
 }
 
-button {
+.findButtons button {
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;

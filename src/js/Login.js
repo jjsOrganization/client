@@ -19,8 +19,10 @@ function Login({ selectedTab, setSelectedTab }) {
         password: password,
       });
       if (response.data && response.data.data.accessToken) {
+        localStorage.setItem('memberId',userEmail);
         localStorage.setItem("accessToken", response.data.data.accessToken);
         document.cookie = `accessToken=${response.data.data.accessToken}; path=/;`;
+        console.log(document.cookie);
         console.log("로그인 성공");
         navigate("/");
       } else {
