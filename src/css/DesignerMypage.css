@@ -1,0 +1,47 @@
+.orderReformProduct {
+margin: 0 auto; /* 페이지를 수평 가운데 정렬*/
+max-width: 1200px; /* 페이지의 최대 가로 너비를 1200px로 제한 */
+overflow-x: hidden; /* 옆으로 이동하는 스크롤을 숨김 */
+}
+
+.reformProduct {
+position: relative;
+left: 25%;
+}
+
+.reformProduct img {
+width: 30%;
+max-width: 15%;
+}
+
+.reformProduct hr {
+width: 50%;
+}
+
+.reformLastHr {
+position: relative;
+top: -140px;
+}
+
+.reformProduct h5 {
+width: 50%;
+background-color: rgb(183, 183, 183);
+padding-top: 10px;
+padding-bottom: 10px;
+margin-top: -10px;
+}
+
+.reformProduct p {
+position: relative;
+top: -130px;
+left: 200px;
+}
+
+.reformPortfolio img {
+    width: 200px;
+    }
+
+.ModifyBtn {
+    text-align: center;
+    margin-top: 40px;
+}
