@@ -72,7 +72,6 @@ function ProductUpdate(props) {
     baseURL: 'http://localhost:8080',
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-      
     }
   });
 

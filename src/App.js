@@ -118,7 +118,7 @@ const App = () => {
             element={<StockList data={data} mainImage={mainImage} />}
           ></Route>
 
-          <Route path="/stockupdater/:id" element={<StockUpdater />} />
+          <Route path="/stockupdater/:productid" element={<StockUpdater />} />
           <Route />
 
           <Route path="/mypage2" element={<MyPages data={data} />}></Route>
