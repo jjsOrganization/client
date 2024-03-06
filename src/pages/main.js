@@ -25,7 +25,10 @@ function Main(){
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+<<<<<<< HEAD
                         
+=======
+>>>>>>> dbcfdc7c94e5892a5cd39b1ea26b87eea8b05952
                     }
                 });
                 setProductInfo(response.data);
@@ -70,12 +73,11 @@ function Main(){
     const [productInfo,setProductInfo] = useState([{}])
     
     return(
-    <div className = 'mainContainer'>
-        <TopBar />
-        
+    <div>
         <div>
-            <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+            <TopBar />
         </div>
+<<<<<<< HEAD
         <div class="mainProduct">
             <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
             <MainProduct Endpoint = {Endpoint} product = {productInfo} mainImage = {mainImage}></MainProduct>
@@ -83,6 +85,20 @@ function Main(){
         <div className = 'designerCarousel'>
             <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
             <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+=======
+        <div className = 'mainContainer' style ={{marginLeft: '20%', marginRight: '20%'}}>
+            <div>
+                <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+            </div>
+            <div class="mainProduct">
+                <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
+                <MainProduct product = {productInfo} mainImage = {mainImage}></MainProduct>
+            </div>
+            <div className = 'designerCarousel'>
+                <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
+                <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+            </div>
+>>>>>>> dbcfdc7c94e5892a5cd39b1ea26b87eea8b05952
         </div>
     </div>
     )

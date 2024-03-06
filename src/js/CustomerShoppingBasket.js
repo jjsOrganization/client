@@ -97,9 +97,9 @@ function CustomerShoppingBasket() {
             <div className="customerBasketPTag">
               <p>{product.productName}</p>
               <p>{product.price}원</p>
-              <p>
+              {/* <p>
                 갯수 :
-                {/* <button
+                { <button
                   className="basketCountButton"
                   onClick={() =>
                     setProductCount(product.id, product.count - 1)
@@ -107,17 +107,17 @@ function CustomerShoppingBasket() {
                   disabled={product.count <= 0}
                 >
                   -
-                </button> */}
+                </button> }
                 {product.count}
-                {/* <button
+                { <button
                   className="basketCountButton"
                   onClick={() =>
                     setProductCount(product.id, product.count + 1)
                   }
                 >
                   +
-                </button> */}
-              </p>
+                </button>}
+              </p> */}
               <p>배송비 : {product.deliveryPrice}</p>
               <p>주문금액 : {product.totalPrice}</p>
               <button onClick={() => handleDelete(product.id)}>

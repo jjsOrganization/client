@@ -7,10 +7,13 @@ import "./js/ProductList.js";
 import "./js/CustomerMyPageDelivery.js";
 import "./js/CustomerMypageOrderList.js";
 import "./js/TopBar.js";
+import "./js/DesignerSelect.js";
 
+import DesignerSelect from "./js/DesignerSelect.js";
 import TopBar from "./js/TopBar.js";
 import Login from "./js/Login.js";
 import Visual from "./js/Visual.js";
+import Reform from "./js/Reform.js";
 import { ProductList, ProductDetail } from "./js/ProductList.js";
 import CustomerMypageDelivery from "./js/CustomerMyPageDelivery.js";
 import CustomerMypageOrderList from "./js/CustomerMypageOrderList.js";
@@ -23,6 +26,11 @@ import DesignerSearch from "./pages/DesignerSearch";
 import DesignerProduct from "./pages/DesignerProduct";
 import DesignerPortfolio from "./pages/DesignerPortfolio";
 import DesignerRanking from "./pages/DesignerRanking";
+import DesignerMypage from "./pages/DesignerMypage.js";
+import ModifyPortfolio from "./pages/ModifyPortfolio.js";
+import RegisterPortfolio from "./pages/RegisterPortfolio.js";
+import DesignerReformState from "./pages/DesignerReformState.js";
+import Signup from "./pages/Signup.js";
 
 import data from "./data.js";
 import Detail from "./pages/Detail.js";
@@ -31,11 +39,8 @@ import StockList from "./pages/stockList.js";
 import StockUpdater from "./pages/stockUpdater.js";
 import MyPages from "./pages/mypages.js";
 import Main from "./pages/main.js";
-import Reform from './pages/reform.js'
 
 const App = () => {
-  
-
   let [onOff, setOnOff] = useState(false);
   let [shoes, setShoes] = useState(data);
   let navigate = useNavigate();
@@ -72,17 +77,9 @@ const App = () => {
 
         <Route path="visual" element={<Visual />} />
 
-        <Route
-          path="products/:page?"
-          element={
-            <ProductList/>
-          }
-        />
+        <Route path="products/:page?" element={<ProductList />} />
 
-        <Route
-          path="product/:productId"
-          element={<ProductDetail/>}
-        />
+        <Route path="product/:productId" element={<ProductDetail />} />
 
         <Route path="mypage/delivery" element={<CustomerMypageDelivery />} />
 
@@ -93,10 +90,15 @@ const App = () => {
 
       <div className="App">
         <Routes>
+          <Route path="Signup" element={<Signup />} />
           <Route path="/DesignerSearch" element={<DesignerSearch />} />
           <Route path="/DesignerProduct" element={<DesignerProduct />} />
           <Route path="/DesignerPortfolio" element={<DesignerPortfolio />} />
           <Route path="/DesignerRanking" element={<DesignerRanking />} />
+          <Route path="/DesignerMypage" element={<DesignerMypage />} />
+          <Route path="/DesignerMypage/ModifyPortfolio" element={<ModifyPortfolio />} />
+          <Route path="/DesignerMypage/ModifyPortfolio/RegisterPortfolio" element={<RegisterPortfolio />} />
+          <Route path="/DesignerMypage/ReformState" element={<DesignerReformState />} />
         </Routes>
 
         <Routes>
@@ -109,7 +111,8 @@ const App = () => {
             }
           ></Route>
 
-          <Route path="/detail/:productid" element={<Detail />} /><Route />
+          <Route path="/detail/:productid" element={<Detail />} />
+          <Route />
 
           <Route path="/productupdate" element={<ProductUpdate />}></Route>
 
@@ -123,7 +126,9 @@ const App = () => {
 
           <Route path="/mypage2" element={<MyPages data={data} />}></Route>
 
-          <Route path = '/reform' element ={ <Reform/>}></Route>
+          <Route path="/reform" element={<Reform />}></Route>
+
+          <Route path="/designerSelect" element={<DesignerSelect />}></Route>
         </Routes>
       </div>
     </div>
