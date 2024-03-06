@@ -22,8 +22,8 @@ function Detail(props) {
   let [total, setTotal] = useState(0);
   const [dropdownVisibility, setDropdownVisibility] = React.useState(false);
   let { productid } = useParams();
-  const [productidInt, setProductidInt] = useState();
   const [productDetailInfo, setProductDetailInfo] = useState();
+  const [sellerData, setSellerData] = useState();
   const [salePrice, setSalePrice] = useState();
 
   //Dropdown 관련 변수
@@ -34,6 +34,14 @@ function Detail(props) {
   const test = total * salePrice;
   const [choiceSize, setChoiceSize] = useState(null);
   const [choiceColor, setChoiceColor] = useState(null);
+
+  const axiosInstance = axios.create({
+    baseURL: 'http://localhost:8080',
+    headers: {
+    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+    'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
+    }
+});
 
   const addValue = () => {
     setMyArray((prevArray) => [
@@ -52,13 +60,12 @@ function Detail(props) {
   }, [choiceSize, choiceColor]);
 
   useEffect(() => {
-    setProductidInt(parseInt(productid));
-    const fetchData = async () => {
+    const fetchDetailData = async () => {
       try {
         const response = await axios.get(`/product/all/detail/${productid}`, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
             "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
           },
         });
@@ -67,13 +74,29 @@ function Detail(props) {
         console.log("상품 상세 데이터 로드 실패", error);
       }
     };
-    fetchData();
+    fetchDetailData();
   }, []);
 
   useEffect(() => {
-    if (productDetailInfo) {
-      console.log(productDetailInfo);
-      console.log(productDetailInfo.productName);
+    const fetchSellerData = async () => {
+    try{ 
+      const sellerInfo = await axiosInstance.get(`/product/all/detail/${productid}/seller`,{
+      headers : { 
+      'Content-Type': 'multipart/form-data',
+      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+      },
+    });
+      setSellerData(sellerInfo.data)
+      console.log(sellerData)
+    } catch(error) {
+        console.log('판매자 데이터 로드 실패',error);
+      }
+    };
+    fetchSellerData();
+  },[]);
+
+  useEffect(() => {
+    if (productDetailInfo ) {
       setSalePrice(productDetailInfo.price * (1 - sale));
     } else {
       console.log("상품 데이터가 아직 로드되지 않았습니다.");
@@ -225,6 +248,9 @@ function Detail(props) {
                 );
               })}
             </div>
+          </div>
+          <div className = 'detail-ShopAddress'>
+            
           </div>
         </div>
       </div>

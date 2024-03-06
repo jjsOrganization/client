@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import StockList from "./stockList";
 import axios from 'axios'
+import { useParams } from 'react-router-dom';
 
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
@@ -42,6 +43,7 @@ function StockUpdater() {
   const [amountValue, setAmountValue] = useState();
   const [thumbnailImage, setThumbnailImage] = useState();
   const [thumbnailImageFile, setThumbnailImageFile] = useState();
+  const productid = useParams();
 
   const savecontent = (event) => {
     setContentValue(event.target.value);
@@ -77,7 +79,7 @@ function StockUpdater() {
       formData.append("productImgDtoList[0].imgUrl", thumbnailImage);
       formData.append("itemImgFile", thumbnailImageFile);
   
-      const response = await axiosInstance.put(`product/seller/register/1`, formData, {
+      const response = await axiosInstance.put(`product/seller/register/${productid}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
@@ -89,7 +91,7 @@ function StockUpdater() {
     } catch (error) {
       console.error("상품 수정 실패:", error);
     }
-  };
+  }
 
   const encodeImageFile = (event) => {
     const file = event.target.files[0]; 
