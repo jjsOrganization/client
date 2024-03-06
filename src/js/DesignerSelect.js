@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import React from "react";
 
 function DesignerSelect() {
-  const [designersList, setDesignersList] = useState();
+  const [designersList, setDesignersList] = useState(null);
 
   useEffect(() => {
     const fetchDesigners = async () => {
@@ -24,17 +24,20 @@ function DesignerSelect() {
     fetchDesigners();
   }, []);
 
-  //  // 사용자가 디자이너를 선택하고 콜백 함수를 호출하는 예시 함수
-  // const selectDesigner = (selectedDesigner) => {
-  //   // 사용자가 선택한 디자이너 정보를 콜백 함수로 전달
-  //   if (props.onDesignerSelect) {
-  //     props.onDesignerSelect(selectedDesigner);
-  //   }
-  // };
+  if (designersList === null) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(designersList);
 
   return (
     <div>
-      <div></div>
+      <h2>디자이너 목록</h2>
+      <ul>
+        {designersList.map((designer, index) => (
+          <li key={index}>{designer.explanation}</li>
+        ))}
+      </ul>
     </div>
   );
 }
