@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import React from "react";
 
 function DesignerSelect() {
+  // window.opener.handleSelectedDesigner(selectedDesigner);
   const [designersList, setDesignersList] = useState(null);
 
   useEffect(() => {
