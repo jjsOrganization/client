@@ -58,23 +58,22 @@ function ProductUpdate(props) {
   };
 
   const encodeImageFile = (event) => {
-    const file = event.target.files[0]; 
+    const file = event.target.files[0];
     const reader = new FileReader();
-    reader.readAsDataURL(file); 
-  
+    reader.readAsDataURL(file);
+
     reader.onload = () => {
-      setThumbnailImage(reader.result); 
-      setThumbnailImageFile(file); 
+      setThumbnailImage(reader.result);
+      setThumbnailImageFile(file);
     };
   };
 
   const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "http://localhost:8080",
     headers: {
-      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-    }
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
   });
-
 
   const registerHandler = async () => {
     try {
@@ -85,20 +84,23 @@ function ProductUpdate(props) {
       formData.append("productStock", amountValue);
       formData.append("productImgDtoList.imgUrl", thumbnailImage);
       formData.append("itemImgFile", thumbnailImageFile);
-  
-      const response = await axiosInstance.post("/product/seller/register", formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-          
+
+      const response = await axiosInstance.post(
+        "/product/seller/register",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         }
-      });
+      );
       console.log("상품 등록 성공:", response.data);
       window.location.replace(`/productupdate`);
-      alert('상품이 등록되었습니다.')
+      alert("상품이 등록되었습니다.");
     } catch (error) {
       console.error("상품 등록 실패:", error);
-      alert('상품 등록에 실패했습니다.')
+      alert("상품 등록에 실패했습니다.");
     }
   };
 
@@ -148,17 +150,15 @@ function ProductUpdate(props) {
           </label>
 
           <input
-  id="fileInput"
-  type="file"
-  multiple
-  onChange={(event) => encodeImageFile(event)}
-  style={{ display: "none" }}
-/>
+            id="fileInput"
+            type="file"
+            multiple
+            onChange={(event) => encodeImageFile(event)}
+            style={{ display: "none" }}
+          />
         </div>
         <div className="title">
-          <p style={{ fontWeight: "700", margin: "0" }}>
-            상품 제목
-          </p>
+          <p style={{ fontWeight: "700", margin: "0" }}>상품 제목</p>
           <input
             value={titleValue}
             type="text"
@@ -202,7 +202,15 @@ function ProductUpdate(props) {
             상품등록
           </RegisterBtn>
         </div>
-        {thumbnailImage ? <img referrerpolicy="no-referrer" height="90%" src = {thumbnailImage} ></img> : '이미지준비중'}
+        {thumbnailImage ? (
+          <img
+            referrerpolicy="no-referrer"
+            height="90%"
+            src={thumbnailImage}
+          ></img>
+        ) : (
+          "이미지준비중"
+        )}
         {thumbnailImage}
       </div>
     </div>
