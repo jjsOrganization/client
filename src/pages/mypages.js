@@ -31,8 +31,13 @@ function MyPages(){
         },
     };
 
+    const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
     const [openPostcode, setOpenPostcode] = useState(false);
     const [address, setAddress] = useState('');
+    const StockNavigate = useNavigate();
+    const productupdateNavigate = useNavigate();
+    const [registerData,setRegisterData] = useState([]);
+    const [sellerData, setSellerData] = useState([]);
 
     const mapHandler = {
         clickButton() {
@@ -50,38 +55,6 @@ function MyPages(){
         setAddress(e.target.value);
     };
 
-    const StockNavigate = useNavigate();
-    const productupdateNavigate = useNavigate();
-
-    const [test, setTest] = useState([
-        {
-        id : 0,
-        title : "White and Black",
-        content : "Born in France",
-        price : 120000,
-        },
-    
-        {
-        id : 1,
-        title : "Red Knit",
-        content : "Born in Seoul",
-        price : 110000,
-        },
-    
-        {
-        id : 2,
-        title : "Grey Yordan",
-        content : "Born in the States",
-        price : 130000,
-        }
-    ])
-
-    const [mypageMainImage, setMypageMainImage] = useState([
-        'https://i.postimg.cc/zfrVFgNL/1.png',
-        'https://i.postimg.cc/zv6fbLpG/2.png',
-        'https://i.postimg.cc/6QfTjp6M/3.png'
-    ])
-
     const axiosInstance = axios.create({
         baseURL: 'http://localhost:8080',
         headers: {
@@ -90,9 +63,9 @@ function MyPages(){
         }
     });
 
-    const productDeleteHandler = async () => {
+    const productDeleteHandler = async (i) => {
         try{
-            const response = await axiosInstance.delete(`/product/seller/register/11`,
+            const deleteProduct = await axiosInstance.delete(`/product/seller/register/${registerData[i].id}`,
             {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -100,39 +73,49 @@ function MyPages(){
                 'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
             }})
             console.log('상품삭제성공')
+            alert('상품 삭제 완료')
+            window.location.replace(`/mypage2`);
         }   
         catch(error){
             console.log('상품삭제실패',error)
         }
         }
 
-    const [userData,setUserData] = useState([]);
-
-    /*  API 수정시 작업 
-    useEffect(()=>{
-        const fetchData = async () => {
-        try{        
-            const response = await axiosInstance.get(`http://product/register/${productid}`,{
-                headers:{
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                    'X-CSRF-TOKEN': localStorage.getItem('csrfToken'),
-                    'memberId' : localStorage.getItem('userEmail')
+        //판매자가 등록한 상품 조회
+        useEffect(() => {
+            const fetchRegisterData = async () => {
+                try {        
+                    const registerResponse = await axiosInstance.get('/product/seller/register', {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        }
+                    });
+                    setRegisterData(registerResponse.data);
+                } catch(error) {
+                    console.log('데이터 로드 실패', error);
                 }
-            });
-            setUserData(fetchData);
-            if('memberId' === userData){
-                return
-            }
-            
-        }catch(error){
-            console.log(error);
+            };
+            fetchRegisterData();
+        }, []);
 
-        }
-    };
-    fetchData();
-},[])
-*/
+        //판매자 정보 조회
+        useEffect(() => {
+            const fetchSellerData = async () => {
+                try {        
+                    const sellerResponse = await axiosInstance.get("/seller/info", {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`,
+                        }
+                    });
+                    setSellerData(sellerResponse.data);
+                } catch(error) {
+                    console.log('데이터 로드 실패', error);
+                }
+            };
+            fetchSellerData();
+        }, []);
 
     return(
 <div className = 'mypageContainer'>
@@ -145,7 +128,7 @@ function MyPages(){
     }}>상품등록</p>
     </div>
     <div>
-        <MypageProductList productDeleteHandler = {productDeleteHandler} test = {test} navigate = {StockNavigate} mypageMainImage = {mypageMainImage}/>
+        <MypageProductList Endpoint = {Endpoint} productDeleteHandler = {productDeleteHandler} registerData = {registerData} navigate = {StockNavigate}/>
     </div>
     <p style = {{ marginBottom : '-12px',display : 'flex'}}>매장정보</p><hr></hr>
 
@@ -169,29 +152,29 @@ function MypageProductList(props){
     return(
         <div >
             {
-                props.mypageMainImage.map(function(image,i){
+                props.registerData.map(function(image,i){
                     return(
                         <>
                         <hr style= {{marginBottom : '10px'}}></hr>
                         <div className = 'stockItemContainer' key = {i} style = {{display : 'flex', marginBottom : '10px'}}>
             <div className = 'image' style= {{marginBottom : '-16px'}}>
-            <img src = {props.mypageMainImage[i]} height = '100px'/>
+            <img src = {props.Endpoint + props.registerData[i].imgUrl} width = '100px' height = '100px'/>
             </div>
                 
             <div className = 'productInfoContainer' style = {{width : '400px',fontWeight : '700',marginLeft : '10%',display : 'inline'}}>
             <div className = 'title'>
-                <h3>{props.test[i].title}</h3>
+                <h3>{props.registerData[i].productName}</h3>
             </div>
             <div className='' style = {{display : 'flex'}}>
-                재고수 : {props.test[i].id}
+                재고수 : {props.registerData[i].productStock}
             </div>
             <div className = 'BtnStyle' style = {{display : 'flex',justifyContent : 'flex-end'}}>
                 <BtnStyle style = {{marginRight  :'5%'}}onClick = {() =>{
-                    props.navigate(`/stockupdater/:id`);
+                    props.navigate(`/stockupdater/${props.registerData[i].id}`);
                 }} >상품 수정</BtnStyle>
 
                 <BtnStyle onClick = {() =>{
-                    props.productDeleteHandler();
+                    props.productDeleteHandler(i);
                 }} >상품 삭제</BtnStyle>
             </div>
             </div>

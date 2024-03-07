@@ -58,14 +58,6 @@ function Reform() {
     };
   };
 
-  const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
-    },
-  });
-
   const registerHandler = async () => {
     try {
       const formData = new FormData();
@@ -76,7 +68,7 @@ function Reform() {
       formData.append("productImgDtoList.imgUrl", thumbnailImage);
       formData.append("itemImgFile", thumbnailImageFile);
 
-      const response = await axiosInstance.post(
+      const response = await axios.post(
         "/product/seller/register",
         formData,
         {
@@ -102,8 +94,10 @@ function Reform() {
   };
 
   const handleDesignerSelect = (selectedDesigner) => {
-    // 선택한 디자이너 정보를 처리하는 로직을 여기에 작성
     console.log("선택한 디자이너:", selectedDesigner);
+  
+    // 선택한 디자이너 정보
+    setDesigners(selectedDesigner);
   };
 
   return (
