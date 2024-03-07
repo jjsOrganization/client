@@ -21,12 +21,9 @@ function Login({ selectedTab, setSelectedTab }) {
       if (response.data && response.data.data.accessToken) {
         localStorage.setItem('memberId',userEmail);
         localStorage.setItem("accessToken", response.data.data.accessToken);
-<<<<<<< HEAD
         localStorage.setItem('csrfToken', response.data.data.csrfToken);
         localStorage.setItem('refreshToken',response.data.data.refreshToken)
         document.cookie = `csrfToken'=${response.data.data.csrfToken}; path = /;`;
-=======
->>>>>>> dbcfdc7c94e5892a5cd39b1ea26b87eea8b05952
         document.cookie = `accessToken=${response.data.data.accessToken}; path=/;`;
         console.log(document.cookie);
         console.log("로그인 성공");
