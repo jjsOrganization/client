@@ -21,9 +21,6 @@ function Login({ selectedTab, setSelectedTab }) {
       if (response.data && response.data.data.accessToken) {
         localStorage.setItem('memberId',userEmail);
         localStorage.setItem("accessToken", response.data.data.accessToken);
-        localStorage.setItem('csrfToken', response.data.data.csrfToken);
-        localStorage.setItem('refreshToken',response.data.data.refreshToken)
-        document.cookie = `csrfToken'=${response.data.data.csrfToken}; path = /;`;
         document.cookie = `accessToken=${response.data.data.accessToken}; path=/;`;
         console.log(document.cookie);
         console.log("로그인 성공");

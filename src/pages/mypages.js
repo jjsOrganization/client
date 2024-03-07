@@ -117,6 +117,12 @@ function MyPages(){
             fetchSellerData();
         }, []);
 
+        useEffect(() => {
+            if(sellerData){
+                console.log(sellerData)
+            }
+        })
+
     return(
 <div className = 'mypageContainer'>
     <TopBar />

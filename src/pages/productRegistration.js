@@ -12,35 +12,13 @@ let RegisterBtn = styled.button`
 `;
 
 function ProductUpdate(props) {
-  const [test, setTest] = useState([
-    {
-      id: 0,
-      title: "White and Black",
-      content: "Born in France",
-      price: 120000,
-    },
-
-    {
-      id: 1,
-      title: "Red Knit",
-      content: "Born in Seoul",
-      price: 110000,
-    },
-
-    {
-      id: 2,
-      title: "Grey Yordan",
-      content: "Born in the States",
-      price: 130000,
-    },
-  ]);
-
   const [titleValue, setTitleValue] = useState();
   const [contentValue, setContentValue] = useState();
   const [priceValue, setPriceValue] = useState();
   const [amountValue, setAmountValue] = useState();
   const [thumbnailImage, setThumbnailImage] = useState();
   const [thumbnailImageFile, setThumbnailImageFile] = useState();
+  const [category, setCategory] = useState();
 
   const savecontent = (event) => {
     setContentValue(event.target.value);
@@ -59,23 +37,23 @@ function ProductUpdate(props) {
   };
 
   const encodeImageFile = (event) => {
-    const file = event.target.files[0]; 
+    const file = event.target.files[0];
     const reader = new FileReader();
-    reader.readAsDataURL(file); 
-  
+    reader.readAsDataURL(file);
+
     reader.onload = () => {
-      setThumbnailImage(reader.result); 
-      setThumbnailImageFile(file); 
+      setThumbnailImage(reader.result);
+      setThumbnailImageFile(file);
     };
   };
 
-  const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-    }
-  });
 
+  const axiosInstance = axios.create({
+    baseURL: "http://localhost:8080",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  });
 
   const registerHandler = async () => {
     try {
@@ -86,24 +64,51 @@ function ProductUpdate(props) {
       formData.append("productStock", amountValue);
       formData.append("productImgDtoList.imgUrl", thumbnailImage);
       formData.append("itemImgFile", thumbnailImageFile);
-  
-      const response = await axiosInstance.post("/product/seller/register", formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-          
+
+      const response = await axiosInstance.post(
+        "/product/seller/register",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         }
-      });
+      );
       console.log("상품 등록 성공:", response.data);
       window.location.replace(`/productupdate`);
-      alert('상품이 등록되었습니다.')
+      alert("상품이 등록되었습니다.");
     } catch (error) {
       console.error("상품 등록 실패:", error);
-      alert('상품 등록에 실패했습니다.')
+      alert("상품 등록에 실패했습니다.");
     }
   };
 
   const [productRegister, setProductRegister] = useState([]);
+
+  
+  useEffect(() => {
+  const fetchCategoryData = async () => {
+    try {
+      const response = await axiosInstance.get(`/products/category/1`, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          'Authorization': `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      });
+      setCategory(response.data);
+    } catch (error) {
+      console.log('카테고리 데이터 로드 실패', error);
+    }
+  };
+  fetchCategoryData();
+}, []);
+
+  useEffect(() => {
+    if(category){
+      console.log(category)
+    }
+  })
 
   return (
     <div>
@@ -149,17 +154,15 @@ function ProductUpdate(props) {
           </label>
 
           <input
-  id="fileInput"
-  type="file"
-  multiple
-  onChange={(event) => encodeImageFile(event)}
-  style={{ display: "none" }}
-/>
+            id="fileInput"
+            type="file"
+            multiple
+            onChange={(event) => encodeImageFile(event)}
+            style={{ display: "none" }}
+          />
         </div>
-        <div className="title">
-          <p style={{ fontWeight: "700", margin: "0" }}>
-            상품 제목
-          </p>
+        <div className="productRegisterTitle">
+          <p style={{ fontWeight: "700", margin: "0" }}>상품 제목</p>
           <input
             value={titleValue}
             type="text"
@@ -167,7 +170,7 @@ function ProductUpdate(props) {
             style={{ width: "100%", marginBottom: "30px" }}
           />
         </div>
-        <div className="content">
+        <div className="productRegisterContent">
           <p style={{ fontWeight: "700", margin: "0" }}>상품 정보</p>
           <input
             value={contentValue}
@@ -176,7 +179,7 @@ function ProductUpdate(props) {
             style={{ width: "100%", marginBottom: "30px" }}
           />
         </div>
-        <div className="price">
+        <div className="productRegisterPrice">
           <p style={{ fontWeight: "700", margin: "0" }}>상품 가격</p>
           <input
             value={priceValue}
@@ -185,7 +188,7 @@ function ProductUpdate(props) {
             style={{ width: "100%", marginBottom: "30px" }}
           />
         </div>
-        <div className="amount">
+        <div className="productRegisterAmount">
           <p style={{ fontWeight: "700", margin: "0" }}>재고수</p>
           <input
             value={amountValue}
@@ -194,7 +197,10 @@ function ProductUpdate(props) {
             style={{ width: "100%", marginBottom: "30px" }}
           />
         </div>
-        <div className="register" style={{ textAlign: "right" }}>
+        <div className = 'productRegisterCategory'>
+          <Dropdown/>
+        </div>
+        <div className="productRegisterBtn" style={{ textAlign: "right" }}>
           <RegisterBtn
             onClick={() => {
               registerHandler();
@@ -203,8 +209,7 @@ function ProductUpdate(props) {
             상품등록
           </RegisterBtn>
         </div>
-        {thumbnailImage ? <img referrerpolicy="no-referrer" height="90%" src = {thumbnailImage} ></img> : '이미지준비중'}
-        {thumbnailImage}
+        
       </div>
     </div>
   );

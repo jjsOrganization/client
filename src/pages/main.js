@@ -25,7 +25,6 @@ function Main(){
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        
                     }
                 });
                 setProductInfo(response.data);
@@ -61,11 +60,6 @@ function Main(){
         'https://i.postimg.cc/28QsjXw7/6.png',
         'https://i.postimg.cc/0NQFf5qV/7.png'])
 
-    let [mainImage, setMainImage] = useState([
-        'https://i.postimg.cc/zfrVFgNL/1.png',
-        'https://i.postimg.cc/zv6fbLpG/2.png',
-        'https://i.postimg.cc/6QfTjp6M/3.png'
-        ])
     
     const [productInfo,setProductInfo] = useState([{}])
     
@@ -74,13 +68,18 @@ function Main(){
         <div>
             <TopBar />
         </div>
-        <div class="mainProduct">
-            <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
-            <MainProduct Endpoint = {Endpoint} product = {productInfo} mainImage = {mainImage}></MainProduct>
-        </div>
-        <div className = 'designerCarousel'>
-            <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
-            <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+        <div className = 'mainContainer' style ={{marginLeft: '20%', marginRight: '20%'}}>
+            <div>
+                <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+            </div>
+            <div class="mainProduct">
+                <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
+                <MainProduct Endpoint = {Endpoint} product = {productInfo}></MainProduct>
+            </div>
+            <div className = 'designerCarousel'>
+                <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
+                <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+            </div>
         </div>
     </div>
     )
@@ -96,7 +95,7 @@ function MainProduct(props){
             <div class="col-6 col-md-4" key={i}>     
     {   
         props.product[i].imgUrl ?
-        (<img referrerpolicy="no-referrer" width = '250px' height = '250px' src = {props.Endpoint + props.product[i].imgUrl} nstyle={{ width: '100%' }} onClick={() => { navigate(`detail/${props.product[i].id}`) }}/>) : 
+        (<img referrerpolicy="no-referrer" width = '100%' height = '80%' src = {props.Endpoint + props.product[i].imgUrl} style = {{marginRight : '5%'}} onClick={() => { navigate(`detail/${props.product[i].id}`) }}/>) : 
         (<p onClick={() => { navigate(`detail/${props.product[i].id}`) }} > 이미지 준비중 </p>)}
         <h4>{props.product[i].productName}</h4><p></p>
         </div>
