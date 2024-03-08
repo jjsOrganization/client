@@ -95,7 +95,7 @@ function MainProduct(props){
             <div class="col-6 col-md-4" key={i}>     
     {   
         props.product[i].imgUrl ?
-        (<img referrerpolicy="no-referrer" width = '100%' height = '80%' src = {props.Endpoint + props.product[i].imgUrl} style = {{marginRight : '5%'}} onClick={() => { navigate(`detail/${props.product[i].id}`) }}/>) : 
+        (<img referrerpolicy="no-referrer" width = '100%' height = '70%' src = {props.Endpoint + props.product[i].imgUrl} style = {{marginRight : '5%'}} onClick={() => { navigate(`detail/${props.product[i].id}`) }}/>) : 
         (<p onClick={() => { navigate(`detail/${props.product[i].id}`) }} > 이미지 준비중 </p>)}
         <h4>{props.product[i].productName}</h4><p></p>
         </div>

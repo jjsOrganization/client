@@ -19,16 +19,15 @@ const StyledButton = styled.button`
 `;
 
 function Dropdown(props) {
-    const [isExpanded, setIsExpanded] = useState(false);
+
+const [isExpanded, setIsExpanded] = useState(false);
     
-
-
 const articleBtnExpandHandler = () => {
     setIsExpanded(!isExpanded);
 };
 
 const articleTypeHandler = (type) => {
-    copyType = ' / ' + type;
+    copyType = ' : ' + type;
     props.setArticleType(copyType);
 };
 return(
@@ -42,7 +41,11 @@ return(
         <div onClick={articleBtnExpandHandler}>
             {props.articleTypeList.map((type, idx) => (
                 <StyledButton
-                key={type} onClick={() => articleTypeHandler(type)}>
+                key={type} onClick={() => {
+                    articleTypeHandler(type);
+                    setTimeout(() => {
+                    props.cate(type)
+                    }, 10000);}} >
                     {type}
                     {idx !== props.articleTypeList.length - 1 && <hr />}
                 </StyledButton>

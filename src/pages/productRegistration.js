@@ -11,6 +11,15 @@ let RegisterBtn = styled.button`
   background: black;
 `;
 
+/*[
+    { id: 1, name: '상의' },
+    { id: 2, name: '아우터' },
+    { id: 3, name: '바지' },
+    { id: 4, name: '스커트' },
+    { id: 5, name: '원피스' },
+    { id: 6, name: '모자' }
+  ];*/
+
 function ProductUpdate(props) {
   const [titleValue, setTitleValue] = useState();
   const [contentValue, setContentValue] = useState();
@@ -18,7 +27,24 @@ function ProductUpdate(props) {
   const [amountValue, setAmountValue] = useState();
   const [thumbnailImage, setThumbnailImage] = useState();
   const [thumbnailImageFile, setThumbnailImageFile] = useState();
-  const [category, setCategory] = useState();
+  const [categoryData, setCategoryData] = useState();
+  const categoryDropDown = ['상의','아우터','바지','스커트','원피스','모자']
+  const [categoryId, setCategoryId] = useState();
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const categoryText = '카테고리'
+
+  const handleDropdownChange = (selectedItem) => {
+    setSelectedCategory(selectedItem);
+  };
+
+  const categoryHandler = ((selectedCategory) => {
+    if(selectedCategory === '상의'){setCategoryId(1);}
+    else if(selectedCategory === '아우터'){setCategoryId(2)}
+    else if(selectedCategory === '바지'){setCategoryId(3)}
+    else if(selectedCategory === '스커트'){setCategoryId(4)}
+    else if(selectedCategory === '원피스'){setCategoryId(5)}
+    else if(selectedCategory === '모자'){setCategoryId(6)}
+  })
 
   const savecontent = (event) => {
     setContentValue(event.target.value);
@@ -64,7 +90,8 @@ function ProductUpdate(props) {
       formData.append("productStock", amountValue);
       formData.append("productImgDtoList.imgUrl", thumbnailImage);
       formData.append("itemImgFile", thumbnailImageFile);
-
+      formData.append("categoryId.id", categoryId)
+      formData.append("categoryId.categoryName", selectedCategory)
       const response = await axiosInstance.post(
         "/product/seller/register",
         formData,
@@ -80,33 +107,32 @@ function ProductUpdate(props) {
       alert("상품이 등록되었습니다.");
     } catch (error) {
       console.error("상품 등록 실패:", error);
+      console.log(selectedCategory)
+      console.log(categoryId)
       alert("상품 등록에 실패했습니다.");
     }
   };
-
-  const [productRegister, setProductRegister] = useState([]);
-
   
   useEffect(() => {
-  const fetchCategoryData = async () => {
-    try {
-      const response = await axiosInstance.get(`/products/category/1`, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          'Authorization': `Bearer ${localStorage.getItem("accessToken")}`
-        }
-      });
-      setCategory(response.data);
-    } catch (error) {
-      console.log('카테고리 데이터 로드 실패', error);
-    }
-  };
-  fetchCategoryData();
-}, []);
+    const fetchCategoryData = async () => {
+      try {
+        const response = await axiosInstance.get(`/products/category/1`, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            'Authorization': `Bearer ${localStorage.getItem("accessToken")}`
+          }
+        });
+        setCategoryData(response.data);
+      } catch (error) {
+        console.log('카테고리 데이터 로드 실패', error);
+      }
+    };
+    fetchCategoryData();
+  }, []);
 
   useEffect(() => {
-    if(category){
-      console.log(category)
+    if(categoryData){
+      console.log(categoryData)
     }
   })
 
@@ -198,7 +224,13 @@ function ProductUpdate(props) {
           />
         </div>
         <div className = 'productRegisterCategory'>
-          <Dropdown/>
+        <Dropdown
+        cate ={categoryHandler} 
+        text = {categoryText}
+        setArticleType = {setSelectedCategory}
+        articleTypeList = {categoryDropDown}
+        articleType= {selectedCategory}
+      />
         </div>
         <div className="productRegisterBtn" style={{ textAlign: "right" }}>
           <RegisterBtn
