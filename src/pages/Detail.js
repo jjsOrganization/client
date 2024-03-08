@@ -3,7 +3,6 @@ import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Dropdown from "../component/dropdown";
-import copyType from "../component/dropdown";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../js/TopBar.js";
@@ -98,8 +97,6 @@ function Detail(props) {
   useEffect(() => {
     if (productDetailInfo ) {
       setSalePrice(productDetailInfo.price * (1 - sale));
-    } else {
-      console.log("상품 데이터가 아직 로드되지 않았습니다.");
     }
   }, [productDetailInfo, sale]);
 
@@ -244,10 +241,11 @@ function Detail(props) {
               );
             })}
           </div>
-          <div className = 'detail-ShopAddress'>
-            
-          </div>
+          
+          
         </div>
+        <div className = 'productLike' style = {{marginLeft : '2%'}}> 위치 확인</div>
+        <div className = 'detail-ShopAddress'>            </div>
       </div>
     </div>
   );

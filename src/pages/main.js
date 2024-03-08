@@ -2,14 +2,12 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Carousel } from 'antd';
 import axios from 'axios'
-import data from '../data';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
 
 function Main(){
 
-    const [testData,setTestData] = useState();
     const axiosInstance = axios.create({
         baseURL: 'http://localhost:8080',
         headers: {
@@ -43,13 +41,6 @@ function Main(){
         color: '#fff',
         background: 'white',
     };
-    
-    const carouselStyle = {
-        width : '100%',
-        height : '40%'
-    };
-
-    let [serverMainImage,setServerMainImage] = useState()
 
     let [carouselImage, setCarouselImage] = useState([
         'https://i.postimg.cc/5yvZCPM1/1.png',
@@ -92,12 +83,12 @@ function MainProduct(props){
     {
         props.product.map(function(a, i){
         return(
-            <div class="col-6 col-md-4" key={i}>     
+            <div class="col-6 col-md-4" key={i} style = {{ height : '300px'}}>     
     {   
         props.product[i].imgUrl ?
         (<img referrerpolicy="no-referrer" width = '100%' height = '70%' src = {props.Endpoint + props.product[i].imgUrl} style = {{marginRight : '5%'}} onClick={() => { navigate(`detail/${props.product[i].id}`) }}/>) : 
         (<p onClick={() => { navigate(`detail/${props.product[i].id}`) }} > 이미지 준비중 </p>)}
-        <h4>{props.product[i].productName}</h4><p></p>
+        <h4>{props.product[i].productName}</h4>
         </div>
         )})
     }

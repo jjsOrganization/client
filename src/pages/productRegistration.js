@@ -225,11 +225,12 @@ function ProductUpdate(props) {
         </div>
         <div className = 'productRegisterCategory'>
         <Dropdown
-        cate ={categoryHandler} 
+        cate ={categoryHandler()} 
         text = {categoryText}
         setArticleType = {setSelectedCategory}
         articleTypeList = {categoryDropDown}
         articleType= {selectedCategory}
+        category = 'dd'
       />
         </div>
         <div className="productRegisterBtn" style={{ textAlign: "right" }}>

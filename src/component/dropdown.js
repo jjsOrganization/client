@@ -2,8 +2,6 @@ import React from 'react';
 import {useEffect,useState} from 'react';
 import styled from 'styled-components';
 
-//강의 1시간부터 근데 새로운 탭 만드는 부분이라 이부분 넘겨도 되긴 함
-
 let copyType;
 
 const StyledButton = styled.button`
@@ -42,10 +40,8 @@ return(
             {props.articleTypeList.map((type, idx) => (
                 <StyledButton
                 key={type} onClick={() => {
-                    articleTypeHandler(type);
-                    setTimeout(() => {
-                    props.cate(type)
-                    }, 10000);}} >
+                    articleTypeHandler(type); 
+                    if(props.category){props.cate(type)}}} >
                     {type}
                     {idx !== props.articleTypeList.length - 1 && <hr />}
                 </StyledButton>
