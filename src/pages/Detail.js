@@ -7,6 +7,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
+import LikeComponent from "../component/likeComponent.js";
 
 let BasicBtn = styled.button`
   padding: 1%;
@@ -24,6 +25,9 @@ function Detail(props) {
   const [productDetailInfo, setProductDetailInfo] = useState();
   const [sellerData, setSellerData] = useState();
   const [salePrice, setSalePrice] = useState();
+  const [productLike,setProductLike] = useState();
+  const [likeState, setLikeState] = useState(false);
+  const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
 
   //Dropdown 관련 변수
   const SizeList = ["S", "M", "L", "XL"];
@@ -58,6 +62,7 @@ function Detail(props) {
     }
   }, [choiceSize, choiceColor]);
 
+  //상품 상세 데이터 get
   useEffect(() => {
     const fetchDetailData = async () => {
       try {
@@ -76,6 +81,7 @@ function Detail(props) {
     fetchDetailData();
   }, []);
 
+  //판매자 데이터 get (매장 위치 표시위한)
   useEffect(() => {
     const fetchSellerData = async () => {
     try{ 
@@ -86,7 +92,6 @@ function Detail(props) {
       },
     });
       setSellerData(sellerInfo.data)
-      console.log(sellerData)
     } catch(error) {
         console.log('판매자 데이터 로드 실패',error);
       }
@@ -94,11 +99,27 @@ function Detail(props) {
     fetchSellerData();
   },[]);
 
+  //할인가 계산 및 좋아요 유무에 판단을 위함
   useEffect(() => {
-    if (productDetailInfo ) {
+    if (productDetailInfo && productLike) {
       setSalePrice(productDetailInfo.price * (1 - sale));
+      console.log(productLike)
     }
+    console.log(productDetailInfo)
   }, [productDetailInfo, sale]);
+
+  //상품 좋아요 개수 get
+  useEffect(() => {
+    const productLikeGet = async () => {
+      try{
+        const productLikeConut = await axiosInstance.get(`/product/all/detail/${productid}/like-count`)
+        setProductLike(productLikeConut);
+      }
+      catch(error) {
+        console.log('좋아요 get에러',error)
+      }
+    };productLikeGet();
+  },[productid, productLike])
 
   if (!productDetailInfo) {
     return <div>데이터를 로드하는 중입니다...</div>;
@@ -133,6 +154,29 @@ function Detail(props) {
 
   const reFormLink = `/reform?productId=${productid}`;
 
+  //상품 좋아요 요청
+  const productLikeHandler = async () => {
+    try{
+      const postLike = await axiosInstance.post(`/product/all/detail/${productid}/like`)
+      console.log('좋아요 누름')
+      
+    }
+    catch(error){
+      console.log('좋아요 실패');
+    }
+  }
+
+  //상품 좋아요 취소
+  const productLikeCancelHandler = async() => {
+    try{
+      const DeleteLike = await axiosInstance.delete(`/product/all/detail/${productid}/like`)
+      console.log('좋아요 취소함')
+    }
+    catch(error){
+      console.log('좋아요 취소 에러',error)
+    }
+  }
+
   return (
     <div className="Detail">
       <TopBar />
@@ -146,7 +190,7 @@ function Detail(props) {
         }}
       >
         <img
-          src="https://i.postimg.cc/zfrVFgNL/1.png"
+          src= {Endpoint + productDetailInfo.productImg[0].imgUrl }
           width="300px"
           height="300px"
         />
@@ -244,11 +288,12 @@ function Detail(props) {
           
           
         </div>
-        <div className = 'productLike' style = {{marginLeft : '2%'}}> 위치 확인</div>
-        <div className = 'detail-ShopAddress'>            </div>
+        <div className = 'productLikeContainer' style = {{marginLeft : '2%'}}><LikeComponent Likeresult = {productLike} likecanceleHandler = {productLikeCancelHandler} likeHandler = {productLikeHandler}/></div>
+        <div className = 'detail-ShopAddress'> 좋아요 수 : {productLike.data.data}</div>
       </div>
     </div>
   );
 }
+
 
 export default Detail;

@@ -71,6 +71,7 @@ function Main(){
                 <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
                 <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
             </div>
+            <input type = 'file'></input>
         </div>
     </div>
     )

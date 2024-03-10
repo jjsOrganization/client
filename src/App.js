@@ -41,12 +41,7 @@ import MyPages from "./pages/mypages.js";
 import Main from "./pages/main.js";
 
 const App = () => {
-  let [onOff, setOnOff] = useState(false);
-  let [shoes, setShoes] = useState(data);
   let navigate = useNavigate();
-
-  //서버에서 받은 데이터 이용해 메인 상품 추가
-  let [serverMainImage, setServerMainImage] = useState();
 
   let [mainImage, setMainImage] = useState([
     "https://i.postimg.cc/zfrVFgNL/1.png",
