@@ -37,7 +37,7 @@ import Detail from "./pages/Detail.js";
 import ProductUpdate from "./pages/productRegistration.js";
 import StockList from "./pages/stockList.js";
 import StockUpdater from "./pages/stockUpdater.js";
-import MyPages from "./pages/mypages.js";
+import MyPages from "./pages/mypage.js";
 import Main from "./pages/main.js";
 
 const App = () => {

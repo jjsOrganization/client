@@ -112,7 +112,7 @@ function ProductUpdate(props) {
       alert("상품 등록에 실패했습니다.");
     }
   };
-  
+  /*
   useEffect(() => {
     const fetchCategoryData = async () => {
       try {
@@ -128,7 +128,7 @@ function ProductUpdate(props) {
       }
     };
     fetchCategoryData();
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     if(categoryData){
@@ -225,7 +225,7 @@ function ProductUpdate(props) {
         </div>
         <div className = 'productRegisterCategory'>
         <Dropdown
-        cate ={categoryHandler()} 
+        cate ={categoryHandler} 
         text = {categoryText}
         setArticleType = {setSelectedCategory}
         articleTypeList = {categoryDropDown}

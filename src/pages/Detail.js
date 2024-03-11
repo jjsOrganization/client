@@ -8,6 +8,7 @@ import axios from "axios";
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
 import LikeComponent from "../component/likeComponent.js";
+import Kakao from "../component/kakaoMap.js";
 
 let BasicBtn = styled.button`
   padding: 1%;
@@ -26,7 +27,7 @@ function Detail(props) {
   const [sellerData, setSellerData] = useState();
   const [salePrice, setSalePrice] = useState();
   const [productLike,setProductLike] = useState();
-  const [likeState, setLikeState] = useState(false);
+  const [likeState, setLikeState] = useState();
   const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
 
   //Dropdown 관련 변수
@@ -37,6 +38,15 @@ function Detail(props) {
   const test = total * salePrice;
   const [choiceSize, setChoiceSize] = useState(null);
   const [choiceColor, setChoiceColor] = useState(null);
+
+  const kakaoMapStyle = {
+    display : 'flex',
+    alignItems: 'center',
+    justifyContent : 'center',
+    height : '200px',
+    width : '250px',
+    marginLeft : '5%'
+}
   
   const axiosInstance = axios.create({
     baseURL: 'http://localhost:8080',
@@ -111,15 +121,29 @@ function Detail(props) {
   //상품 좋아요 개수 get
   useEffect(() => {
     const productLikeGet = async () => {
+      try {
+        const productLikeCount = await axiosInstance.get(`/product/all/detail/${productid}/like-count`);
+        setProductLike(productLikeCount);
+      } catch (error) {
+        console.log('좋아요 get에러', error);
+      }
+    };
+    productLikeGet();
+  }, [productid]);
+
+  //상품 좋아요 여부 확인
+  useEffect(() => {
+    const LikeCheckGet = async() => {
       try{
-        const productLikeConut = await axiosInstance.get(`/product/all/detail/${productid}/like-count`)
-        setProductLike(productLikeConut);
+        const likeStateInfo = await axiosInstance.get(`/product/all/detail/${productid}/like-status`)
+        setLikeState(likeStateInfo)
+        console.log()
       }
-      catch(error) {
-        console.log('좋아요 get에러',error)
+      catch(error){
+        console.log('좋아요 상태 체크 에러',error);
       }
-    };productLikeGet();
-  },[productid, productLike])
+    };LikeCheckGet();
+  },[])
 
   if (!productDetailInfo) {
     return <div>데이터를 로드하는 중입니다...</div>;
@@ -159,7 +183,6 @@ function Detail(props) {
     try{
       const postLike = await axiosInstance.post(`/product/all/detail/${productid}/like`)
       console.log('좋아요 누름')
-      
     }
     catch(error){
       console.log('좋아요 실패');
@@ -218,6 +241,7 @@ function Detail(props) {
           <p style={{ fontWeight: "bold" }}>
             할인가 : {salePrice && salePrice.toLocaleString()}{" "}
           </p>
+          <div className = 'productLikeContainer' style = {{marginTop : '-3%'}}><LikeComponent setLikeState = {setLikeState} likeState = {likeState} Likeresult = {productLike} likecanceleHandler = {productLikeCancelHandler} likeHandler = {productLikeHandler}/> {productLike.data.data} </div>
           <div
             className="btn"
             style={{
@@ -250,7 +274,6 @@ function Detail(props) {
       <div className="productField">
         <p>{productDetailInfo.itemDetail}</p>
       </div>
-
       <div className="buy-info" style={{ display: "flex" }}>
         <div className="dropdown" style={{ display: "flex", marginTop: "3%" }}>
           <Dropdown
@@ -285,12 +308,15 @@ function Detail(props) {
               );
             })}
           </div>
-          
-          
         </div>
-        <div className = 'productLikeContainer' style = {{marginLeft : '2%'}}><LikeComponent Likeresult = {productLike} likecanceleHandler = {productLikeCancelHandler} likeHandler = {productLikeHandler}/></div>
-        <div className = 'detail-ShopAddress'> 좋아요 수 : {productLike.data.data}</div>
+        <div className = 'detail-kakaomap'> <Kakao mapSize = {kakaoMapStyle}/></div>
+        <div className = 'detail-shopInfo' style = {{marginLeft : '2%',letterSpacing : '3px',width : '140px'}}>
+          <div className = 'detail-shopTitle'>매장명 : </div>
+          <div className = 'detail-ShopAddress'>매장 주소 : </div>
+          <div className = 'detail-shopNumber'>매장 번호 : </div>
+        </div>
       </div>
+      
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
 
+
 function Main(){
 
     const axiosInstance = axios.create({
@@ -26,7 +27,6 @@ function Main(){
                     }
                 });
                 setProductInfo(response.data);
-                console.log(response.data); 
             } catch(error) {
                 console.log('데이터 로드 실패', error);
             }
@@ -42,7 +42,7 @@ function Main(){
         background: 'white',
     };
 
-    let [carouselImage, setCarouselImage] = useState([
+    let carouselImage = ([
         'https://i.postimg.cc/5yvZCPM1/1.png',
         'https://i.postimg.cc/x19WXypD/2.png',
         'https://i.postimg.cc/wTYKpdhB/3.png',
@@ -51,7 +51,6 @@ function Main(){
         'https://i.postimg.cc/28QsjXw7/6.png',
         'https://i.postimg.cc/0NQFf5qV/7.png'])
 
-    
     const [productInfo,setProductInfo] = useState([{}])
     
     return(
