@@ -2,14 +2,12 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Carousel } from 'antd';
 import axios from 'axios'
-import data from '../data';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
 
 function Main(){
 
-    const [testData,setTestData] = useState();
     const axiosInstance = axios.create({
         baseURL: 'http://localhost:8080',
         headers: {
@@ -43,13 +41,6 @@ function Main(){
         color: '#fff',
         background: 'white',
     };
-    
-    const carouselStyle = {
-        width : '100%',
-        height : '40%'
-    };
-
-    let [serverMainImage,setServerMainImage] = useState()
 
     let [carouselImage, setCarouselImage] = useState([
         'https://i.postimg.cc/5yvZCPM1/1.png',
@@ -60,11 +51,6 @@ function Main(){
         'https://i.postimg.cc/28QsjXw7/6.png',
         'https://i.postimg.cc/0NQFf5qV/7.png'])
 
-    let [mainImage, setMainImage] = useState([
-        'https://i.postimg.cc/zfrVFgNL/1.png',
-        'https://i.postimg.cc/zv6fbLpG/2.png',
-        'https://i.postimg.cc/6QfTjp6M/3.png'
-        ])
     
     const [productInfo,setProductInfo] = useState([{}])
     
@@ -79,7 +65,7 @@ function Main(){
             </div>
             <div class="mainProduct">
                 <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
-                <MainProduct product = {productInfo} mainImage = {mainImage}></MainProduct>
+                <MainProduct Endpoint = {Endpoint} product = {productInfo}></MainProduct>
             </div>
             <div className = 'designerCarousel'>
                 <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
@@ -97,12 +83,12 @@ function MainProduct(props){
     {
         props.product.map(function(a, i){
         return(
-            <div class="col-6 col-md-4" key={i}>     
+            <div class="col-6 col-md-4" key={i} style = {{ height : '300px'}}>     
     {   
         props.product[i].imgUrl ?
-        (<img referrerpolicy="no-referrer" width = '250px' height = '250px' src = {props.Endpoint + props.product[i].imgUrl} nstyle={{ width: '100%' }} onClick={() => { navigate(`detail/${props.product[i].id}`) }}/>) : 
+        (<img referrerpolicy="no-referrer" width = '100%' height = '70%' src = {props.Endpoint + props.product[i].imgUrl} style = {{marginRight : '5%'}} onClick={() => { navigate(`detail/${props.product[i].id}`) }}/>) : 
         (<p onClick={() => { navigate(`detail/${props.product[i].id}`) }} > 이미지 준비중 </p>)}
-        <h4>{props.product[i].productName}</h4><p></p>
+        <h4>{props.product[i].productName}</h4>
         </div>
         )})
     }
