@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TopBar from "./TopBar.js";
-import "../css/CustomerShoppingBasket.css";
+import "../css/PurchaserInfo.css";
 
-function CustomerShoppingBasket() {
+function PurchaserInfo() {
   const [customerShoppingBasket, setCustomerShoppingBasket] = useState([]);
-  const [orderList, setOrderList] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -38,7 +37,8 @@ function CustomerShoppingBasket() {
       prevBasket.map((product) => {
         if (product.id === productId) {
           const count = Math.max(newCount, 0);
-          const totalPrice = count === 0 ? 0 : product.price * count;
+          const totalPrice =
+            count === 0 ? 0 : product.price * count + product.deliveryPrice;
           return { ...product, count, totalPrice };
         }
         return product;
@@ -55,36 +55,14 @@ function CustomerShoppingBasket() {
         return product;
       })
     );
-
-    const selectedProduct = customerShoppingBasket.find(
-      (product) => product.id === productId
-    );
-
-    if (selectedProduct.checked) {
-      setOrderList((prevOrderList) => [...prevOrderList, selectedProduct]);
-    } else {
-      // 선택 해제 시 해당 제품을 orderList에서 제거
-      setOrderList((prevOrderList) =>
-        prevOrderList.filter((product) => product.id !== productId)
-      );
-    }
   };
-  console.log(orderList);
 
   const totalPriceOfCheckedItems = customerShoppingBasket
     .filter((product) => product.checked)
     .reduce((total, product) => total + product.totalPrice, 0);
 
-  const handleOrder = async () => {
-    try {
-      await axios.post(`/cart/purchaser/order`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-    } catch (error) {
-      console.log("실패", error);
-    }
+  const handleOrder = () => {
+    // 주문 처리 로직 구현
     // totalPriceOfCheckedItems를 사용하여 주문 처리
     // 장바구니에서 화살표 이용 수량 증감은 고민중
     console.log("주문 처리 로직 구현");
@@ -109,9 +87,9 @@ function CustomerShoppingBasket() {
   return (
     <div customerShoppingBasketDivTag>
       <TopBar />
-      <h1>장바구니</h1>
-      <div className="customerBakset">
-        <h4>주문하기</h4>
+      <h1>구매자 정보 입력</h1>
+      <div className="purchaserInfo">
+        <h4>배송지 정보 입력</h4>
         {customerShoppingBasket.map((product) => (
           <div key={product.id}>
             <hr className="customerBasketFirstHr"></hr>
@@ -119,34 +97,27 @@ function CustomerShoppingBasket() {
             <div className="customerBasketPTag">
               <p>{product.productName}</p>
               <p>{product.price}원</p>
-              {
-                <p>
-                  갯수 :
-                  {
-                    <button
-                      className="basketCountButton"
-                      onClick={() =>
-                        setProductCount(product.id, product.count - 1)
-                      }
-                      disabled={product.checked || product.count <= 0}
-                    >
-                      -
-                    </button>
+              {/* <p>
+                갯수 :
+                { <button
+                  className="basketCountButton"
+                  onClick={() =>
+                    setProductCount(product.id, product.count - 1)
                   }
-                  {product.count}
-                  {
-                    <button
-                      className="basketCountButton"
-                      onClick={() =>
-                        setProductCount(product.id, product.count + 1)
-                      }
-                      disabled={product.checked}
-                    >
-                      +
-                    </button>
+                  disabled={product.count <= 0}
+                >
+                  -
+                </button> }
+                {product.count}
+                { <button
+                  className="basketCountButton"
+                  onClick={() =>
+                    setProductCount(product.id, product.count + 1)
                   }
-                </p>
-              }
+                >
+                  +
+                </button>}
+              </p> */}
               <p>배송비 : {product.deliveryPrice}</p>
               <p>주문금액 : {product.totalPrice}</p>
               <button onClick={() => handleDelete(product.id)}>
@@ -173,4 +144,4 @@ function CustomerShoppingBasket() {
   );
 }
 
-export default CustomerShoppingBasket;
+export default PurchaserInfo;

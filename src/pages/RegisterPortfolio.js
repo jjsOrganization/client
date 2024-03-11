@@ -94,7 +94,6 @@ const RegisterPortfolio = () => {
     } catch (error) {
       console.log("데이터 로드 실패", error);
     }
-    // navigate("/DesignerMypage/ModifyPortfolio"); // 예시로 페이지 이동 코드 작성
   };
 
   // 리폼 과정 추가 함수
@@ -136,7 +135,17 @@ const RegisterPortfolio = () => {
     reader.readAsDataURL(file);
   };
 
-  
+  // const encodeImageFile = (event) => {
+  //   const file = event.target.files[0]; // 첫 번째 파일만 가져옵니다.
+  //   const reader = new FileReader(); // FileReader 객체를 생성합니다.
+  //   reader.readAsDataURL(file); // 파일을 읽어 데이터 URL로 변환합니다.
+
+  //   reader.onload = () => {
+  //     // 파일 읽기가 완료되면 실행됩니다.
+  //     setThumbnailImage(reader.result); // 변환된 데이터 URL을 상태에 설정합니다.
+  //     setThumbnailImageFile(file); // 파일 자체도 상태에 설정합니다.
+  //   };
+  // };
 
   return (
     <Container>
@@ -176,16 +185,18 @@ const RegisterPortfolio = () => {
           setPortfolio({ ...portfolio, explanation: e.target.value })
         }
       />
+
       {/* 디자이너 이름 입력 */}
       <Input
         type="text"
         name="name"
-        placeholder="디자이너 제목 입력"
+        placeholder="디자이너 닉네임 입력"
         value={portfolio.designerName}
         onChange={(e) =>
           setPortfolio({ ...portfolio, designerName: e.target.value })
         }
       />
+
       {/* 리폼 과정 */}
       <h4>리폼 과정</h4>
       {reformSteps.map((step, index) => (

@@ -2,31 +2,21 @@ import "../css/ProductList.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import exProductURL from "../images/exProduct.jpg";
-import axios from "axios"; 
+import axios from "axios";
 
 import "./TopBar.js";
 import TopBar from "./TopBar.js";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("");
   const itemsPerPage = 6; // 페이지당 보여줄 상품 수
 
   const navigate = useNavigate();
   const { page } = useParams();
   const currentPage = page ? parseInt(page, 10) : 1;
-
-  const totalPages = Math.ceil(products.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentProducts = products.slice(startIndex, endIndex);
-
-  const handlePageChange = (newPage) => {
-    navigate(`/products/${newPage}`);
-  };
-
-  const [filteredProducts, setFilteredProducts] = useState([]); // 검색된 상품 목록
-  const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
-  const [sortBy, setSortBy] = useState(""); // 'latest' 또는 'popular'
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +28,8 @@ const ProductList = () => {
           },
         });
         setProducts(response.data);
-        console.log(response.data); // 데이터 확인용
+        setFilteredProducts(response.data); 
+        console.log(response.data);
       } catch (error) {
         console.log("데이터 로드 실패", error);
       }
@@ -47,38 +38,39 @@ const ProductList = () => {
     fetchData();
   }, []);
 
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentProducts = filteredProducts.slice(startIndex, endIndex);
+
+  const handlePageChange = (newPage) => {
+    navigate(`/products/${newPage}`);
+  };
+
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value.toLowerCase()); // 검색어를 소문자로 변환하여 저장
-  };
+    const searchTerm = event.target.value.toLowerCase();
+    setSearchTerm(searchTerm);
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleSearch();
-    }
-  };
-
-  const handleSearch = () => {
-    // 검색어가 비어있지 않은 경우 필터링된 상품 목록을 설정
-    if (searchTerm.trim() !== "") {
+    if (searchTerm.trim() === "") {
+      setFilteredProducts(products);
+    } else {
       const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(searchTerm)
+        product.productName.toLowerCase().includes(searchTerm)
       );
       setFilteredProducts(filteredProducts);
-    } else {
-      // 검색어가 비어있는 경우 전체 상품 목록을 보여줌
-      setFilteredProducts(products); // setFilteredProducts를 사용하여 필터링된 상품 목록 초기화
     }
   };
 
   const handleSortByLatest = () => {
     setSortBy("latest");
-    setProducts((prevProducts) =>
+    setFilteredProducts((prevProducts) =>
       prevProducts.slice().sort((a, b) => b.id - a.id)
     );
   };
 
   const handleSortByPopular = () => {
     setSortBy("popular");
+    //인기도 순으로 상품을 정렬
   };
 
   return (
@@ -95,30 +87,30 @@ const ProductList = () => {
           placeholder="상품명 검색"
           value={searchTerm}
           onChange={handleSearchChange}
-          onKeyPress={handleKeyPress} // 이 부분 추가
         />
       </div>
-
-      {currentProducts.map((product) => (
-        <div key={product.id} className="productItem">
-          <Link to={`/product/${product.id}`}>
-            {/* 상품 이미지가 있을 경우 화면에 표시 */}
-            {product.images && product.images.length > 0 && (
-              <img src={product.images[0]} alt={product.productName} />
+      <div className="productList">
+        {currentProducts.map((product) => (
+          <div key={product.id} className="productItem">
+            {product.imgUrl && (
+              <img
+                src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${product.imgUrl}`}
+                alt={product.productName}
+              />
             )}
-          </Link>
-          {/* 상품 이름이 존재할 경우 화면에 표시 */}
-          {product.productName && <p>{product.productName}</p>}
-          <p>가격 : {product.price}</p>
-        </div>
-      ))}
-
-      {/* 페이지네이션 */}
-      <Pagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        handlePageChange={handlePageChange}
-      />
+            <p>상품명 : {product.productName}</p>
+            <p>가격 : {product.price}</p>
+          </div>
+        ))}
+      </div>
+      <div>
+        {/* 페이지네이션 */}
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          handlePageChange={handlePageChange}
+        />
+      </div>
     </div>
   );
 };

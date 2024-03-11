@@ -4,7 +4,7 @@ import React from "react";
 
 function DesignerSelect() {
   // window.opener.handleSelectedDesigner(selectedDesigner);
-  const [designersList, setDesignersList] = useState(null);
+  const [designersList, setDesignersList] = useState([]);
 
   useEffect(() => {
     const fetchDesigners = async () => {
@@ -15,7 +15,9 @@ function DesignerSelect() {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        const data = response.data;
+        const data = response.data.data;
+        console.log(data);
+        console.log(response.data);
         setDesignersList(data);
       } catch (error) {
         console.log("데이터 로드 실패", error);

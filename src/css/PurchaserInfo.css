@@ -1,0 +1,66 @@
+.customerShoppingBasketDivTag {
+   margin: 0 auto; /* 페이지를 수평 가운데 정렬*/
+   max-width: 1200px; /* 페이지의 최대 가로 너비를 1200px로 제한 */
+   overflow-x: hidden; /* 옆으로 이동하는 스크롤을 숨김 */
+}
+
+.purchaserInfo {
+   margin-top: 50px;
+   text-align: center; /* 가운데 정렬을 위해 추가 */
+}
+
+
+.purchaserInfo img {
+   width: 30%;
+   max-width: 15%;
+   margin-left: -35%;
+}
+
+.purchaserInfo hr {
+   width: 50%;
+   margin-left: 25%;
+}
+
+.customerBasketFirstHr {
+   position: relative;
+}
+
+.customerBasketLastHr {
+   margin-bottom: 10%; 
+}
+
+.customerBasketPTag {
+   margin-top: 0%;
+}
+
+.customerBakset p {
+   margin-left: 0%; 
+}
+
+.checkBoxForBasket {
+   position: relative;
+   top : -130px;
+   left: 30%;
+   width: 30px;
+   height: 30px;
+}
+
+.customerBakset h3 {
+   margin-left: 0%; 
+   margin-top: 5%;
+}
+
+.basketCountButton {
+   margin: 4px;
+   width: 30px;
+   height: 30px;
+   display: inline-flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.basketOrderButton {
+   margin-top: 5%; /* 이동을 margin으로 대체 */
+   text-align: center; /* 가운데 정렬을 위해 추가 */
+   margin-bottom: 5%;
+}
