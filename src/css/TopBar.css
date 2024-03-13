@@ -1,36 +1,38 @@
 .loginMenu {
-   margin-left: 60%;
-   overflow-x: hidden; 
+  display: flex;
+  margin-left: 70%;
 }
 
 .loginMenu p {
-   margin-left: 6%;
+  margin-right: 20px;
 }
 
 .topBarMenu {
-   margin-left: 22%;
+  display: flex;
+  justify-content: space-around;
+  margin: 0 auto;
+  width: 60%;
 }
 
 .topBarMenu p {
-   margin-left: 6%;
-   font-size: 1.2em;
+  font-size: 1.3em;
 }
 
 @media screen and (max-width: 720px) {
-   .loginMenu {
-      margin-left: 10%;
-   }
+  .loginMenu {
+    margin-left: 10%;
+  }
 
-   .topBarMenu {
-      margin-left: 10%;
-   }
+  .topBarMenu {
+    margin-left: 10%;
+  }
 
-   .loginMenu p,
-   .topBarMenu p {
-      margin-left: 5%;
-   }
+  .loginMenu p,
+  .topBarMenu p {
+    margin-left: 5%;
+  }
 
-   .topBarMenu p {
-      font-size: 0.8em;
-   }
+  .topBarMenu p {
+    font-size: 0.5em;
+  }
 }
