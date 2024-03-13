@@ -1,0 +1,36 @@
+.loginMenu {
+   margin-left: 60%;
+   overflow-x: hidden; 
+}
+
+.loginMenu p {
+   margin-left: 6%;
+}
+
+.topBarMenu {
+   margin-left: 22%;
+}
+
+.topBarMenu p {
+   margin-left: 6%;
+   font-size: 1.2em;
+}
+
+@media screen and (max-width: 720px) {
+   .loginMenu {
+      margin-left: 10%;
+   }
+
+   .topBarMenu {
+      margin-left: 10%;
+   }
+
+   .loginMenu p,
+   .topBarMenu p {
+      margin-left: 5%;
+   }
+
+   .topBarMenu p {
+      font-size: 0.8em;
+   }
+}

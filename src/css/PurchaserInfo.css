@@ -1,0 +1,58 @@
+.purchaserInfo {
+  max-width: 600px; /* 최대 너비*/
+  margin: 0 auto; /* 가운데 정렬 */
+}
+
+.purchaserInfo h4 {
+  margin-bottom: 5%;
+}
+
+.purchaserInfo .postCode,
+.purchaserInfo .address,
+.purchaserInfo .detailAddress,
+.purchaserInfo .phoneNumber,
+.purchaserInfo .deliveryRequest {
+  margin-bottom: 3%;
+}
+
+.purchaserInfo .postCode label,
+.purchaserInfo .address label,
+.purchaserInfo .detailAddress label,
+.purchaserInfo .phoneNumber label,
+.purchaserInfo .deliveryRequest label {
+  display: block; /* 블록 요소로 한 줄로 표시 */
+}
+
+.purchaserInfo .postCode input,
+.purchaserInfo .address input,
+.purchaserInfo .detailAddress input,
+.purchaserInfo .phoneNumber input,
+.purchaserInfo .deliveryRequest input {
+  width: 100%; /* 부모 요소 너비와 똑같이 하기위해 설정 */
+  padding: 2%;
+  border: 1px solid #6ad8a0;
+}
+
+.purchaserInfo .basketOrderButton {
+  display: block;
+  width: 100%; 
+  padding: 2%;
+  background-color: #6ad8a0;
+  color: #fff;
+  cursor: pointer;
+}
+
+.purchaserInfo .basketOrderButton:hover {
+  background-color: #9fe5c1;
+}
+
+@media (max-width: 720px) {
+   .purchaserInfo .postCode input,
+   .purchaserInfo .address input,
+   .purchaserInfo .detailAddress input,
+   .purchaserInfo .phoneNumber input,
+   .purchaserInfo .deliveryRequest input {
+     width: 100%;
+     margin-bottom: 10px;
+   }
+ }

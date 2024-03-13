@@ -2,8 +2,6 @@ import React from 'react';
 import {useEffect,useState} from 'react';
 import styled from 'styled-components';
 
-//강의 1시간부터 근데 새로운 탭 만드는 부분이라 이부분 넘겨도 되긴 함
-
 let copyType;
 
 const StyledButton = styled.button`
@@ -19,16 +17,15 @@ const StyledButton = styled.button`
 `;
 
 function Dropdown(props) {
-    const [isExpanded, setIsExpanded] = useState(false);
+
+const [isExpanded, setIsExpanded] = useState(false);
     
-
-
 const articleBtnExpandHandler = () => {
     setIsExpanded(!isExpanded);
 };
 
 const articleTypeHandler = (type) => {
-    copyType = ' / ' + type;
+    copyType = ' : ' + type;
     props.setArticleType(copyType);
 };
 return(
@@ -42,7 +39,9 @@ return(
         <div onClick={articleBtnExpandHandler}>
             {props.articleTypeList.map((type, idx) => (
                 <StyledButton
-                key={type} onClick={() => articleTypeHandler(type)}>
+                key={type} onClick={() => {
+                    articleTypeHandler(type); 
+                    if(props.category){props.cate(type)}}} >
                     {type}
                     {idx !== props.articleTypeList.length - 1 && <hr />}
                 </StyledButton>

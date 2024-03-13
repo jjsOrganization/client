@@ -1,8 +1,25 @@
 import '../css/CustomerMypageOrderList.css';
 import React, { useState } from 'react';
 import exProductURL from "../images/exProduct.jpg"
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+
+import "./TopBar.js";
+import TopBar from "./TopBar.js";
+
+let BasicBtn = styled.button`
+   background : black;
+   color : white;
+   width : 100px;
+   height : 25px;
+   line-height: 3px;
+   border-radius: 10px;
+`
 
 function CustomerOrderList() {
+
+   let navigate = useNavigate();
+
    const [customerOrderedProducts, setCustomerOrderedProducts] = useState([
       { 
          id: 1, 
@@ -63,6 +80,7 @@ function CustomerOrderList() {
 
    return (
       <div className='customerOrderReformProduct'>
+         <TopBar />
          <h1>마이페이지</h1>
          <div className='customerOrederedProduct'>
             <h4>주문내역</h4>
@@ -74,7 +92,8 @@ function CustomerOrderList() {
                   <p>{product.name}</p>
                   <p>{product.price}원</p>
                   <p>{product.options}</p>
-                  <p>{product.state}</p>
+                  {/* 배송현황 페이지로 이동하는 버튼 없길래 새로 만들고 연결 시켜둠 */}
+                  <p>배송현황 : {product.state} <BasicBtn onClick = {()=> {navigate("/mypage/delivery")}} >자세히</BasicBtn></p>
                   <hr className='customerOrderLastHr'></hr>
                </div>
             ))}
