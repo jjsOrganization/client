@@ -1,140 +1,111 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import TopBar from "./TopBar.js";
 import "../css/PurchaserInfo.css";
+import { useNavigate } from "react-router-dom";
+
 
 function PurchaserInfo() {
-  const [customerShoppingBasket, setCustomerShoppingBasket] = useState([]);
+  let navigate = useNavigate();
+  const [orderInfo, setOrderInfo] = useState({
+    postCode: "",
+    address: "",
+    detailAddress: "",
+    phoneNumber: "",
+    deliveryRequest: "",
+  });
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("/cart/purchaser", {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        const data = response.data;
-        console.log(data.data);
-        setCustomerShoppingBasket(
-          data.data.map((product) => ({
-            ...product,
-            totalPrice: product.price,
-            checked: false, // 기본적으로 모든 상품은 체크되지 않은 상태로 설정
-          }))
-        );
-      } catch (error) {
-        console.log("데이터 로드 실패", error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  const setProductCount = (productId, newCount) => {
-    setCustomerShoppingBasket((prevBasket) =>
-      prevBasket.map((product) => {
-        if (product.id === productId) {
-          const count = Math.max(newCount, 0);
-          const totalPrice =
-            count === 0 ? 0 : product.price * count + product.deliveryPrice;
-          return { ...product, count, totalPrice };
-        }
-        return product;
-      })
-    );
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setOrderInfo({
+      ...orderInfo,
+      [name]: value,
+    });
   };
 
-  const handleCheckboxChange = (productId) => {
-    setCustomerShoppingBasket((prevBasket) =>
-      prevBasket.map((product) => {
-        if (product.id === productId) {
-          return { ...product, checked: !product.checked };
-        }
-        return product;
-      })
-    );
-  };
-
-  const totalPriceOfCheckedItems = customerShoppingBasket
-    .filter((product) => product.checked)
-    .reduce((total, product) => total + product.totalPrice, 0);
-
-  const handleOrder = () => {
-    // 주문 처리 로직 구현
-    // totalPriceOfCheckedItems를 사용하여 주문 처리
-    // 장바구니에서 화살표 이용 수량 증감은 고민중
-    console.log("주문 처리 로직 구현");
-  };
-
-  const handleDelete = async (productId) => {
+  const handleOrder = async () => {
     try {
-      await axios.delete(`/cart/purchaser/delete/${productId}`, {
+      await axios.put(`/cart/purchaser/order`, orderInfo, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-
-      setCustomerShoppingBasket((prevBasket) =>
-        prevBasket.filter((product) => product.id !== productId)
-      );
+      alert("구매가 완료되었습니다.");
+      navigate("/");
     } catch (error) {
-      console.log("상품 삭제 실패", error);
+      console.log("주문 실패", error);
     }
   };
 
   return (
-    <div customerShoppingBasketDivTag>
+    <div>
       <TopBar />
       <h1>구매자 정보 입력</h1>
       <div className="purchaserInfo">
         <h4>배송지 정보 입력</h4>
-        {customerShoppingBasket.map((product) => (
-          <div key={product.id}>
-            <hr className="customerBasketFirstHr"></hr>
-            <img src={product.image} alt={product.name} />
-            <div className="customerBasketPTag">
-              <p>{product.productName}</p>
-              <p>{product.price}원</p>
-              {/* <p>
-                갯수 :
-                { <button
-                  className="basketCountButton"
-                  onClick={() =>
-                    setProductCount(product.id, product.count - 1)
-                  }
-                  disabled={product.count <= 0}
-                >
-                  -
-                </button> }
-                {product.count}
-                { <button
-                  className="basketCountButton"
-                  onClick={() =>
-                    setProductCount(product.id, product.count + 1)
-                  }
-                >
-                  +
-                </button>}
-              </p> */}
-              <p>배송비 : {product.deliveryPrice}</p>
-              <p>주문금액 : {product.totalPrice}</p>
-              <button onClick={() => handleDelete(product.id)}>
-                장바구니에서 삭제하기
-              </button>
-            </div>
-            <input
-              className="checkBoxForBasket"
-              type="checkbox"
-              checked={product.checked}
-              onChange={() => handleCheckboxChange(product.id)}
-            />
-            <hr className="customerBasketLastHr"></hr>
-          </div>
-        ))}
         <div>
-          <h3>선택한 상품 총액: {totalPriceOfCheckedItems}</h3>
+          <div className="postCode">
+            <label>
+              <span>우편번호</span>
+              <input
+                name="postCode"
+                value={orderInfo.postCode}
+                onChange={handleChange}
+                placeholder="우편번호를 입력해주세요."
+              />
+            </label>
+          </div>
+
+          <div className="address">
+            <label>
+              <span>주소</span>
+              <input
+                name="address"
+                value={orderInfo.address}
+                onChange={handleChange}
+                placeholder="주소를 입력해주세요."
+              />
+            </label>
+          </div>
+
+          <div className="detailAddress">
+            <label>
+              <span>상세 주소</span>
+              <input
+                name="detailAddress"
+                value={orderInfo.detailAddress}
+                onChange={handleChange}
+                placeholder="상세 주소를 입력해주세요."
+              />
+            </label>
+          </div>
+
+          <div className="phoneNumber">
+            <label>
+              <span>휴대전화</span>
+              <input
+                name="phoneNumber"
+                value={orderInfo.phoneNumber}
+                onChange={handleChange}
+                placeholder="휴대전화 번호를 입력해주세요."
+              />
+            </label>
+          </div>
+
+          <div className="deliveryRequest">
+            <label>
+              <span>배송요청 사항</span>
+              <input
+                name="deliveryRequest"
+                value={orderInfo.deliveryRequest}
+                onChange={handleChange}
+                placeholder="배송요청 사항을 입력해주세요."
+              />
+            </label>
+          </div>
+        </div>
+
+        <div>
           <button className="basketOrderButton" onClick={handleOrder}>
             주문하기
           </button>

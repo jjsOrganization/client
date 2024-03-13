@@ -8,7 +8,8 @@ import "./js/CustomerMyPageDelivery.js";
 import "./js/CustomerMypageOrderList.js";
 import "./js/TopBar.js";
 import "./js/PurchaserInfo.js";
-
+import "./js/PurchaserMyPage.js";
+import PurchaserMyPage from "./js/PurchaserMyPage.js";
 import PurchaserInfo from "./js/PurchaserInfo.js";
 import TopBar from "./js/TopBar.js";
 import Login from "./js/Login.js";
@@ -129,6 +130,8 @@ const App = () => {
           <Route path="/reform" element={<Reform />}></Route>
 
           <Route path="/PurchaserInfo" element={<PurchaserInfo />}></Route>
+
+          <Route path="/PurchaserMyPage" element={<PurchaserMyPage />}></Route>
         </Routes>
       </div>
     </div>

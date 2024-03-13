@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TopBar from "./TopBar.js";
 import "../css/CustomerShoppingBasket.css";
+import { useNavigate } from "react-router-dom";
 
 function CustomerShoppingBasket() {
+  let navigate = useNavigate();
   const [customerShoppingBasket, setCustomerShoppingBasket] = useState([]);
   const [orderList, setOrderList] = useState([]);
 
@@ -55,19 +57,19 @@ function CustomerShoppingBasket() {
         return product;
       })
     );
-
-    const selectedProduct = customerShoppingBasket.find(
-      (product) => product.id === productId
-    );
-
-    if (selectedProduct.checked) {
-      setOrderList((prevOrderList) => [...prevOrderList, selectedProduct]);
-    } else {
-      // 선택 해제 시 해당 제품을 orderList에서 제거
-      setOrderList((prevOrderList) =>
-        prevOrderList.filter((product) => product.id !== productId)
+    setOrderList((prevOrderList) => {
+      const selectedProduct = prevOrderList.find(
+        (product) => product.id === productId
       );
-    }
+      if (!selectedProduct) {
+        const addedProduct = customerShoppingBasket.find(
+          (product) => product.id === productId
+        );
+        return [...prevOrderList, addedProduct];
+      } else {
+        return prevOrderList.filter((product) => product.id !== productId);
+      }
+    });
   };
   console.log(orderList);
 
@@ -77,19 +79,37 @@ function CustomerShoppingBasket() {
 
   const handleOrder = async () => {
     try {
-      await axios.post(`/cart/purchaser/order`, {
+      const selectedProducts = customerShoppingBasket.filter(
+        (product) => product.checked
+      );
+
+      const orderDTO = {
+        orderDetails: selectedProducts.map((product) => ({
+          productId: product.id,
+          quantity: product.count,
+        })),
+        postcode: "",
+        address: "",
+        detailAddress: "",
+        phoneNumber: "",
+        deliveryRequest: "",
+      };
+
+      await axios.post(`/cart/purchaser/order`, orderDTO, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
+      // 주문이 성공적으로 완료되면 선택된 상품을 장바구니에서 삭제
+      for (const product of selectedProducts) {
+        await handleDelete(product.id);
+      }
+      // 페이지 이동
+      navigate("/PurchaserInfo");
     } catch (error) {
-      console.log("실패", error);
+      console.log("주문 실패", error);
     }
-    // totalPriceOfCheckedItems를 사용하여 주문 처리
-    // 장바구니에서 화살표 이용 수량 증감은 고민중
-    console.log("주문 처리 로직 구현");
   };
-
   const handleDelete = async (productId) => {
     try {
       await axios.delete(`/cart/purchaser/delete/${productId}`, {
