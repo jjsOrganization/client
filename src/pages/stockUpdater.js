@@ -4,9 +4,9 @@ import styled from "styled-components";
 import StockList from "./stockList";
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
-
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
+import Dropdown from "../component/dropdown.js";
 
 let RegisterBtn = styled.button`
   color: white;
@@ -43,7 +43,21 @@ function StockUpdater() {
   const [amountValue, setAmountValue] = useState();
   const [thumbnailImage, setThumbnailImage] = useState();
   const [thumbnailImageFile, setThumbnailImageFile] = useState();
-  const productid = useParams();
+  let { productid } = useParams();
+  const [categoryData, setCategoryData] = useState();
+  const categoryDropDown = ['상의','아우터','바지','스커트','원피스','모자']
+  const [categoryId, setCategoryId] = useState();
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const categoryText = '카테고리'
+
+  const categoryHandler = ((selectedCategory) => {
+    if(selectedCategory === '상의'){setCategoryId(1);}
+    else if(selectedCategory === '아우터'){setCategoryId(2)}
+    else if(selectedCategory === '바지'){setCategoryId(3)}
+    else if(selectedCategory === '스커트'){setCategoryId(4)}
+    else if(selectedCategory === '원피스'){setCategoryId(5)}
+    else if(selectedCategory === '모자'){setCategoryId(6)}
+  })
 
   const savecontent = (event) => {
     setContentValue(event.target.value);
@@ -76,14 +90,15 @@ function StockUpdater() {
       formData.append("price", priceValue);
       formData.append("itemDetail", contentValue);
       formData.append("productStock", amountValue);
-      formData.append("productImgDtoList[0].imgUrl", thumbnailImage);
+      formData.append("productImgDtoList.imgUrl", thumbnailImage);
       formData.append("itemImgFile", thumbnailImageFile);
+      formData.append("categoryId.id", categoryId)
+      formData.append("categoryId.categoryName", selectedCategory)
   
       const response = await axiosInstance.put(`product/seller/register/${productid}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-          'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         }
       });
   
@@ -202,6 +217,13 @@ function StockUpdater() {
             onChange={saveAmount}
             style={{ width: "100%", marginBottom: "30px" }}
           />
+        <Dropdown
+        cate ={categoryHandler} 
+        text = {categoryText}
+        setArticleType = {setSelectedCategory}
+        articleTypeList = {categoryDropDown}
+        articleType= {selectedCategory}
+        category = 'dd'/>
         </div>
         <div className="register" style={{ textAlign: "right" }}>
           <RegisterBtn

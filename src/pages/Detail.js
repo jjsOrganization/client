@@ -118,6 +118,7 @@ function Detail(props) {
     console.log(productDetailInfo)
   }, [productDetailInfo, sale]);
 
+  //여기서 무한 get발생 문제시 주석처리하거나 [productLike] 에서 productLike지우고 []만 남기면 됨
   //상품 좋아요 개수 get
   useEffect(() => {
     const productLikeGet = async () => {
@@ -129,7 +130,7 @@ function Detail(props) {
       }
     };
     productLikeGet();
-  }, [productid]);
+  }, [productLike]);
 
   //상품 좋아요 여부 확인
   useEffect(() => {
@@ -137,7 +138,6 @@ function Detail(props) {
       try{
         const likeStateInfo = await axiosInstance.get(`/product/all/detail/${productid}/like-status`)
         setLikeState(likeStateInfo)
-        console.log()
       }
       catch(error){
         console.log('좋아요 상태 체크 에러',error);

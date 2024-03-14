@@ -92,8 +92,8 @@ function ProductUpdate(props) {
       formData.append("itemImgFile", thumbnailImageFile);
       formData.append("categoryId.id", categoryId)
       formData.append("categoryId.categoryName", selectedCategory)
-      const response = await axiosInstance.post(
-        "/product/seller/register",
+
+      const response = await axiosInstance.post("/product/seller/register",
         formData,
         {
           headers: {
