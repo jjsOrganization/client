@@ -49,12 +49,12 @@ function Detail(props) {
 }
   
   const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "http://localhost:8080",
     headers: {
-    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-    'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
-    }
-});
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
+    },
+  });
 
   const addValue = () => {
     setMyArray((prevArray) => [
@@ -79,7 +79,7 @@ function Detail(props) {
         const response = await axios.get(`/product/all/detail/${productid}`, {
           headers: {
             "Content-Type": "multipart/form-data",
-            'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
           },
         });
@@ -107,7 +107,7 @@ function Detail(props) {
       }
     };
     fetchSellerData();
-  },[]);
+  }, []);
 
   //할인가 계산 및 좋아요 유무에 판단을 위함
   useEffect(() => {
@@ -201,7 +201,7 @@ function Detail(props) {
   }
 
   return (
-    <div className="Detail">
+    <div>
       <TopBar />
       <div
         className="image"
@@ -218,13 +218,12 @@ function Detail(props) {
           height="300px"
         />
         <div
-          className="productinfo"
+          className="image"
           style={{
-            display: "inline",
-            position: "relative",
-            flexDirection: "column",
-            flexGrow: 1,
-            marginLeft: "2%",
+            display: "flex",
+            marginBottom: "3%",
+            width: "100%",
+            height: "100%",
           }}
         >
           <h4 className="title">{productDetailInfo.productName}</h4>
@@ -243,33 +242,57 @@ function Detail(props) {
           </p>
           <div className = 'productLikeContainer' style = {{marginTop : '-3%'}}><LikeComponent setLikeState = {setLikeState} likeState = {likeState} Likeresult = {productLike} likecanceleHandler = {productLikeCancelHandler} likeHandler = {productLikeHandler}/> {productLike.data.data} </div>
           <div
-            className="btn"
+            className="productinfo"
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              position: "absolute",
-              bottom: "0",
-              w0th: "100%",
-              width: "100%",
+              display: "inline",
+              position: "relative",
+              flexDirection: "column",
+              flexGrow: 1,
+              marginLeft: "2%",
             }}
           >
-            <BasicBtn
-              onClick={() => {
-                total === 0
-                  ? alert("사이즈와 색상을 선택해 주세요")
-                  : alert("구매 완료");
-                window.location.replace(`/detail/${productid}`);
+            <h4 className="title">{productDetailInfo.productName}</h4>
+            <p
+              style={{
+                fontWeight: "bold",
+                textDecoration: "line-through",
+                color: "darkgray",
               }}
             >
-              구매하기
-            </BasicBtn>
-            <BasicBtn>
-              <Link to={reFormLink}>의뢰하기</Link>
-            </BasicBtn>
-            <BasicBtn onClick={addToCart}>장바구니</BasicBtn>
+              {productDetailInfo.price}
+            </p>
+            <p style={{ fontWeight: "800", color: "red" }}>{sale * 100}%</p>
+            <p style={{ fontWeight: "bold" }}>
+              할인가 : {salePrice && salePrice.toLocaleString()}{" "}
+            </p>
+            <div
+              className="btn"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                position: "absolute",
+                bottom: "0",
+                w0th: "100%",
+                width: "100%",
+              }}
+            >
+              <BasicBtn
+                onClick={() => {
+                  total === 0
+                    ? alert("사이즈와 색상을 선택해 주세요")
+                    : alert("구매 완료");
+                  window.location.replace(`/detail/${productid}`);
+                }}
+              >
+                구매하기
+              </BasicBtn>
+              <BasicBtn>
+                <Link to={reFormLink}>의뢰하기</Link>
+              </BasicBtn>
+              <BasicBtn onClick={addToCart}>장바구니</BasicBtn>
+            </div>
           </div>
         </div>
-      </div>
 
       <div className="productField">
         <p>{productDetailInfo.itemDetail}</p>
@@ -289,24 +312,24 @@ function Detail(props) {
             articleTypeList={ColorList}
           />
         </div>
-        <div className="buy-info" style={{ marginLeft: "7%" }}>
-          <h3>제품명 : {productDetailInfo.productName}</h3>
-          <p style={{ marginBottom: "2%" }}>
-            결제 예정 금액 : {test.toLocaleString()}{" "}
-          </p>
-          <p>수량 : {total}</p>
-          <div classNale="selectOpt">
-            {myArray.map(function (choice, index) {
-              return (
-                <div
-                  className="user-choice"
-                  style={{ w0th: "180px", marginBottom: "10px" }}
-                >
-                  {choice.size + choice.color}{" "}
-                  <button className="choice-cancel">✖</button>
-                </div>
-              );
-            })}
+
+        <div className="buy-info" style={{ display: "flex" }}>
+          <div
+            className="dropdown"
+            style={{ display: "flex", marginTop: "3%" }}
+          >
+            <Dropdown
+              text={size}
+              setArticleType={setChoiceSize}
+              articleType={choiceSize}
+              articleTypeList={SizeList}
+            />
+            <Dropdown
+              text={color}
+              setArticleType={setChoiceColor}
+              articleType={choiceColor}
+              articleTypeList={ColorList}
+            />
           </div>
         </div>
         <div className = 'detail-kakaomap'> <Kakao mapSize = {kakaoMapStyle}/></div>

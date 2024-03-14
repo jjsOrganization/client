@@ -1,58 +1,99 @@
+/* 기본 스타일 */
+
 .productList {
-   display: flex;
-   justify-content: space-around;
-   flex-wrap: wrap;
-   margin-top: 50px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 50px;
 }
- 
+
 .productItem {
-   flex: 0 0 calc(25%);
-   margin: 50px;
-   box-sizing: border-box;
+  flex: 0 0 calc(32%);
+  margin: 5%;
+  box-sizing: border-box;
 }
- 
+
 .productItem img {
-   width: 100%;
-   max-width: 250px;
-   height: auto;
-   display: block;
-   margin: 0 auto;
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
- 
+
 .pagination {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   flex-wrap: wrap;
-   font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 30px;
 }
 
 .pagination span {
-   margin: 0 20px; /* 좌우 간격 */
+  margin: 0 20px; 
 }
 
 .findProduct {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.findProduct input[type='text'] {
-  width: 800px;
+.findProduct input {
+  width: 900px;
   height: 40px;
   font-size: 20px;
+  margin-top: 2%;
 }
 
 .sortButtons {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
-  margin-right: 530px;
+  margin-right: 680px;
 }
 
 .sortButtons button {
-  width: 120px;
-  height: 40px;
-  font-size: 16px;
+  width: 100px;
+  height: 30px;
+  font-size: 13px;
   margin: 0 10px;
+}
+
+@media screen and (max-width: 1024px) {
+  .findProduct input[type="text"] {
+    width: 900px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .productItem {
+    flex-basis: calc(49% - 20px);
+    margin: 10px;
+  }
+
+  .pagination {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .findProduct input[type="text"] {
+    width: 400px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .productItem {
+    flex-basis: calc(100% - 20px);
+    margin: 10px;
+  }
+
+  .pagination {
+    font-size: 20px;
+  }
+
+  .sortButtons {
+    margin: 0;
+  }
 }
