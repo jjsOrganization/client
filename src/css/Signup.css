@@ -1,52 +1,108 @@
-.signupTitle h4 {
-text-align: center;
+.signUp {
+  margin-left: 20%;
+  margin-right: 20%;
 }
 
-/* 위 아래 구분선*/
+.signUp h1 {
+  margin-top: 5%;
+  margin-left: 41.5%;
+}
+
+.signUp h5 {
+  margin-top: 5%;
+  margin-left: 45%;
+}
+
 .SignUp1 {
-margin-left: 1%;
-margin-right: 1%;
-padding-top: 10px;
-padding-bottom: 10px;
-border-top : 1px solid grey;
-border-bottom : 1px solid #808080;
+  color: #374d9a;
 }
 
-/* 위만 구분선*/
-.SignUp2 {
-margin-left: 1%;
-margin-right: 1%;
-padding-top: 10px;
-padding-bottom: 10px;
-border-top : 1px solid grey;
-}
-
-/* 회원가입 라벨 위치 조정 */
 .SignUp3 {
-text-align: left;
-padding-left: 20px;
-padding-right: 200px;
+  color: #374d9a;
 }
 
-/* 회원 구분 스팬 조정*/
 .SignUp4 {
-padding-right: 90px;
+  color: #374d9a;
 }
 
-/* 기본정보 텍스트 위치 */
 .SignUp5 {
-margin-left: 1%;
-margin-top: 20px;
+  color: #374d9a;
 }
 
-/* 주소 가운데 정렬*/
-.SignUp6 {
-text-align: center;
+.Submit-button button {
+  background-color: #374d9a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
-/* 가입하기 버튼 */
+.Submit-button button:hover {
+  background-color: #1e2a5e;
+}
+
+.SignUp2 input[type="text"],
+.SignUp2 input[type="email"],
+.SignUp2 input[type="password"] {
+  border: 1px solid #374d9a;
+  border-radius: 5px;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.SignUp2 input[type="text"]:focus,
+.SignUp2 input[type="email"]:focus,
+.SignUp2 input[type="password"]:focus {
+  outline: none;
+  border-color: #1e2a5e;
+}
+
+.SignUp2 label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.SignUp2 span.SignUp3 {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.SignUp2 {
+  margin-bottom: 15px;
+}
+
+.SignUp2:last-child {
+  margin-bottom: 0;
+}
+
+.signupTitle h4,
+.SignUp5 h5 {
+  margin: 0;
+}
+
 .Submit-button {
-text-align: center;
-margin-top: 30px;
-margin-bottom: 50px;
+  margin-top: 5%;
+  margin-left: 45%;
+  padding-bottom: 10%;
+}
+
+.tab {
+  display: flex;
+  margin-top: 3%;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: -3%;
+  transition: background-color 0.3s;
+}
+
+.tab.active {
+  background-color: #374d9a;
+}
+
+.tab.active .SignUp4 {
+  font-weight: bold;
+  color: white;
 }

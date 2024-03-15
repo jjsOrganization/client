@@ -41,7 +41,10 @@ function TopBar() {
         {isLoggedIn ? (
           <p onClick={handleLogout}>로그아웃</p>
         ) : (
-          <p onClick={() => navigate("/login")}>로그인</p>
+          <>
+            <p onClick={() => navigate("/login")}>로그인</p>
+            <p onClick={() => navigate("/signup")}>회원가입</p>
+          </>
         )}
         {role === "ROLE_PURCHASER" && (
           <>

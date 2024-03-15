@@ -67,6 +67,11 @@
   align-items: center;
 }
 
+.loginInputs label{ 
+  color: white;
+  font-weight: bold;
+}
+
 .loginInputs {
   display: flex;
   flex-direction: column;
@@ -81,7 +86,7 @@
 
 .loginButton button {
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 15px;
   cursor: pointer;
   width: 300px;
 }
@@ -96,13 +101,13 @@
 
 .loginInputs input {
   padding: 8px;
-  border-radius: 8px;
+  border-radius: 15px;
   border: 1px solid #374D9A;
   margin-left: 5px;
 }
 
 .findButtons button {
   padding: 10px;
-  border-radius: 5px;
   cursor: pointer;
+  border-radius: 15px;
 }

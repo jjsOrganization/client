@@ -19,7 +19,7 @@ function Login({ selectedTab, setSelectedTab }) {
         password: password,
       });
       if (response.data && response.data.data.accessToken) {
-        localStorage.setItem('memberId',userEmail);
+        localStorage.setItem('memberId', userEmail);
         localStorage.setItem("accessToken", response.data.data.accessToken);
         document.cookie = `accessToken=${response.data.data.accessToken}; path=/;`;
         console.log(document.cookie);
@@ -32,6 +32,11 @@ function Login({ selectedTab, setSelectedTab }) {
       window.alert("이메일 혹은 비밀번호가 틀렸습니다. 다시 입력하세요.");
       console.error("Error :", error);
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // 기본 폼 제출 방지
+    handleLogin(); // 로그인 시도
   };
 
   const getLoginType = () => {
@@ -52,7 +57,7 @@ function Login({ selectedTab, setSelectedTab }) {
       <div className="logo">
         <h4>LOGO</h4>
       </div>
-      <div className="rectangle">
+      {/* <div className="rectangle">
         <div
           className={`tab ${selectedTab === 1 ? "active" : ""}`}
           onClick={() => handleTabClick(1)}
@@ -71,44 +76,39 @@ function Login({ selectedTab, setSelectedTab }) {
         >
           디자이너
         </div>
-      </div>
+      </div> */}
       <div className="loginForm">
-        <div className="loginInputs">
-          <label>
-            이메일 :
-            <input
-              className="loginEmail"
-              type="text"
-              value={userEmail}
-              onChange={(e) => setUserEmail(e.target.value)}
-            />
-          </label>
-          <label>
-            비밀번호 :
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </label>
-        </div>
-        <div className="loginButton">
-          <button onClick={handleLogin}>Login</button>
-        </div>
+        <form onSubmit={handleSubmit}> {/* form 요소와 onSubmit 이벤트 핸들러 추가 */}
+          <div className="loginInputs">
+            <label>
+              이메일 :
+              <input
+                className="loginEmail"
+                type="text"
+                value={userEmail}
+                onChange={(e) => setUserEmail(e.target.value)}
+              />
+            </label>
+            <label>
+              비밀번호 :
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
+          </div>
+          <div className="loginButton">
+            <button type="submit">Login</button> {/* 폼 제출 버튼으로 변경 */}
+          </div>
+        </form>
         <div className="findButtons">
-          {/* 회원가입 버튼 클릭시 회원가입 페이지로 이동 시키려고 넣어놓긴 했는데 회원가입 페이지 누락돼서 링크는 못적음 */}
-          <button
-            onClick={() => {
-              navigate("");
-            }}
-          >
-            회원가입
-          </button>
+          <button onClick={() => { navigate("/signup"); }}>회원가입</button>
           <button>아이디 찾기</button>
           <button>비밀번호 찾기</button>
         </div>
-        <p>선택된 로그인 유형설명 : {getLoginType()}</p>
       </div>
+      {/* <p>선택된 로그인 유형설명 : {getLoginType()}</p> */}
     </div>
   );
 }
