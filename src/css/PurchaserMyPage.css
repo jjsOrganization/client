@@ -1,74 +1,117 @@
 .customerOrderReformProduct {
-   margin: 0 auto; /* 페이지를 수평 가운데 정렬*/
-   max-width: 1200px; /* 페이지의 최대 가로 너비를 1200px로 제한 */
-   overflow-x: hidden; /* 옆으로 이동하는 스크롤을 숨김 */
+  margin: 0 auto; /* 페이지를 수평 가운데 정렬*/
+  max-width: 1200px; /* 페이지의 최대 가로 너비를 1200px로 제한 */
+  overflow-x: hidden; /* 옆으로 이동하는 스크롤을 숨김 */
 }
 
 .customerOrederedProduct {
-   margin-top: 50px;
-   position: relative;
-   left: 25%;
+  margin-top: 50px;
+  position: relative;
+  left: 25%;
 }
 
 .customerOrederedProduct img {
-   width: 30%;
-   max-width: 15%;
-}
-
-.customerOrederedProduct hr {
-   width: 50%;
+  width: 30%;
+  max-width: 15%;
 }
 
 .customerOrderLastHr {
-   position: relative;
-   top:-140px;
+  position: relative;
+  top: -140px;
+  width: 50%;
 }
 
 .customerOrederedProduct h5 {
-   width: 50%;
-   background-color: rgb(183, 183, 183);
-   padding-top: 10px;
-   padding-bottom: 10px;
-   margin-top: -10px;
+  width: 50%;
+  background-color: #374d9a;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: -10px;
 }
 
 .customerOrederedProduct p {
-   position: relative;
-   top: -160px;
-   left: 200px;
+  position: relative;
+  top: -160px;
+  left: 200px;
 }
 
-
-
 .customerReformProduct {
-   position: relative;
-   left: 25%;
+  position: relative;
+  left: 25%;
 }
 
 .customerReformProduct img {
-   width: 30%;
-   max-width: 15%;
+  width: 30%;
+  max-width: 15%;
 }
 
 .customerReformProduct hr {
-   width: 50%;
+  width: 50%;
 }
 
-.customerReformLastHr {
-   position: relative;
-   top:-140px;
+.customerReformLastHr hr {
+  position: relative;
+  top: -140px;
 }
 
 .customerReformProduct h5 {
-   width: 50%;
-   background-color: rgb(183, 183, 183);
-   padding-top: 10px;
-   padding-bottom: 10px;
-   margin-top: -10px;
+  width: 50%;
+  background-color: #374d9a;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: -10px;
 }
 
 .customerReformProduct p {
-   position: relative;
-   top: -160px;
-   left: 200px;
+  position: relative;
+  top: -160px;
+  left: 200px;
+}
+
+.basicBtn {
+  background: #374d9a;
+  color: white;
+  width: 100px;
+  height: 25px;
+  line-height: 3px;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 720px) {
+  .customerOrederedProduct p {
+    font-size: 0.4em;
+    position: relative;
+    top: -75px;
+    left: 80px;
+  }
+
+  .customerOrederedProduct h5 {
+    font-size: 0.6em;
+  }
+
+  .customerOrderLastHr hr {
+    top: -200px;
+  }
+
+  .basicBtn {
+    background: #374d9a;
+    color: white;
+    width: 50px;
+    height: 12.5px;
+    border-radius: 10px;
+    margin-left: 20px;
+  }
+
+  .customerReformProduct p {
+    font-size: 0.4em;
+    position: relative;
+    top: -75px;
+    left: 80px;
+  }
+
+  .customerReformProduct h5 {
+    font-size: 0.6em;
+  }
 }
