@@ -38,16 +38,14 @@ return(
     {isExpanded && (
         <div onClick={articleBtnExpandHandler}>
             {props.articleTypeList.map((type, idx) => (
-                <StyledButton
-                key={type} onClick={() => {
-                    articleTypeHandler(type); 
-                    if(props.category){props.cate(type)}}} >
+                <StyledButton key={type} onClick={() => { articleTypeHandler(type); if(props.category){props.cate(type)}}}>
                     {type}
                     {idx !== props.articleTypeList.length - 1 && <hr />}
                 </StyledButton>
             ))}
         </div>
     )}
+
 
     
         

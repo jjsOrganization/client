@@ -2,7 +2,7 @@ import React from 'react';
 import {useEffect,useState,} from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import Kakao from '../component/kakaoMap';
+import Kakao from '../component/kakaoMap.js';
 import DaumPostcode from "react-daum-postcode";
 import Modal from "react-modal"; 
 import axios from 'axios'
@@ -30,6 +30,11 @@ function MyPages(){
             overflow: "hidden",
         },
     };
+
+    const kakaoMapStyle = {
+        height : '250px',
+        width : '25%'
+    }
 
     const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
     const [openPostcode, setOpenPostcode] = useState(false);
@@ -134,12 +139,15 @@ function MyPages(){
     }}>상품등록</p>
     </div>
     <div>
-        <MypageProductList Endpoint = {Endpoint} productDeleteHandler = {productDeleteHandler} registerData = {registerData} navigate = {StockNavigate}/>
+        {registerData.length >= 1 ?
+        <MypageProductList Endpoint = {Endpoint} productDeleteHandler = {productDeleteHandler} registerData = {registerData} navigate = {StockNavigate}/>:
+        <h2 style = {{display : 'flex',height : '300px',marginTop : '2%',justifyContent: 'center',alignItems: 'center',color : 'darkgrey'}}>상품을 등록해주세요</h2>}
     </div>
-    <p style = {{ marginBottom : '-12px',display : 'flex'}}>매장정보</p><hr></hr>
+    
+    <p style = {{ marginTop : '3%',marginBottom : '-12px',display : 'flex'}}>매장정보</p><hr></hr>
 
     <div className = 'mypageShopContainer' style = {{marginTop : '-4px',display : 'flex'}}>
-        <Kakao/>
+        <Kakao mapSize = {kakaoMapStyle}/>
         <div className = 'shopAddress' onClick = {() => { mapHandler.clickButton()}} style = {{display : 'flex' }}>
             <p style = {{display : 'flex',marginLeft: '25px'}}>매장위치 :</p>
             <input type = 'text' value = {address} readOnly placeholder=" 우편번호"  onChange={handleInputChange} style = {{marginLeft : '10px',height : '25px'}}></input>
@@ -189,6 +197,7 @@ function MypageProductList(props){
                     )
                 })
             }
+            <hr></hr>
         </div>
     )
 }
