@@ -1,24 +1,24 @@
 @keyframes gradientAnimation {
   0% {
-    background: linear-gradient(to right, #6ad8a0, #8de1b6);
+    background: linear-gradient(to right, #374D9A, #415AB4);
   }
   16.7% {
-    background: linear-gradient(to right, #6ad8a0, #9fe5c1);
+    background: linear-gradient(to right, #374D9A, #4B64BE);
   }
   33.3% {
-    background: linear-gradient(to right, #6ad8a0, #b0eacc);
+    background: linear-gradient(to right, #374D9A, #5A71C4);
   }
   50% {
-    background: linear-gradient(to right, #6ad8a0, #c2eed7);
+    background: linear-gradient(to right, #374D9A, #697EC9);
   }
   66.7% {
-    background: linear-gradient(to right, #6ad8a0, #d4f3e3);
+    background: linear-gradient(to right, #374D9A, #788BCE);
   }
   83.3% {
-    background: linear-gradient(to right, #6ad8a0, #d4f3e3);
+    background: linear-gradient(to right, #374D9A, #8798D4);
   }
   100% {
-    background: linear-gradient(to right, #6ad8a0, #ffffff);
+    background: linear-gradient(to right, #374D9A, #96A5D9);
   }
 }
 
@@ -28,7 +28,7 @@
   height: 100vh;
   overflow: hidden;
   animation: gradientAnimation 0.5s linear 1 forwards;
-  background: #6ad8a0;
+  background: #374D9A;
 
   display: flex;
   flex-direction: column;
@@ -97,7 +97,7 @@
 .loginInputs input {
   padding: 8px;
   border-radius: 8px;
-  border: 1px solid #6AD8A0;
+  border: 1px solid #374D9A;
   margin-left: 5px;
 }
 

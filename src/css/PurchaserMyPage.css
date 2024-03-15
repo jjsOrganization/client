@@ -1,74 +1,127 @@
-.customerOrderReformProduct {
-   margin: 0 auto; /* 페이지를 수평 가운데 정렬*/
-   max-width: 1200px; /* 페이지의 최대 가로 너비를 1200px로 제한 */
-   overflow-x: hidden; /* 옆으로 이동하는 스크롤을 숨김 */
+.purchaserOrderReformProduct {
+  overflow-x: hidden;
 }
 
-.customerOrederedProduct {
-   margin-top: 50px;
-   position: relative;
-   left: 25%;
+.purchaserOrderReformProduct hr {
+  width: 50%;
 }
 
-.customerOrederedProduct img {
-   width: 30%;
-   max-width: 15%;
+.purchaserOrederedProduct {
+  position: relative;
+  left: 25%;
 }
 
-.customerOrederedProduct hr {
-   width: 50%;
+.purchaserOrederedProduct h5 {
+  width: 50%;
+  background-color: #374d9a;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: -10px;
 }
 
-.customerOrderLastHr {
-   position: relative;
-   top:-140px;
+.purchaserOrederedProduct p,
+.purchaserReformedProduct p {
+  display: flex;
+  font-size: 1.2em;
 }
 
-.customerOrederedProduct h5 {
-   width: 50%;
-   background-color: rgb(183, 183, 183);
-   padding-top: 10px;
-   padding-bottom: 10px;
-   margin-top: -10px;
+.purchaserOrederedProduct img,
+.purchaserReformedProduct img {
+  margin-left: 17.5%;
+  width: 15%;
+  max-width: 15%;
 }
 
-.customerOrederedProduct p {
-   position: relative;
-   top: -160px;
-   left: 200px;
+.purchaserReformedProduct {
+  position: relative;
+  left: 25%;
 }
 
-
-
-.customerReformProduct {
-   position: relative;
-   left: 25%;
+.purchaserReformedProduct h5 {
+  width: 50%;
+  background-color: #374d9a;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: -10px;
 }
 
-.customerReformProduct img {
-   width: 30%;
-   max-width: 15%;
+.OrderedBTN {
+  background: #374d9a;
+  color: white;
+  width: 100px;
+  height: 25px;
+  line-height: 3px;
+  border-radius: 10px;
+  margin-left: 10px;
 }
 
-.customerReformProduct hr {
-   width: 50%;
+.OrderedMoreBTN {
+  background: #374d9a;
+  color: white;
+  width: 200px;
+  height: 25px;
+  line-height: 3px;
+  border-radius: 10px;
+  margin-left: 37%;
 }
 
-.customerReformLastHr {
-   position: relative;
-   top:-140px;
+.UserCorrection button{
+   background: #374d9a;
+  color: white;
+  width: 400px;
+  height: 75px;
+  line-height: 3px;
+  border-radius: 10px;
+  margin-top: 10%;
+  margin-bottom: 10%;
+  margin-left: 40%;
 }
 
-.customerReformProduct h5 {
-   width: 50%;
-   background-color: rgb(183, 183, 183);
-   padding-top: 10px;
-   padding-bottom: 10px;
-   margin-top: -10px;
+.purchaserOrderReformProduct h1 {
+  font-size: 3em;
 }
 
-.customerReformProduct p {
-   position: relative;
-   top: -160px;
-   left: 200px;
+.purchaserOrderReformProduct h4 {
+  font-size: 2em;
+}
+
+@media screen and (max-width: 720px) {
+  .purchaserOrederedProduct p {
+    display: flex;
+    font-size: 0.4em;
+  }
+
+  .purchaserOrederedProduct h5 {
+    font-size: 0.6em;
+  }
+
+  .OrderedBTN {
+    background: #374d9a;
+    color: white;
+    width: 50px;
+    height: 12.5px;
+    border-radius: 10px;
+    margin-left: 10px;
+  }
+
+  .purchaserReformedProduct p {
+    font-size: 0.4em;
+    position: relative;
+    top: -75px;
+    left: 80px;
+  }
+
+  .purchaserReformedProduct h5 {
+    font-size: 0.6em;
+  }
+
+  .purchaserOrderReformProduct h1 {
+    font-size: 1em;
+  }
+
+  .purchaserOrderReformProduct h4 {
+    font-size: 0.6em;
+  }
 }

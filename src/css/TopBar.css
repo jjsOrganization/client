@@ -36,3 +36,23 @@
     font-size: 0.5em;
   }
 }
+
+@media screen and (max-width: 400px) {
+  .loginMenu {
+    margin-left: 10%;
+  }
+
+  .topBarMenu {
+    margin-left: 10%;
+  }
+
+  .loginMenu p,
+  .topBarMenu p {
+    margin-left: 5%;
+    font-size: 0.2em;
+  }
+
+  .topBarMenu p {
+    font-size: 0.2em;
+  }
+}
