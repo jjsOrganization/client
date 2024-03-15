@@ -26,9 +26,9 @@ function Detail(props) {
   const [productDetailInfo, setProductDetailInfo] = useState();
   const [sellerData, setSellerData] = useState();
   const [salePrice, setSalePrice] = useState();
-  const [productLike,setProductLike] = useState();
+  const [productLike, setProductLike] = useState();
   const [likeState, setLikeState] = useState();
-  const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
+  const Endpoint = "https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/";
 
   //Dropdown 관련 변수
   const SizeList = ["S", "M", "L", "XL"];
@@ -40,14 +40,14 @@ function Detail(props) {
   const [choiceColor, setChoiceColor] = useState(null);
 
   const kakaoMapStyle = {
-    display : 'flex',
-    alignItems: 'center',
-    justifyContent : 'center',
-    height : '200px',
-    width : '250px',
-    marginLeft : '5%'
-}
-  
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "200px",
+    width: "250px",
+    marginLeft: "5%",
+  };
+
   const axiosInstance = axios.create({
     baseURL: "http://localhost:8080",
     headers: {
@@ -94,16 +94,19 @@ function Detail(props) {
   //판매자 데이터 get (매장 위치 표시위한)
   useEffect(() => {
     const fetchSellerData = async () => {
-    try{ 
-      const sellerInfo = await axiosInstance.get(`/product/all/detail/${productid}/seller`,{
-      headers : { 
-      'Content-Type': 'multipart/form-data',
-      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-      },
-    });
-      setSellerData(sellerInfo.data)
-    } catch(error) {
-        console.log('판매자 데이터 로드 실패',error);
+      try {
+        const sellerInfo = await axiosInstance.get(
+          `/product/all/detail/${productid}/seller`,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        setSellerData(sellerInfo.data);
+      } catch (error) {
+        console.log("판매자 데이터 로드 실패", error);
       }
     };
     fetchSellerData();
@@ -113,9 +116,9 @@ function Detail(props) {
   useEffect(() => {
     if (productDetailInfo && productLike) {
       setSalePrice(productDetailInfo.price * (1 - sale));
-      console.log(productLike)
+      console.log(productLike);
     }
-    console.log(productDetailInfo)
+    console.log(productDetailInfo);
   }, [productDetailInfo, sale]);
 
   //여기서 무한 get발생 문제시 주석처리하거나 [productLike] 에서 productLike지우고 []만 남기면 됨
@@ -123,10 +126,12 @@ function Detail(props) {
   useEffect(() => {
     const productLikeGet = async () => {
       try {
-        const productLikeCount = await axiosInstance.get(`/product/all/detail/${productid}/like-count`);
+        const productLikeCount = await axiosInstance.get(
+          `/product/all/detail/${productid}/like-count`
+        );
         setProductLike(productLikeCount);
       } catch (error) {
-        console.log('좋아요 get에러', error);
+        console.log("좋아요 get에러", error);
       }
     };
     productLikeGet();
@@ -134,16 +139,18 @@ function Detail(props) {
 
   //상품 좋아요 여부 확인
   useEffect(() => {
-    const LikeCheckGet = async() => {
-      try{
-        const likeStateInfo = await axiosInstance.get(`/product/all/detail/${productid}/like-status`)
-        setLikeState(likeStateInfo)
+    const LikeCheckGet = async () => {
+      try {
+        const likeStateInfo = await axiosInstance.get(
+          `/product/all/detail/${productid}/like-status`
+        );
+        setLikeState(likeStateInfo);
+      } catch (error) {
+        console.log("좋아요 상태 체크 에러", error);
       }
-      catch(error){
-        console.log('좋아요 상태 체크 에러',error);
-      }
-    };LikeCheckGet();
-  },[])
+    };
+    LikeCheckGet();
+  }, []);
 
   if (!productDetailInfo) {
     return <div>데이터를 로드하는 중입니다...</div>;
@@ -180,43 +187,38 @@ function Detail(props) {
 
   //상품 좋아요 요청
   const productLikeHandler = async () => {
-    try{
-      const postLike = await axiosInstance.post(`/product/all/detail/${productid}/like`)
-      console.log('좋아요 누름')
+    try {
+      const postLike = await axiosInstance.post(
+        `/product/all/detail/${productid}/like`
+      );
+      console.log("좋아요 누름");
+    } catch (error) {
+      console.log("좋아요 실패");
     }
-    catch(error){
-      console.log('좋아요 실패');
-    }
-  }
+  };
 
   //상품 좋아요 취소
-  const productLikeCancelHandler = async() => {
-    try{
-      const DeleteLike = await axiosInstance.delete(`/product/all/detail/${productid}/like`)
-      console.log('좋아요 취소함')
+  const productLikeCancelHandler = async () => {
+    try {
+      const DeleteLike = await axiosInstance.delete(
+        `/product/all/detail/${productid}/like`
+      );
+      console.log("좋아요 취소함");
+    } catch (error) {
+      console.log("좋아요 취소 에러", error);
     }
-    catch(error){
-      console.log('좋아요 취소 에러',error)
-    }
-  }
+  };
 
   return (
     <div>
       <TopBar />
       <div
-        className="image"
+        className="Detail"
         style={{
-          display: "flex",
-          marginBottom: "3%",
-          width: "100%",
-          height: "100%",
+          marginRight: "20%",
+          marginLeft: "20%",
         }}
       >
-        <img
-          src= {Endpoint + productDetailInfo.productImg[0].imgUrl }
-          width="300px"
-          height="300px"
-        />
         <div
           className="image"
           style={{
@@ -226,21 +228,11 @@ function Detail(props) {
             height: "100%",
           }}
         >
-          <h4 className="title">{productDetailInfo.productName}</h4>
-          <p
-            style={{
-              fontWeight: "bold",
-              textDecoration: "line-through",
-              color: "darkgray",
-            }}
-          >
-            {productDetailInfo.price}
-          </p>
-          <p style={{ fontWeight: "800", color: "red" }}>{sale * 100}%</p>
-          <p style={{ fontWeight: "bold" }}>
-            할인가 : {salePrice && salePrice.toLocaleString()}{" "}
-          </p>
-          <div className = 'productLikeContainer' style = {{marginTop : '-3%'}}><LikeComponent setLikeState = {setLikeState} likeState = {likeState} Likeresult = {productLike} likecanceleHandler = {productLikeCancelHandler} likeHandler = {productLikeHandler}/> {productLike.data.data} </div>
+          <img
+            src={Endpoint + productDetailInfo.productImg[0].imgUrl}
+            width="300px"
+            height="300px"
+          />
           <div
             className="productinfo"
             style={{
@@ -265,6 +257,16 @@ function Detail(props) {
             <p style={{ fontWeight: "bold" }}>
               할인가 : {salePrice && salePrice.toLocaleString()}{" "}
             </p>
+            <div className="productLikeContainer" style={{ marginTop: "-3%" }}>
+              <LikeComponent
+                setLikeState={setLikeState}
+                likeState={likeState}
+                Likeresult={productLike}
+                likecanceleHandler={productLikeCancelHandler}
+                likeHandler={productLikeHandler}
+              />{" "}
+              {productLike.data.data}{" "}
+            </div>
             <div
               className="btn"
               style={{
@@ -287,32 +289,16 @@ function Detail(props) {
                 구매하기
               </BasicBtn>
               <BasicBtn>
-                <Link to={reFormLink}>의뢰하기</Link>
+                <Link to={reFormLink} style={{ textDecoration: "none", color:"white"}}>의뢰하기</Link>
               </BasicBtn>
               <BasicBtn onClick={addToCart}>장바구니</BasicBtn>
             </div>
           </div>
         </div>
 
-      <div className="productField">
-        <p>{productDetailInfo.itemDetail}</p>
-      </div>
-      <div className="buy-info" style={{ display: "flex" }}>
-        <div className="dropdown" style={{ display: "flex", marginTop: "3%" }}>
-          <Dropdown
-            text={size}
-            setArticleType={setChoiceSize}
-            articleType={choiceSize}
-            articleTypeList={SizeList}
-          />
-          <Dropdown
-            text={color}
-            setArticleType={setChoiceColor}
-            articleType={choiceColor}
-            articleTypeList={ColorList}
-          />
+        <div className="productField">
+          <p>{productDetailInfo.itemDetail}</p>
         </div>
-
         <div className="buy-info" style={{ display: "flex" }}>
           <div
             className="dropdown"
@@ -331,18 +317,42 @@ function Detail(props) {
               articleTypeList={ColorList}
             />
           </div>
-        </div>
-        <div className = 'detail-kakaomap'> <Kakao mapSize = {kakaoMapStyle}/></div>
-        <div className = 'detail-shopInfo' style = {{marginLeft : '2%',letterSpacing : '3px',width : '140px'}}>
-          <div className = 'detail-shopTitle'>매장명 : </div>
-          <div className = 'detail-ShopAddress'>매장 주소 : </div>
-          <div className = 'detail-shopNumber'>매장 번호 : </div>
+          <div className="buy-info" style={{ marginLeft: "7%" }}>
+            <h3>제품명 : {productDetailInfo.productName}</h3>
+            <p style={{ marginBottom: "2%" }}>
+              결제 예정 금액 : {test.toLocaleString()}{" "}
+            </p>
+            <p>수량 : {total}</p>
+            <div classNale="selectOpt">
+              {myArray.map(function (choice, index) {
+                return (
+                  <div
+                    className="user-choice"
+                    style={{ w0th: "180px", marginBottom: "10px" }}
+                  >
+                    {choice.size + choice.color}{" "}
+                    <button className="choice-cancel">✖</button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="detail-kakaomap">
+            {" "}
+            <Kakao mapSize={kakaoMapStyle} />
+          </div>
+          <div
+            className="detail-shopInfo"
+            style={{ marginLeft: "2%", letterSpacing: "3px", width: "140px" }}
+          >
+            <div className="detail-shopTitle">매장명 : </div>
+            <div className="detail-ShopAddress">매장 주소 : </div>
+            <div className="detail-shopNumber">매장 번호 : </div>
+          </div>
         </div>
       </div>
-      
     </div>
   );
 }
-
 
 export default Detail;

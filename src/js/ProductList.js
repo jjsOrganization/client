@@ -28,7 +28,7 @@ const ProductList = () => {
           },
         });
         setProducts(response.data);
-        setFilteredProducts(response.data); 
+        setFilteredProducts(response.data);
         console.log(response.data);
       } catch (error) {
         console.log("데이터 로드 실패", error);
@@ -92,14 +92,17 @@ const ProductList = () => {
       <div className="productList">
         {currentProducts.map((product) => (
           <div key={product.id} className="productItem">
-            {product.imgUrl && (
-              <img
-                src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${product.imgUrl}`}
-                alt={product.productName}
-              />
-            )}
-            <p>상품명 : {product.productName}</p>
-            <p>가격 : {product.price}</p>
+            {/* 링크 추가 */}
+            <Link to={`/detail/${product.id}`} style={{ textDecoration: "none"}}>
+              {product.imgUrl && (
+                <img
+                  src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${product.imgUrl}`}
+                  alt={product.productName}
+                />
+              )}
+              <p style={{ color: "black"}}>상품명 : {product.productName}</p>
+              <p style={{ color: "black"}}>가격 : {product.price}</p>
+            </Link>
           </div>
         ))}
       </div>
