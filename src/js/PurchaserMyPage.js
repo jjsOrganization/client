@@ -36,6 +36,24 @@ function CustomerOrderList() {
     setShowMore(true);
   };
 
+  // 각 주문 상태에 대한 렌더링 함수
+  function renderOrderStatus(orderStatus) {
+    switch (orderStatus) {
+      case "ORDER_COMPLETE":
+        return "주문접수 완료";
+      case "SHIPPING":
+        return "배송중";
+      case "DELIVERED":
+        return "배송완료";
+      case "CANCELLED":
+        return "주문취소됨";
+      case "REFUNDED":
+        return "환불완료";
+      default:
+        return orderStatus;
+    }
+  }
+
   return (
     <div>
       <TopBar />
@@ -56,7 +74,7 @@ function CustomerOrderList() {
                   src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${product.imgUrl}`}
                   alt={product.name}
                 />
-                <p>주문상태 : {product.orderStatus}</p>
+                <p>주문상태 : {renderOrderStatus(product.orderStatus)}</p>
                 <p>제품명 : {product.productName}</p>
                 <p>수량 : {product.quantity}</p>
                 <p>가격 : {product.price}원</p>
@@ -96,12 +114,12 @@ function CustomerOrderList() {
                   src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${product.imgUrl}`}
                   alt={product.name}
                 />
-                <p>주문상태 : {product.orderStatus}</p>
+                <p>주문상태 : {renderOrderStatus(product.orderStatus)}</p>
                 <p>제품명 : {product.productName}</p>
                 <p>수량 : {product.quantity}</p>
                 <p>가격 : {product.price}원</p>
                 <p>
-                  리폼현황 : {product.state}{" "}
+                  배송현황 : {product.state}{" "}
                   <button
                     className="OrderedBTN"
                     onClick={() => {

@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import "./TopBar.js";
@@ -17,9 +16,7 @@ function Reform() {
   const [requestInfo, setRequestInfo] = useState("");
   const [requestPrice, setRequestPrice] = useState("");
   const [designers, setDesigners] = useState([]);
-
-  const [thumbnailImage, setThumbnailImage] = useState("");
-  const [thumbnailImageFile, setThumbnailImageFile] = useState("");
+  const [Image, setImage] = useState("");
 
   const [selectedDesigner, setSelectedDesigner] = useState(null);
 
@@ -39,16 +36,15 @@ function Reform() {
     setRequestPrice(event.target.value);
   };
 
-  const encodeImageFile = (event) => {
-    const file = event.target.files[0];
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
     const reader = new FileReader();
-    reader.readAsDataURL(file);
-
     reader.onload = () => {
-      const encodeImageUrl = encodeURIComponent(reader.result);
-      setThumbnailImage(encodeImageUrl);
-      setThumbnailImageFile(file);
+      const imageData = reader.result;
+      const blobData = new Blob([imageData], { type: file.type });
+      setImage(blobData);
     };
+    reader.readAsDataURL(file);
   };
 
   const registerHandler = async () => {
@@ -56,17 +52,19 @@ function Reform() {
       const formData = new FormData();
       formData.append("requestPart", requestPart);
       formData.append("requestInfo", requestInfo);
-      formData.append("requestImg", thumbnailImage);
+      formData.append("requestImg", Image);
       formData.append("requestPrice", requestPrice);
-      formData.append("designerEmail", selectedDesigner);
+      formData.append("designerEmail", selectedDesigner.value);
 
-      const response = await axios.post(`/reform-request/purchaser/creation/${productId}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
-        },
-      });
+      const response = await axios.post(
+        `/reform-request/purchaser/creation/${productId}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
 
       console.log("리폼요청 성공:", response.data);
       alert("리폼요청이 성공적으로 등록되었습니다.");
@@ -81,7 +79,6 @@ function Reform() {
       try {
         const response = await axios.get("/portfolio/all", {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
@@ -96,9 +93,9 @@ function Reform() {
     fetchDesigners();
   }, []);
 
-  const handleDesignerSelect = (selectedDesigner) => {
-    console.log("선택한 디자이너:", selectedDesigner);
-    setSelectedDesigner(selectedDesigner);
+  const handleDesignerSelect = (selectedOption) => {
+    console.log("선택한 디자이너:", selectedOption);
+    setSelectedDesigner(selectedOption);
   };
 
   const designerOptions = designers.map((designer) => ({
@@ -123,7 +120,7 @@ function Reform() {
           }}
         >
           <img
-            src={thumbnailImage}
+            src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${Image}`}
             height="90%"
             style={{ marginTop: "1.8%" }}
           ></img>
@@ -158,7 +155,7 @@ function Reform() {
               id="fileInput"
               type="file"
               multiple
-              onChange={(event) => encodeImageFile(event)}
+              onChange={(event) => handleImageUpload(event)}
               style={{ display: "none" }}
             />
           </div>
@@ -166,7 +163,11 @@ function Reform() {
           <div className="designer">
             <p style={{ fontWeight: "700", margin: "0" }}>디자이너</p>
             {/* 검색 창 */}
-            <Select options={designerOptions} placeholder="디자이너 검색" onChange={handleDesignerSelect} />
+            <Select
+              options={designerOptions}
+              placeholder="디자이너 검색"
+              onChange={handleDesignerSelect}
+            />
           </div>
 
           <div className="requestPart">
