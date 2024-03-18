@@ -5,27 +5,14 @@
 
 .signUp h1 {
   margin-top: 5%;
-  margin-left: 41.5%;
 }
 
 .signUp h5 {
   margin-top: 5%;
-  margin-left: 45%;
-}
-
-.SignUp1 {
-  color: #374d9a;
+  margin-bottom: 5%;
 }
 
 .SignUp3 {
-  color: #374d9a;
-}
-
-.SignUp4 {
-  color: #374d9a;
-}
-
-.SignUp5 {
   color: #374d9a;
 }
 
@@ -53,13 +40,6 @@
   margin-top: 5px;
 }
 
-.SignUp2 input[type="text"]:focus,
-.SignUp2 input[type="email"]:focus,
-.SignUp2 input[type="password"]:focus {
-  outline: none;
-  border-color: #1e2a5e;
-}
-
 .SignUp2 label {
   display: block;
   margin-bottom: 10px;
@@ -68,19 +48,6 @@
 .SignUp2 span.SignUp3 {
   font-weight: bold;
   margin-right: 10px;
-}
-
-.SignUp2 {
-  margin-bottom: 15px;
-}
-
-.SignUp2:last-child {
-  margin-bottom: 0;
-}
-
-.signupTitle h4,
-.SignUp5 h5 {
-  margin: 0;
 }
 
 .Submit-button {
