@@ -1,0 +1,53 @@
+.purchaserAddressEdit {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.purchaserAddressEdit h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.purchaserAddressEdit form {
+  display: flex;
+  flex-direction: column;
+}
+
+.purchaserAddressEdit form .newAddress {
+  margin-bottom: 15px;
+}
+
+.purchaserAddressEdit form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.purchaserAddressEdit form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.purchaserAddressEdit form button {
+  padding: 10px;
+  background-color: #374d9a;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.purchaserAddressEdit form button:hover {
+  background-color: #003f82;
+}
+
+.purchaserAddressEdit form button:focus {
+  outline: none;
+}

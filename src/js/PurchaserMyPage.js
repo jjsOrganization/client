@@ -36,6 +36,10 @@ function CustomerOrderList() {
     setShowMore(true);
   };
 
+  const handlePurchaserInfoEdit = () => {
+    navigate("/mypage/purchaserInfoEdit");
+  };
+
   // 각 주문 상태에 대한 렌더링 함수
   function renderOrderStatus(orderStatus) {
     switch (orderStatus) {
@@ -140,7 +144,7 @@ function CustomerOrderList() {
         </div>
       </div>
       <div className="UserCorrection">
-        <button>회원정보 수정하기</button>
+        <button onClick={handlePurchaserInfoEdit}>회원정보 수정하기</button>
       </div>
     </div>
   );
