@@ -8,6 +8,13 @@ function TopBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState("");
 
+  const axiosInstance = axios.create({
+    baseURL: 'http://localhost:8080',
+    headers: {
+    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+    }
+});
+
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {

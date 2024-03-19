@@ -8,6 +8,8 @@ import TopBar from "../js/TopBar.js";
 
 
 function Main(){
+    const [sort, setSort] = useState(true);
+    const [productDesc,setProductDesc] = useState();
 
     const axiosInstance = axios.create({
         baseURL: 'http://localhost:8080',
@@ -26,8 +28,15 @@ function Main(){
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     }
                 });
-                setProductInfo(response.data);
-            } catch(error) {
+                const resopnseLikeDesc = await axiosInstance.get(`/product/all/like/desc`,{
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    }})
+                    setProductInfo(response.data);
+                    setProductDesc(resopnseLikeDesc.data.data);
+                }
+            catch(error) {
                 console.log('데이터 로드 실패', error);
             }
         };
@@ -53,6 +62,11 @@ function Main(){
 
     const [productInfo,setProductInfo] = useState([{}])
     
+    console.log('상품 내림차순')
+    console.log(productDesc);
+    console.log('상품 최신순')
+    console.log(productInfo)
+    
     return(
     <div>
         <div>
@@ -63,8 +77,10 @@ function Main(){
                 <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
             </div>
             <div class="mainProduct">
-                <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
-                <MainProduct Endpoint = {Endpoint} product = {productInfo}></MainProduct>
+                <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>상품</h4>
+                <div style = {{marginBottom : '3%'}}><button onClick = {() => {setSort(true)}}>최신순</button> <button onClick = {() => {setSort(false)}}>인기순</button></div>
+                {sort ? <MainProduct Endpoint = {Endpoint} product = {productInfo}></MainProduct> : <MainProduct Endpoint = {Endpoint} product = {productDesc}></MainProduct>}
+                
             </div>
             <div className = 'designerCarousel'>
                 <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>

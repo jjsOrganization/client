@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const Container = styled.div`
 display: flex;
@@ -64,9 +65,15 @@ margin-top: 10px;
 `;
 
 const ModifyPortfolio = () => {
+const portfolidId = useParams()
 const navigate = useNavigate();
 const [designerIntro, setDesignerIntro] = useState("소개글을 작성해주세요.");
 const [profileImage, setProfileImage] = useState(""); // 프로필 사진 상태 추가
+const [portfolio, setPortfolio] = useState({
+    explanation: "",
+    designerImage: "",
+    designerName: "",
+});
 
 // 디자이너 소개글 수정 상태
 const [isEditingIntro, setIsEditingIntro] = useState(false);
@@ -88,6 +95,37 @@ setProfileImage(imageUrl);
 const gotoRegisterPage = () => {
 navigate("/DesignerMypage/ModifyPortfolio/RegisterPortfolio");
 };
+
+const axiosInstance = axios.create({
+    baseURL: "http://localhost:8080",
+    headers: {
+    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+});
+
+const handleRegister = async () => {
+    try {
+    const formData = new FormData();
+    formData.append("explanation", portfolio.explanation);
+    formData.append("designerImage", portfolio.designerImage);
+    formData.append("designerName", portfolio.designerName);
+    const response = await axiosInstance.put(
+        `/portfolio/designer/${portfolidId}`,
+        formData,
+        {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        }
+    );
+      console.log(formData); // 데이터 확인용
+    } catch (error) {
+    console.log("데이터 전송 실패", error);
+    }
+};
+
+
 
 return (
 <Container>

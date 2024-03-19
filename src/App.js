@@ -92,7 +92,7 @@ const App = () => {
           <Route path="/DesignerPortfolio" element={<DesignerPortfolio />} />
           <Route path="/DesignerRanking" element={<DesignerRanking />} />
           <Route path="/DesignerMypage" element={<DesignerMypage />} />
-          <Route path="/DesignerMypage/ModifyPortfolio" element={<ModifyPortfolio />} />
+          <Route path="/DesignerMypage/ModifyPortfolio/:portfolidId" element={<ModifyPortfolio />} />
           <Route path="/DesignerMypage/ModifyPortfolio/RegisterPortfolio" element={<RegisterPortfolio />} />
           <Route path="/DesignerMypage/ReformState" element={<DesignerReformState />} />
         </Routes>

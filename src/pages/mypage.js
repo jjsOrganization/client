@@ -80,9 +80,11 @@ function MyPages(){
             console.log('상품삭제성공')
             alert('상품 삭제 완료')
             window.location.replace(`/mypage2`);
+            
         }   
         catch(error){
             console.log('상품삭제실패',error)
+            console.log(registerData[i].id)
         }
         }
 
