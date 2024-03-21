@@ -15,7 +15,7 @@ function PurchaserInfoEdit() {
 
   const openPasswordChangePopup = () => {
     window.open(
-      "/mypage/PurchaserPasswordEdit",
+      "/Mypage/PurchaserInfoEdit/PurchaserPasswordEdit",
       "PasswordChange",
       "width=400,height=400"
     );
@@ -23,7 +23,7 @@ function PurchaserInfoEdit() {
 
   const openAddressChangePopup = () => {
     window.open(
-      "/mypage/purchaserAddressEdit",
+      "/Mypage/PurchaserInfoEdit/PurchaserAddressEdit",
       "AddressChange",
       "width=400,height=400"
     );
@@ -31,7 +31,7 @@ function PurchaserInfoEdit() {
 
   const openPNumberChangePopup = () => {
     window.open(
-      "/mypage/purchaserPNumberEdit",
+      "/Mypage/PurchaserInfoEdit/PurchaserPNumberEdit",
       "AddressChange",
       "width=400,height=400"
     );
