@@ -80,7 +80,6 @@ function Detail(props) {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
           },
         });
         setProductDetailInfo(response.data);
