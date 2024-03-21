@@ -68,7 +68,7 @@ function TopBar() {
         <p onClick={() => navigate("/DesignerSearch")}>디자이너검색</p>
         <p onClick={() => navigate("/")}>메인페이지</p>
         <p onClick={() => navigate("/visual")}>물 시각화</p>
-        <p onClick={() => navigate("/DesignerPortfolio")}>포트폴리오</p>
+        <p onClick={() => navigate("/PortpolioList")}>포트폴리오 (작업물)</p>
       </div>
     </div>
   );
