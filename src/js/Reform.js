@@ -18,6 +18,9 @@ function Reform() {
   const [designers, setDesigners] = useState([]);
   const [Image, setImage] = useState("");
 
+  const [thumbnailImage, setThumbnailImage] = useState();
+  const [thumbnailImageFile, setThumbnailImageFile] = useState();
+
   const [selectedDesigner, setSelectedDesigner] = useState(null);
 
   const location = useLocation();
@@ -36,15 +39,15 @@ function Reform() {
     setRequestPrice(event.target.value);
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
+  const encodeImageFile = (event) => {
+    const file = event.target.files[0];
     const reader = new FileReader();
-    reader.onload = () => {
-      const imageData = reader.result;
-      const blobData = new Blob([imageData], { type: file.type });
-      setImage(blobData);
-    };
     reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      setThumbnailImage(reader.result);
+      setThumbnailImageFile(file);
+    };
   };
 
   const registerHandler = async () => {
@@ -52,7 +55,7 @@ function Reform() {
       const formData = new FormData();
       formData.append("requestPart", requestPart);
       formData.append("requestInfo", requestInfo);
-      formData.append("requestImg", Image);
+      formData.append("requestImg", thumbnailImageFile);
       formData.append("requestPrice", requestPrice);
       formData.append("designerEmail", selectedDesigner.value);
 
@@ -120,7 +123,7 @@ function Reform() {
           }}
         >
           <img
-            src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${Image}`}
+            src={thumbnailImage}
             height="90%"
             style={{ marginTop: "1.8%" }}
           ></img>
@@ -155,7 +158,7 @@ function Reform() {
               id="fileInput"
               type="file"
               multiple
-              onChange={(event) => handleImageUpload(event)}
+              onChange={(event) => encodeImageFile(event)}
               style={{ display: "none" }}
             />
           </div>

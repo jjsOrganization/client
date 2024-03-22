@@ -10,6 +10,7 @@ function CustomerOrderList() {
   let navigate = useNavigate();
 
   const [purchaserOrderProducts, setPurchaserOrderProducts] = useState([]);
+  const [purchaserReformProducts, setPurchaserReformProducts] = useState([]);
   const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
@@ -21,6 +22,17 @@ function CustomerOrderList() {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
+
+        const respons = await axios.get("/reform/purchaser/requests/all", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+
+        const dat = respons.data.data;
+        console.log(dat);
+        setPurchaserReformProducts(dat);
+
         const data = response.data.data;
         console.log(data);
         setPurchaserOrderProducts(data);
@@ -106,24 +118,21 @@ function CustomerOrderList() {
         <div className="purchaserReformedProduct">
           <h4>리폼목록</h4>
           <hr></hr>
-          {purchaserOrderProducts
+          {purchaserReformProducts
             .slice(0, showMore ? undefined : 2)
             .map((product) => (
               <div key={product.id}>
-                <h5>
-                  {product.orderDate[0]}년 {product.orderDate[1]}월{" "}
-                  {product.orderDate[2]} 일
-                </h5>
+                <h5>요청한 디자이너 : {product.designerEmail}</h5>
                 <img
-                  src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${product.imgUrl}`}
+                  src={`${product.requestImg.imgUrl}`}
                   alt={product.name}
                 />
-                <p>주문상태 : {renderOrderStatus(product.orderStatus)}</p>
-                <p>제품명 : {product.productName}</p>
-                <p>수량 : {product.quantity}</p>
-                <p>가격 : {product.price}원</p>
+                <p>요청부위 : {product.requestPart}</p>
+                <p>요청사항 : {product.requestInfo}</p>
+                <p>가격 : {product.requestPrice}원</p>
+                <p>상태 : {product.requestStatus}</p>
                 <p>
-                  배송현황 : {product.state}{" "}
+                  형상관리 : {product.state}{" "}
                   <button
                     className="OrderedBTN"
                     onClick={() => {
