@@ -9,6 +9,16 @@ import "./js/CustomerMypageOrderList.js";
 import "./js/TopBar.js";
 import "./js/PurchaserInfo.js";
 import "./js/PurchaserMyPage.js";
+import "./js/PurchaserInfoEdit.js";
+import "./js/PurchaserPNumberEdit.js";
+import "./js/PurchaserPasswordEdit.js";
+import "./js/PurchaserAddressEdit.js";
+import "./js/PortpolioList.js";
+import PortpolioList from "./js/PortpolioList.js";
+import PurchaserAddressEdit from "./js/PurchaserAddressEdit.js";
+import PurchaserPasswordEdit from "./js/PurchaserPasswordEdit.js";
+import PurchaserPNumberEdit from "./js/PurchaserPNumberEdit.js";
+import PurchaserInfoEdit from "./js/PurchaserInfoEdit.js";
 import PurchaserMyPage from "./js/PurchaserMyPage.js";
 import PurchaserInfo from "./js/PurchaserInfo.js";
 import TopBar from "./js/TopBar.js";
@@ -127,6 +137,17 @@ const App = () => {
           <Route path="/PurchaserInfo" element={<PurchaserInfo />}></Route>
 
           <Route path="/PurchaserMyPage" element={<PurchaserMyPage />}></Route>
+
+          <Route path="/Mypage/PurchaserInfoEdit" element={<PurchaserInfoEdit />}></Route>
+
+          <Route path="/Mypage/PurchaserInfoEdit/PurchaserPNumberEdit" element={<PurchaserPNumberEdit />}></Route>
+
+          <Route path="/Mypage/PurchaserInfoEdit/PurchaserPasswordEdit" element={<PurchaserPasswordEdit />}></Route>
+          
+          <Route path="/Mypage/PurchaserInfoEdit/PurchaserAddressEdit" element={<PurchaserAddressEdit />}></Route>
+
+          <Route path="/PortpolioList" element={<PortpolioList />}></Route>
+          
         </Routes>
       </div>
     </div>

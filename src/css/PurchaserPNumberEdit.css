@@ -1,0 +1,49 @@
+.purchaserPNumberEdit {
+  max-width: 400px;
+  padding: 20px;
+}
+
+.purchaserPNumberEdit h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.purchaserPNumberEdit form {
+  display: flex;
+  flex-direction: column;
+}
+
+.newPNumber {
+  margin-bottom: 15px;
+}
+
+.purchaserPNumberEdit form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.newPNumber input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.purchaserPNumberEdit form button {
+  padding: 10px;
+  background-color: #374d9a;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.purchaserPNumberEdit form button:hover {
+  background-color: #003f82;
+}
+
+.purchaserPNumberEdit form button:focus {
+  outline: none;
+}
