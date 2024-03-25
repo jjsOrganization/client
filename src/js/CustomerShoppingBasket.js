@@ -110,6 +110,7 @@ function CustomerShoppingBasket() {
       console.log("주문 실패", error);
     }
   };
+  
   const handleDelete = async (productId) => {
     try {
       await axios.delete(`/cart/purchaser/delete/${productId}`, {
