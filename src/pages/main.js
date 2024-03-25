@@ -8,6 +8,9 @@ import TopBar from "../js/TopBar.js";
 
 
 function Main(){
+    const [sort, setSort] = useState(true);
+    const [productDesc,setProductDesc] = useState();
+    const [productInfo,setProductInfo] = useState()
 
     const axiosInstance = axios.create({
         baseURL: 'http://localhost:8080',
@@ -26,8 +29,17 @@ function Main(){
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     }
                 });
-                setProductInfo(response.data);
-            } catch(error) {
+                const resopnseLikeDesc = await axiosInstance.get(`/product/all/like/desc`,{
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    }})
+                    setProductInfo(response.data);
+                    setProductDesc(resopnseLikeDesc.data.data);
+                    console.log('상품 데이터 확인')
+                    console.log(productInfo)
+                }
+            catch(error) {
                 console.log('데이터 로드 실패', error);
             }
         };
@@ -50,8 +62,6 @@ function Main(){
         'https://i.postimg.cc/jq7Vmjn9/5.png',
         'https://i.postimg.cc/28QsjXw7/6.png',
         'https://i.postimg.cc/0NQFf5qV/7.png'])
-
-    const [productInfo,setProductInfo] = useState([{}])
     
     return(
     <div>
@@ -63,8 +73,11 @@ function Main(){
                 <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
             </div>
             <div class="mainProduct">
-                <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 상품</h4>
-                <MainProduct Endpoint = {Endpoint} product = {productInfo}></MainProduct>
+            <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%', marginTop : '5%'}}>상품</h4>
+                {productInfo === null? 
+                <><div style = {{marginBottom : '3%'}}><button onClick = {() => {setSort(true)}}>최신순</button> <button onClick = {() => {setSort(false)}}>인기순</button></div>
+                {sort ? <MainProduct Endpoint = {Endpoint} product = {productInfo}></MainProduct> : <MainProduct Endpoint = {Endpoint} product = {productDesc}></MainProduct>} </>: 
+                <><p style = {{display : 'flex',height : '300px',marginTop : '2%',justifyContent: 'center',alignItems: 'center',color : 'darkgrey', fontSize : '150%'}}>등록된 상품이 존재하지 않습니다</p></>}
             </div>
             <div className = 'designerCarousel'>
                 <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>

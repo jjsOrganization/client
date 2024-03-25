@@ -80,7 +80,6 @@ function Detail(props) {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
           },
         });
         setProductDetailInfo(response.data);
@@ -116,19 +115,16 @@ function Detail(props) {
   useEffect(() => {
     if (productDetailInfo && productLike) {
       setSalePrice(productDetailInfo.price * (1 - sale));
-      console.log(productLike);
     }
-    console.log(productDetailInfo);
+    console.log(productDetailInfo)
   }, [productDetailInfo, sale]);
 
   const handleLike = async () => {
     try {
       if (likeState) {
         await axiosInstance.delete(`/product/all/detail/${productid}/like`);
-        console.log("좋아요 취소함");
       } else {
         await axiosInstance.post(`/product/all/detail/${productid}/like`);
-        console.log("좋아요 누름");
       }
       const likeStateInfo = await axiosInstance.get(
         `/product/all/detail/${productid}/like-status`
@@ -202,7 +198,6 @@ const productLikeGet = async () => {
   };
 
   const reFormLink = `/reform?productId=${productid}`;
-
   return (
     <div>
       <TopBar />

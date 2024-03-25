@@ -1,7 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import StockList from "./stockList";
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
 import "../js/TopBar.js";
