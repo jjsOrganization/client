@@ -35,6 +35,7 @@ function Main(){
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     }})
                     setProductInfo(response.data);
+                    console.log(response.data)
                     setProductDesc(resopnseLikeDesc.data.data);
                     console.log('상품 데이터 확인')
                     console.log(productInfo)
