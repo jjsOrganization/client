@@ -2,7 +2,7 @@ import "../css/ProductList.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import exProductURL from "../images/exProduct.jpg";
-import axios from "axios";
+import axiosInstance from "./jwt.js";
 
 import "./TopBar.js";
 import TopBar from "./TopBar.js";
@@ -21,7 +21,7 @@ const PortpolioList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/portfolio/all", {
+        const response = await axiosInstance.get("/portfolio/all", {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

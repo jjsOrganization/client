@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosInstance from "./jwt.js";
 import TopBar from "./TopBar.js";
 import "../css/PurchaserInfo.css";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +25,7 @@ function PurchaserInfo() {
 
   const handleOrder = async () => {
     try {
-      await axios.put(`/cart/purchaser/order`, orderInfo, {
+      await axiosInstance.put(`/cart/purchaser/order`, orderInfo, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import styled from "styled-components";
-import axios from "axios";
+import axiosInstance from "./jwt.js";
 import "./TopBar.js";
 import TopBar from "./TopBar.js";
 import { useLocation } from "react-router-dom";
@@ -59,7 +59,7 @@ function Reform() {
       formData.append("requestPrice", requestPrice);
       formData.append("designerEmail", selectedDesigner.value);
 
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `/reform-request/purchaser/creation/${productId}`,
         formData,
         {
@@ -80,7 +80,7 @@ function Reform() {
   useEffect(() => {
     const fetchDesigners = async () => {
       try {
-        const response = await axios.get("/portfolio/all", {
+        const response = await axiosInstance.get("/portfolio/all", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },

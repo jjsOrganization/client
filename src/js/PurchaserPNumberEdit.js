@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "./jwt.js";
 import "../css/PurchaserPNumberEdit.css"
 
 function PurchaserPNumberEdit() {
@@ -19,7 +19,7 @@ function PurchaserPNumberEdit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.patch(`/auth/update/phoneNumber`, PNumberData, {
+      const response = await axiosInstance.patch(`/auth/update/phoneNumber`, PNumberData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
