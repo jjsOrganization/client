@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "./jwt.js";
+import axiosInstance from "../pages/jwt.js";
 import "../css/PurchaserPasswordEdit.css";
 
 function PurchaserPasswordEdit() {

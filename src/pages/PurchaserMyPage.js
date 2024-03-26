@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "../css/PurchaserMyPage.css";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "./jwt.js";
+import axiosInstance from "../pages/jwt.js";
 
-import "./TopBar.js";
-import TopBar from "./TopBar.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 function CustomerOrderList() {
   let navigate = useNavigate();

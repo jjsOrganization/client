@@ -19,8 +19,8 @@ import 배송완료선택 from "../images/배송완료선택.png"
 
 import next from "../images/next.png"
 
-import "./TopBar.js";
-import TopBar from "./TopBar.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 function CustomerDelivery() {
    const [customerDeliveryData, setCustomerDeliveryData] = useState([

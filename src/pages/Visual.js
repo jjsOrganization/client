@@ -1,8 +1,8 @@
 import "../css/Visual.css";
 import React, { useEffect, useState } from "react";
 
-import "./TopBar.js";
-import TopBar from "./TopBar.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 function Visual() {
   const [showWaterSaved, setShowWaterSaved] = useState(false);

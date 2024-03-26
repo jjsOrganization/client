@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "./jwt.js";
 import { useEffect, useState } from "react";
 import React from "react";
 
@@ -9,7 +9,7 @@ function DesignerSelect() {
   useEffect(() => {
     const fetchDesigners = async () => {
       try {
-        const response = await axios.get("/portfolio/all", {
+        const response = await axiosInstance.get("/portfolio/all", {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../pages/jwt.js";
 import { useNavigate } from "react-router-dom";
-import TopBar from "./TopBar.js";
+import TopBar from "../component/TopBar.js";
 import "../css/PurchaserInfoEdit.css";
 
 function PurchaserInfoEdit() {

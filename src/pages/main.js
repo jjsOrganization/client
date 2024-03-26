@@ -1,10 +1,10 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Carousel } from 'antd';
-import axiosInstance from "../js/jwt.js";
+import axiosInstance from "./jwt.js";
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import "../js/TopBar.js";
-import TopBar from "../js/TopBar.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 
 function Main(){

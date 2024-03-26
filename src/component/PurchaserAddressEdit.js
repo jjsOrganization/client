@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "./jwt.js";
-import "../css/PurchaserPNumberEdit.css"
+import axiosInstance from "../pages/jwt.js";
+import "../css/PurchaserAddressEdit.css";
 
-function PurchaserPNumberEdit() {
+function PurchaserAddressEdit() {
 
-  const [PNumberData, setPNumberData] = useState({
-    phoneNumber: "",
+  const [addressData, setAddressData] = useState({
+    password: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setPNumberData((prevState) => ({
+    setAddressData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -19,7 +19,7 @@ function PurchaserPNumberEdit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.patch(`/auth/update/phoneNumber`, PNumberData, {
+      const response = await axiosInstance.patch(`/auth/update-purchaser/address`, addressData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -35,23 +35,23 @@ function PurchaserPNumberEdit() {
   };
 
   return (
-    <div className="purchaserPNumberEdit">
-      <h1>전화번호 변경</h1>
+   <div className="purchaserAddressEdit">
+      <h1>주소 변경</h1>
       <form onSubmit={handleSubmit}>
-        <div className="newPNumber">
-          <label>새 전화번호:</label>
+        <div className="newAddress">
+          <label>새 주소:</label>
           <input
             type="text"
-            name="phoneNumber"
-            value={PNumberData.phoneNumber}
+            name="address"
+            value={addressData.address}
             onChange={handleChange}
             required
           />
         </div>
-        <button type="submit">전화번호 변경 완료</button>
+        <button type="submit">주소 변경 완료</button>
       </form>
     </div>
   );
 }
 
-export default PurchaserPNumberEdit;
+export default PurchaserAddressEdit;

@@ -4,15 +4,15 @@ import React, { useState, useEffect } from "react";
 import exProductURL from "../images/exProduct.jpg";
 import axiosInstance from "./jwt.js";
 
-import "./TopBar.js";
-import TopBar from "./TopBar.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
-const PortpolioList = () => {
-  const [portfolios, setPortfolios] = useState([]);
-  const [filteredPortfolios, setFilteredPortfolios] = useState([]);
+const ProductList = () => {
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const itemsPerPage = 6; // 페이지당 보여줄 포트폴리오(작업물)
+  const itemsPerPage = 6; // 페이지당 보여줄 상품 수
 
   const navigate = useNavigate();
   const { page } = useParams();
@@ -21,15 +21,15 @@ const PortpolioList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get("/portfolio/all", {
+        const response = await axiosInstance.get("/product/all", {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(response.data.data);
-        setPortfolios(response.data.data);
-        setFilteredPortfolios(response.data.data);
+        setProducts(response.data);
+        setFilteredProducts(response.data);
+        console.log(response.data);
       } catch (error) {
         console.log("데이터 로드 실패", error);
       }
@@ -38,32 +38,32 @@ const PortpolioList = () => {
     fetchData();
   }, []);
 
-  const totalPages = Math.ceil(filteredPortfolios.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentProducts = filteredPortfolios.slice(startIndex, endIndex);
+  const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
   const handlePageChange = (newPage) => {
     navigate(`/products/${newPage}`);
   };
 
   const handleSearchChange = (event) => {
-    const searchTerm = event.target.value.toLowerCase();                // 오류
+    const searchTerm = event.target.value.toLowerCase();
     setSearchTerm(searchTerm);
 
     if (searchTerm.trim() === "") {
-        filteredPortfolios(portfolios);
+      setFilteredProducts(products);
     } else {
-      const filteredPortfolios = portfolios.filter((portfolio) =>
-        portfolio.explanation.toLowerCase().includes(searchTerm)        // 오류
+      const filteredProducts = products.filter((product) =>
+        product.productName.toLowerCase().includes(searchTerm)
       );
-      setFilteredPortfolios(filteredPortfolios);
+      setFilteredProducts(filteredProducts);
     }
   };
 
   const handleSortByLatest = () => {
     setSortBy("latest");
-    setFilteredPortfolios((prevProducts) =>
+    setFilteredProducts((prevProducts) =>
       prevProducts.slice().sort((a, b) => b.id - a.id)
     );
   };
@@ -84,24 +84,24 @@ const PortpolioList = () => {
       <div className="findProduct">
         <input
           type="text"
-          placeholder="포트폴리오 (작업물) 검색"
+          placeholder="상품명 검색"
           value={searchTerm}
           onChange={handleSearchChange}
         />
       </div>
       <div className="productList">
-        {currentProducts.map((portfolio) => (
-          <div key={portfolio.id} className="productItem">
+        {currentProducts.map((product) => (
+          <div key={product.id} className="productItem">
             {/* 링크 추가 */}
-            <Link to={`/detail/${portfolio.id}`} style={{ textDecoration: "none"}}>
-              {portfolio.designerImagePath && (
+            <Link to={`/detail/${product.id}`} style={{ textDecoration: "none"}}>
+              {product.imgUrl && (
                 <img
-                  src={`${portfolio.designerImagePath}`}
-                  alt={portfolio.desginerName}
+                  src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${product.imgUrl}`}
+                  alt={product.productName}
                 />
               )}
-              <p style={{ color: "black"}}>디자이너 : {portfolio.designerName}</p>
-              <p style={{ color: "black"}}>설명 : {portfolio.explanation}</p>
+              <p style={{ color: "black"}}>상품명 : {product.productName}</p>
+              <p style={{ color: "black"}}>가격 : {product.price}</p>
             </Link>
           </div>
         ))}
@@ -114,6 +114,22 @@ const PortpolioList = () => {
           handlePageChange={handlePageChange}
         />
       </div>
+    </div>
+  );
+};
+
+const ProductDetail = ({ products }) => {
+  const { productId } = useParams();
+  const product = products.find((p) => p.id === parseInt(productId, 10));
+
+  // 상품을 찾지 못한 경우에 대한 처리
+  if (!product) {
+    return <div>상품을 찾을 수 없습니다.</div>;
+  }
+
+  return (
+    <div>
+      <h2>{product.name} 상세 페이지</h2>
     </div>
   );
 };
@@ -194,4 +210,4 @@ const Pagination = ({ totalPages, currentPage, handlePageChange }) => {
   );
 };
 
-export default PortpolioList;
+export { ProductList, ProductDetail };

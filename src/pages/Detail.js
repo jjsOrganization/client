@@ -4,9 +4,9 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Dropdown from "../component/dropdown";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import axiosInstance from "../js/jwt.js";
-import "../js/TopBar.js";
-import TopBar from "../js/TopBar.js";
+import axiosInstance from "./jwt.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 import LikeComponent from "../component/likeComponent.js";
 import Kakao from "../component/kakaoMap.js";
 
