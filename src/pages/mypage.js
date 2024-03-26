@@ -37,28 +37,14 @@ function MyPages(){
     }
 
     const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
-    const [openPostcode, setOpenPostcode] = useState(false);
-    const [address, setAddress] = useState('');
     const StockNavigate = useNavigate();
     const productupdateNavigate = useNavigate();
     const [registerData,setRegisterData] = useState([]);
     const [sellerData, setSellerData] = useState([]);
+    const [soldProduct, setSoldProduct] = useState();
+    const [allData, setAllData] = useState();
 
-    const mapHandler = {
-        clickButton() {
-            setOpenPostcode(current => !current);
-        },
-
-        searchAddress(data) {
-            setAddress(data.address)
-            setOpenPostcode(false);
-        }
-
-    }
-
-    const handleInputChange = (e) => {
-        setAddress(e.target.value);
-    };
+    
 
     const axiosInstance = axios.create({
         baseURL: 'http://localhost:8080',
@@ -77,18 +63,16 @@ function MyPages(){
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                 'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
             }})
-            console.log('상품삭제성공')
             alert('상품 삭제 완료')
             window.location.replace(`/mypage2`);
             
         }   
         catch(error){
             console.log('상품삭제실패',error)
-            console.log(registerData[i].id)
         }
-        }
+}
 
-        //판매자가 등록한 상품 조회
+        
         useEffect(() => {
             const fetchRegisterData = async () => {
                 try {        
@@ -98,17 +82,27 @@ function MyPages(){
                             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         }
                     });
+                    const soldProductResponse = await axiosInstance.get(`/order/seller-list`,{
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        }
+                    });
+                    
                     setRegisterData(registerResponse.data);
+                    setSoldProduct(soldProductResponse.data.data);
+                    console.log(soldProduct)
                 } catch(error) {
                     console.log('데이터 로드 실패', error);
                 }
             };
             fetchRegisterData();
         }, []);
+        
 
         //판매자 정보 조회
         useEffect(() => {
-            const fetchSellerData = async () => {
+            const fetchSellerData = async (i) => {
                 try {        
                     const sellerResponse = await axiosInstance.get("/seller/info", {
                         headers: {
@@ -116,7 +110,7 @@ function MyPages(){
                             'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`,
                         }
                     });
-                    setSellerData(sellerResponse.data);
+                    setSellerData(sellerResponse.data.data);
                 } catch(error) {
                     console.log('데이터 로드 실패', error);
                 }
@@ -124,11 +118,9 @@ function MyPages(){
             fetchSellerData();
         }, []);
 
-        useEffect(() => {
-            if(sellerData){
-                console.log(sellerData)
-            }
-        })
+        if (!registerData[0]) {
+            return <div>데이터를 로드하는 중입니다...</div>;
+        }
 
     return(
 <div className = 'mypageContainer'>
@@ -145,18 +137,12 @@ function MyPages(){
         <MypageProductList Endpoint = {Endpoint} productDeleteHandler = {productDeleteHandler} registerData = {registerData} navigate = {StockNavigate}/>:
         <h2 style = {{display : 'flex',height : '300px',marginTop : '2%',justifyContent: 'center',alignItems: 'center',color : 'darkgrey'}}>상품을 등록해주세요</h2>}
     </div>
-    
-    <p style = {{ marginTop : '3%',marginBottom : '-12px',display : 'flex'}}>매장정보</p><hr></hr>
-
-    <div className = 'mypageShopContainer' style = {{marginTop : '-4px',display : 'flex'}}>
-        <Kakao mapSize = {kakaoMapStyle}/>
-        <div className = 'shopAddress' onClick = {() => { mapHandler.clickButton()}} style = {{display : 'flex' }}>
-            <p style = {{display : 'flex',marginLeft: '25px'}}>매장위치 :</p>
-            <input type = 'text' value = {address} readOnly placeholder=" 우편번호"  onChange={handleInputChange} style = {{marginLeft : '10px',height : '25px'}}></input>
-        </div>
-        <Modal isOpen={openPostcode} ariaHideApp={false} style={customStyles} >
-            <DaumPostcode onComplete={mapHandler.searchAddress} height="100%" /> <label onClick = {() => { mapHandler.clickButton()}} style = {{position : 'absolute', bottom : '0', right : '5%'}}>나가기 ✖</label>
-        </Modal>
+    <p style = {{ marginTop : '3%',marginBottom : '-12px',display : 'flex'}}>판매 상품</p><hr></hr>
+            ㅁㄴㅇ
+    <div className = 'mypageSoldList' style = {{marginTop : '-4px',display : 'flex'}}>
+        {soldProduct.map(function(e , i){
+            
+        })}
     </div>
 </div>
 
