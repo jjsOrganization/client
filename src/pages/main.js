@@ -34,6 +34,7 @@ function Main(){
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     }})
                     setProductInfo(response.data);
+                    console.log(response.data)
                     setProductDesc(resopnseLikeDesc.data.data);
                 }
             catch(error) {

@@ -16,26 +16,26 @@ function CustomerOrderList() {
   useEffect(() => {
     const fetchOrderList = async () => {
       try {
-        const response = await axios.get("/order/purchaser-list", {
+        const responsePurchase = await axios.get("/order/purchaser-list", {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
 
-        const respons = await axios.get("/reform/purchaser/requests/all", {
+        const responseReform = await axios.get("/reform/purchaser/requests/all", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
 
-        const dat = respons.data.data;
-        console.log(dat);
-        setPurchaserReformProducts(dat);
+        const reformData = responseReform.data.data;
+        console.log(reformData);
+        setPurchaserReformProducts(reformData);
 
-        const data = response.data.data;
-        console.log(data);
-        setPurchaserOrderProducts(data);
+        const purchaseData = responsePurchase.data.data;
+        console.log(purchaseData);
+        setPurchaserOrderProducts(purchaseData);
       } catch (error) {
         console.log("데이터 로드 실패", error);
       }
@@ -122,9 +122,9 @@ function CustomerOrderList() {
             .slice(0, showMore ? undefined : 2)
             .map((product) => (
               <div key={product.id}>
-                <h5>요청한 디자이너 : {product.designerEmail}</h5>
+                <h5>리폼 의뢰를 요청한 디자이너 : {product.designerName}</h5>
                 <img
-                  src={`${product.requestImg.imgUrl}`}
+                  src={`${product.requestImg[0].imgUrl}`}
                   alt={product.name}
                 />
                 <p>요청부위 : {product.requestPart}</p>
