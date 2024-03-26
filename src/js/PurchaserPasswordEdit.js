@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "./jwt.js";
 import "../css/PurchaserPasswordEdit.css";
 
 function PurchaserPasswordEdit() {
@@ -20,7 +20,7 @@ function PurchaserPasswordEdit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.patch(`/auth/update/password`, passwordData, {
+      const response = await axiosInstance.patch(`/auth/update/password`, passwordData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

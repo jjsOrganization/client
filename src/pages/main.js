@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Carousel } from 'antd';
-import axios from 'axios'
+import axiosInstance from "../js/jwt.js";
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
@@ -10,13 +10,6 @@ import TopBar from "../js/TopBar.js";
 function Main(){
     const [sort, setSort] = useState(true);
     const [productDesc,setProductDesc] = useState();
-
-    const axiosInstance = axios.create({
-        baseURL: 'http://localhost:8080',
-        headers: {
-        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-        }
-    });
     const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
 
     useEffect(() => {

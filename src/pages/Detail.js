@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Dropdown from "../component/dropdown";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../js/jwt.js";
 import "../js/TopBar.js";
 import TopBar from "../js/TopBar.js";
 import LikeComponent from "../component/likeComponent.js";
@@ -58,14 +58,6 @@ function Detail(props) {
     marginLeft: "15%",
   };
 
-  const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
-    },
-  });
-
   const addValue = () => {
     setMyArray((prevArray) => [
       ...prevArray,
@@ -86,7 +78,7 @@ function Detail(props) {
   useEffect(() => {
     const fetchDetailData = async () => {
       try {
-        const response = await axios.get(`/product/all/detail/${productid}`, {
+        const response = await axiosInstance.get(`/product/all/detail/${productid}`, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -182,7 +174,7 @@ const productLikeGet = async () => {
 
   const addToCart = async () => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `/cart/purchaser/add/${productid}`,
         {
           id: productDetailInfo.id,

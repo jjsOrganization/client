@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "./jwt.js";
 import TopBar from "./TopBar.js";
 import "../css/CustomerShoppingBasket.css";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ function CustomerShoppingBasket() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("/cart/purchaser", {
+        const response = await axiosInstance.get("/cart/purchaser", {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -95,7 +95,7 @@ function CustomerShoppingBasket() {
         deliveryRequest: "",
       };
 
-      await axios.post(`/cart/purchaser/order`, orderDTO, {
+      await axiosInstance.post(`/cart/purchaser/order`, orderDTO, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -113,7 +113,7 @@ function CustomerShoppingBasket() {
   
   const handleDelete = async (productId) => {
     try {
-      await axios.delete(`/cart/purchaser/delete/${productId}`, {
+      await axiosInstance.delete(`/cart/purchaser/delete/${productId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../css/PurchaserMyPage.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "./jwt.js";
 
 import "./TopBar.js";
 import TopBar from "./TopBar.js";
@@ -16,14 +16,14 @@ function CustomerOrderList() {
   useEffect(() => {
     const fetchOrderList = async () => {
       try {
-        const responsePurchase = await axios.get("/order/purchaser-list", {
+        const responsePurchase = await axiosInstance.get("/order/purchaser-list", {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
 
-        const responseReform = await axios.get("/reform/purchaser/requests/all", {
+        const responseReform = await axiosInstance.get("/reform/purchaser/requests/all", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },

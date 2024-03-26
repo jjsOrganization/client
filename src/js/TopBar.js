@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // 추가된 부분: axios 불러오기
+import axiosInstance from "./jwt.js";
 import "../css/TopBar.css";
 
 function TopBar() {
@@ -8,18 +8,11 @@ function TopBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState("");
 
-  const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
-    headers: {
-    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-    }
-});
-
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       setIsLoggedIn(true);
-      axios
+      axiosInstance
         .get("/user/role", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
