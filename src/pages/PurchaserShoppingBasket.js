@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "./jwt.js";
 import TopBar from "../component/TopBar.js";
-import "../css/CustomerShoppingBasket.css";
+import "../css/PurchaserShoppingBasket.css";
 import { useNavigate } from "react-router-dom";
 
 function CustomerShoppingBasket() {

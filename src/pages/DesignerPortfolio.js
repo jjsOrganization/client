@@ -1,8 +1,8 @@
 import { Button } from "react-bootstrap";
-import style from "./DesignerPortfolio.module.css";
+import style from "../css/DesignerPortfolio.module.css";
 
-import "../js/TopBar.js";
-import TopBar from "../js/TopBar.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 function DesignerPortfolio() {
   return (

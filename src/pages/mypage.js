@@ -6,8 +6,8 @@ import Kakao from '../component/kakaoMap.js';
 import DaumPostcode from "react-daum-postcode";
 import Modal from "react-modal"; 
 import axios from 'axios'
-import "../js/TopBar.js";
-import TopBar from "../js/TopBar.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 const BtnStyle = styled.button`
     color: white;

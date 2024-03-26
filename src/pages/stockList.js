@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import "../js/TopBar.js";
-import TopBar from "../js/TopBar.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 const StockBtn = styled.button`
   color: white;

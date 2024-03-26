@@ -1,11 +1,11 @@
-import '../css/CustomerMypageOrderList.css';
+import '../css/PurchaserMypageOrderList.css';
 import React, { useState } from 'react';
 import exProductURL from "../images/exProduct.jpg"
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-import "./TopBar.js";
-import TopBar from "./TopBar.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 let BasicBtn = styled.button`
    background : black;

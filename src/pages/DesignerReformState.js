@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import TopBar from "../js/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 const ProgressContainer = styled.div`
 display: flex;

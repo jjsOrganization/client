@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import TopBar from "../js/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 function DesignerRanking() {
   const [designs, setDesigns] = useState([

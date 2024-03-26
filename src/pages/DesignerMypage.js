@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Col, Row, Container } from 'react-bootstrap'
 
 
-import TopBar from "../js/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 let BasicBtn = styled.button`
 background : black;

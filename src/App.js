@@ -1,34 +1,34 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-import "./js/Visual.js";
-import "./js/Login.js";
-import "./js/ProductList.js";
-import "./js/CustomerMyPageDelivery.js";
-import "./js/CustomerMypageOrderList.js";
-import "./js/TopBar.js";
-import "./js/PurchaserInfo.js";
-import "./js/PurchaserMyPage.js";
-import "./js/PurchaserInfoEdit.js";
-import "./js/PurchaserPNumberEdit.js";
-import "./js/PurchaserPasswordEdit.js";
-import "./js/PurchaserAddressEdit.js";
-import "./js/PortpolioList.js";
-import PortpolioList from "./js/PortpolioList.js";
-import PurchaserAddressEdit from "./js/PurchaserAddressEdit.js";
-import PurchaserPasswordEdit from "./js/PurchaserPasswordEdit.js";
-import PurchaserPNumberEdit from "./js/PurchaserPNumberEdit.js";
-import PurchaserInfoEdit from "./js/PurchaserInfoEdit.js";
-import PurchaserMyPage from "./js/PurchaserMyPage.js";
-import PurchaserInfo from "./js/PurchaserInfo.js";
-import TopBar from "./js/TopBar.js";
-import Login from "./js/Login.js";
-import Visual from "./js/Visual.js";
-import Reform from "./js/Reform.js";
-import { ProductList, ProductDetail } from "./js/ProductList.js";
-import CustomerMypageDelivery from "./js/CustomerMyPageDelivery.js";
-import CustomerMypageOrderList from "./js/CustomerMypageOrderList.js";
-import CustomerShoppingBasket from "./js/CustomerShoppingBasket.js";
+import "./pages/Visual.js";
+import "./pages/Login.js";
+import "./pages/ProductList.js";
+import "./pages/PurchaserMyPageDelivery.js";
+import "./pages/PurchaserMypageOrderList.js";
+import "./component/TopBar.js";
+import "./pages/PurchaserInfo.js";
+import "./pages/PurchaserMyPage.js";
+import "./pages/PurchaserInfoEdit.js";
+import "./component/PurchaserPNumberEdit.js";
+import "./component/PurchaserPasswordEdit.js";
+import "./component/PurchaserAddressEdit.js";
+import "./pages/PortpolioList.js";
+import PortpolioList from "./pages/PortpolioList.js";
+import PurchaserAddressEdit from "./component/PurchaserAddressEdit.js";
+import PurchaserPasswordEdit from "./component/PurchaserPasswordEdit.js";
+import PurchaserPNumberEdit from "./component/PurchaserPNumberEdit.js";
+import PurchaserInfoEdit from "./pages/PurchaserInfoEdit.js";
+import PurchaserMyPage from "./pages/PurchaserMyPage.js";
+import PurchaserInfo from "./pages/PurchaserInfo.js";
+
+import Login from "./pages/Login.js";
+import Visual from "./pages/Visual.js";
+import Reform from "./pages/Reform.js";
+import { ProductList, ProductDetail } from "./pages/ProductList.js";
+import PurchaserMypageDelivery from "./pages/PurchaserMyPageDelivery.js";
+import PurchaserMypageOrderList from "./pages/PurchaserMypageOrderList.js";
+import PurchaserShoppingBasket from "./pages/PurchaserShoppingBasket.js";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import exProductURL from "./images/exProduct.jpg";
 
@@ -89,11 +89,11 @@ const App = () => {
 
         <Route path="product/:productId" element={<ProductDetail />} />
 
-        <Route path="mypage/delivery" element={<CustomerMypageDelivery />} />
+        <Route path="mypage/delivery" element={<PurchaserMypageDelivery />} />
 
-        <Route path="mypage/orderlist" element={<CustomerMypageOrderList />} />
+        <Route path="mypage/orderlist" element={<PurchaserMypageOrderList />} />
 
-        <Route path="shoppingbasket" element={<CustomerShoppingBasket />} />
+        <Route path="shoppingbasket" element={<PurchaserShoppingBasket />} />
       </Routes>
 
       <div className="App">

@@ -1,4 +1,4 @@
-import '../css/CustomerMyPageDelivery.css';
+import '../css/PurchaserMyPageDelivery.css';
 import React, { useState, useEffect } from 'react';
 import exProductURL from "../images/exProduct.jpg"
 

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/Signup.css";
 import { useNavigate } from "react-router-dom";
-import "../js/TopBar.js";
-import TopBar from "../js/TopBar.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 function Signup() {
   let navigate = useNavigate();

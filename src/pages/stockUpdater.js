@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
-import "../js/TopBar.js";
-import TopBar from "../js/TopBar.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 import Dropdown from "../component/dropdown.js";
 
 let RegisterBtn = styled.button`

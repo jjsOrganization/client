@@ -6,10 +6,10 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import style from "./DesignerProduct.module.css";
+import style from "../css/DesignerProduct.module.css";
 
-import "../js/TopBar.js";
-import TopBar from "../js/TopBar.js";
+import "../component/TopBar.js";
+import TopBar from "../component/TopBar.js";
 
 function DesignerProduct() {
   let [좋아요, 좋아요변경] = useState(0);

@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import TopBar from "../js/TopBar.js";
-import style from "./DesignerSearch.module.css";
+import TopBar from "../component/TopBar.js";
+import style from "../css/DesignerSearch.module.css";
 
 function DesignerSearch() {
   return (
