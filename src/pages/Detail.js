@@ -10,12 +10,16 @@ import TopBar from "../js/TopBar.js";
 import LikeComponent from "../component/likeComponent.js";
 import Kakao from "../component/kakaoMap.js";
 
+
+
 let BasicBtn = styled.button`
   padding: 1%;
   background: black;
   color: white;
   width: 30%;
 `;
+
+
 
 function Detail(props) {
   const [myArray, setMyArray] = useState([]);
@@ -38,6 +42,12 @@ function Detail(props) {
   const test = total * salePrice;
   const [choiceSize, setChoiceSize] = useState(null);
   const [choiceColor, setChoiceColor] = useState(null);
+
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+  }
+
+
 
   const kakaoMapStyle = {
     display: "flex",
@@ -198,6 +208,8 @@ const productLikeGet = async () => {
   };
 
   const reFormLink = `/reform?productId=${productid}`;
+
+  
   return (
     <div>
       <TopBar />
@@ -326,6 +338,7 @@ const productLikeGet = async () => {
           <Kakao mapSize = {kakaoMapStyle}/>
         </div>
       </div>
+  
     </div>
   );
 }

@@ -50,6 +50,8 @@ import StockList from "./pages/stockList.js";
 import StockUpdater from "./pages/stockUpdater.js";
 import MyPages from "./pages/mypage.js";
 import Main from "./pages/main.js";
+import Example from './pages/test'
+
 
 const App = () => {
   let navigate = useNavigate();
@@ -147,6 +149,8 @@ const App = () => {
           <Route path="/Mypage/PurchaserInfoEdit/PurchaserAddressEdit" element={<PurchaserAddressEdit />}></Route>
 
           <Route path="/PortpolioList" element={<PortpolioList />}></Route>
+
+          <Route path = "/testpages" element = {<Example/>}></Route>
           
         </Routes>
       </div>
