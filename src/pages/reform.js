@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import styled from "styled-components";
-import axiosInstance from "../pages/jwt.js";
+import axiosInstance from "./jwt.js";
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 import { useLocation } from "react-router-dom";
