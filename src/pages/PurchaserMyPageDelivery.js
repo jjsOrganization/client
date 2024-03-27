@@ -1,5 +1,5 @@
 import '../css/PurchaserMyPageDelivery.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import exProductURL from "../images/exProduct.jpg"
 
 import 상품접수일반 from "../images/상품접수일반.png"

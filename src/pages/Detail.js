@@ -3,7 +3,6 @@ import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Dropdown from "../component/dropdown";
-import { Routes, Route, useNavigate } from "react-router-dom";
 import axiosInstance from "./jwt.js";
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
@@ -42,12 +41,6 @@ function Detail(props) {
   const test = total * salePrice;
   const [choiceSize, setChoiceSize] = useState(null);
   const [choiceColor, setChoiceColor] = useState(null);
-
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-  }
-
-
 
   const kakaoMapStyle = {
     display: "flex",

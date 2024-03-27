@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import axiosInstance from "../pages/jwt.js";
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 import Dropdown from "../component/dropdown";
@@ -10,15 +10,6 @@ let RegisterBtn = styled.button`
   color: white;
   background: black;
 `;
-
-/*[
-    { id: 1, name: '상의' },
-    { id: 2, name: '아우터' },
-    { id: 3, name: '바지' },
-    { id: 4, name: '스커트' },
-    { id: 5, name: '원피스' },
-    { id: 6, name: '모자' }
-  ];*/
 
 function ProductUpdate(props) {
   const [titleValue, setTitleValue] = useState();
@@ -32,10 +23,6 @@ function ProductUpdate(props) {
   const [categoryId, setCategoryId] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const categoryText = '카테고리'
-
-  const handleDropdownChange = (selectedItem) => {
-    setSelectedCategory(selectedItem);
-  };
 
   const categoryHandler = ((selectedCategory) => {
     if(selectedCategory === '상의'){setCategoryId(1);}
@@ -72,14 +59,6 @@ function ProductUpdate(props) {
       setThumbnailImageFile(file);
     };
   };
-
-
-  const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    },
-  });
 
   const registerHandler = async () => {
     try {

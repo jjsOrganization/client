@@ -39,19 +39,6 @@ function Login({ selectedTab, setSelectedTab }) {
     handleLogin(); // 로그인 시도
   };
 
-  const getLoginType = () => {
-    switch (selectedTab) {
-      case 1:
-        return "user";
-      case 2:
-        return "seller";
-      case 3:
-        return "designer";
-      default:
-        return "";
-    }
-  };
-
   return (
     <div className="Login">
       <div className="logo">

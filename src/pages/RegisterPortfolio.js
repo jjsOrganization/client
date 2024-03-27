@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../pages/jwt.js";
 
 const Container = styled.div`
   display: flex;
@@ -46,19 +45,10 @@ const Button = styled.button`
 `;
 
 const RegisterPortfolio = () => {
-  const navigate = useNavigate();
   const [portfolio, setPortfolio] = useState({
     explanation: "",
     designerImage: "",
     designerName: "",
-  });
-
-  const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
-    },
   });
 
   // 작업물 등록 함수

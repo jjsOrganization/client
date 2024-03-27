@@ -1,7 +1,7 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import axios from 'axios'
+import axiosInstance from "./jwt.js";
 import { useParams } from 'react-router-dom';
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
@@ -43,7 +43,6 @@ function StockUpdater() {
   const [thumbnailImage, setThumbnailImage] = useState();
   const [thumbnailImageFile, setThumbnailImageFile] = useState();
   let { productid } = useParams();
-  const [categoryData, setCategoryData] = useState();
   const categoryDropDown = ['상의','아우터','바지','스커트','원피스','모자']
   const [categoryId, setCategoryId] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -73,14 +72,6 @@ function StockUpdater() {
   const saveTitle = (event) => {
     setTitleValue(event.target.value);
   };
-
-  const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-      'X-CSRF-TOKEN': localStorage.getItem('csrfToken')
-    }
-  });
 
   const stockHandler = async () => {
     try {
@@ -117,8 +108,6 @@ function StockUpdater() {
       setThumbnailImageFile(file); 
     };
   };
-
-  const [productRegister, setProductRegister] = useState([]);
 
   return (
     <div>

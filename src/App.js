@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 
 import "./pages/Visual.js";
 import "./pages/Login.js";
 import "./pages/ProductList.js";
 import "./pages/PurchaserMyPageDelivery.js";
-import "./pages/PurchaserMypageOrderList.js";
 import "./component/TopBar.js";
 import "./pages/PurchaserInfo.js";
 import "./pages/PurchaserMyPage.js";
@@ -27,12 +26,8 @@ import Visual from "./pages/Visual.js";
 import Reform from "./pages/Reform.js";
 import { ProductList, ProductDetail } from "./pages/ProductList.js";
 import PurchaserMypageDelivery from "./pages/PurchaserMyPageDelivery.js";
-import PurchaserMypageOrderList from "./pages/PurchaserMypageOrderList.js";
 import PurchaserShoppingBasket from "./pages/PurchaserShoppingBasket.js";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import exProductURL from "./images/exProduct.jpg";
-
-import { Button, Nav } from "react-bootstrap";
+import { Routes, Route } from "react-router-dom";
 import DesignerSearch from "./pages/DesignerSearch";
 import DesignerProduct from "./pages/DesignerProduct";
 import DesignerPortfolio from "./pages/DesignerPortfolio";
@@ -54,7 +49,6 @@ import Example from './pages/test'
 
 
 const App = () => {
-  let navigate = useNavigate();
 
   let [mainImage, setMainImage] = useState([
     "https://i.postimg.cc/zfrVFgNL/1.png",
@@ -90,8 +84,6 @@ const App = () => {
         <Route path="product/:productId" element={<ProductDetail />} />
 
         <Route path="mypage/delivery" element={<PurchaserMypageDelivery />} />
-
-        <Route path="mypage/orderlist" element={<PurchaserMypageOrderList />} />
 
         <Route path="shoppingbasket" element={<PurchaserShoppingBasket />} />
       </Routes>

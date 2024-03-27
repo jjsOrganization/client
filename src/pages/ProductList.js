@@ -1,7 +1,6 @@
 import "../css/ProductList.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import exProductURL from "../images/exProduct.jpg";
 import axiosInstance from "./jwt.js";
 
 import "../component/TopBar.js";

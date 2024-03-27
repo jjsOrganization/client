@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Carousel } from 'antd';
 import axiosInstance from "./jwt.js";
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 

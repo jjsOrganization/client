@@ -1,17 +1,8 @@
 import React, { useState } from "react";
-import axiosInstance from "../pages/jwt.js";
-import { useNavigate } from "react-router-dom";
 import TopBar from "../component/TopBar.js";
 import "../css/PurchaserInfoEdit.css";
 
 function PurchaserInfoEdit() {
-  let navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    password: "",
-    rePassword: "",
-    phoneNumber: "",
-    address: "",
-  });
 
   const openPasswordChangePopup = () => {
     window.open(

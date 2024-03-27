@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
+import axiosInstance from "./jwt.js";
 import "../css/Signup.css";
 import { useNavigate } from "react-router-dom";
 import "../component/TopBar.js";
@@ -33,7 +33,7 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`/auth/join-${userType}`, formData);
+      const response = await axiosInstance.post(`/auth/join-${userType}`, formData);
       if (response.data) {
         window.alert("화원가입에 성공했습니다.");
         navigate("/login");
