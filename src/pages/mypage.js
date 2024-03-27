@@ -75,10 +75,8 @@ function MyPages() {
             },
           }
         );
-
         setRegisterData(registerResponse.data);
         setSoldProduct(soldProductResponse.data.data);
-        console.log(soldProduct);
       } catch (error) {
         console.log("데이터 로드 실패", error);
       }
@@ -103,10 +101,6 @@ function MyPages() {
     };
     fetchSellerData();
   }, []);
-
-  if (!registerData[0]) {
-    return <div>데이터를 로드하는 중입니다...</div>;
-  }
 
   return (
     <div className="mypageContainer">
@@ -150,16 +144,12 @@ function MyPages() {
         )}
       </div>
       <p style={{ marginTop: "3%", marginBottom: "-12px", display: "flex" }}>
-        판매 상품
-      </p>
-      <hr></hr>
-      ㅁㄴㅇ
-      <div
-        className="mypageSoldList"
-        style={{ marginTop: "-4px", display: "flex" }}
-      >
-        {soldProduct.map(function (e, i) {})}
-      </div>
+      판매 상품</p><hr></hr>
+      {!soldProduct ? '판매된 상품이 존재하지 않습니다': 
+      <>
+      <div className="mypageSoldList" style={{ marginTop: "-4px", display: "flex" }}>
+        {soldProduct[0].orderDetails[0].price}
+      </div></>}
     </div>
   );
 }
