@@ -51,7 +51,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "http://3.38.128.50:8080/",
   "devDependencies": {
     "autoprefixer": "^10.4.19",
     "http-proxy-middleware": "^2.0.6",

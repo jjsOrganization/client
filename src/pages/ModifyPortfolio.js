@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from "../pages/jwt.js";
 
 const Container = styled.div`
 display: flex;
@@ -95,13 +95,6 @@ setProfileImage(imageUrl);
 const gotoRegisterPage = () => {
 navigate("/DesignerMypage/ModifyPortfolio/RegisterPortfolio");
 };
-
-const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080",
-    headers: {
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    },
-});
 
 const handleRegister = async () => {
     try {

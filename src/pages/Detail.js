@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Dropdown from "../component/dropdown";
@@ -9,8 +9,6 @@ import TopBar from "../component/TopBar.js";
 import LikeComponent from "../component/likeComponent.js";
 import Kakao from "../component/kakaoMap.js";
 
-
-
 let BasicBtn = styled.button`
   padding: 1%;
   background: black;
@@ -18,9 +16,8 @@ let BasicBtn = styled.button`
   width: 30%;
 `;
 
-
-
 function Detail(props) {
+  let navigate = useNavigate();
   const [myArray, setMyArray] = useState([]);
   let [sale, setSale] = useState(0.25);
   let [total, setTotal] = useState(0);
@@ -71,12 +68,15 @@ function Detail(props) {
   useEffect(() => {
     const fetchDetailData = async () => {
       try {
-        const response = await axiosInstance.get(`/product/all/detail/${productid}`, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
+        const response = await axiosInstance.get(
+          `/product/all/detail/${productid}`,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
         setProductDetailInfo(response.data);
       } catch (error) {
         console.log("상품 상세 데이터 로드 실패", error);
@@ -111,7 +111,7 @@ function Detail(props) {
     if (productDetailInfo && productLike) {
       setSalePrice(productDetailInfo.price * (1 - sale));
     }
-    console.log(productDetailInfo)
+    console.log(productDetailInfo);
   }, [productDetailInfo, sale]);
 
   const handleLike = async () => {
@@ -129,13 +129,13 @@ function Detail(props) {
     } catch (error) {
       console.log("좋아요 처리 에러", error);
     }
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     productLikeGet();
-}, []);
+  }, []);
 
-const productLikeGet = async () => {
+  const productLikeGet = async () => {
     try {
       const productLikeCount = await axiosInstance.get(
         `/product/all/detail/${productid}/like-count`
@@ -144,7 +144,7 @@ const productLikeGet = async () => {
     } catch (error) {
       console.log("좋아요 get에러", error);
     }
-};
+  };
 
   //상품 좋아요 여부 확인
   useEffect(() => {
@@ -192,9 +192,36 @@ const productLikeGet = async () => {
     }
   };
 
+  const handleOrder = async () => {
+    try {
+      const orderDTO = {
+        orderDetails: [
+          {
+            productId: productDetailInfo.id,
+            quantity: 1,
+          },
+        ],
+        postcode: "",
+        address: "",
+        detailAddress: "",
+        phoneNumber: "",
+        deliveryRequest: "",
+      };
+
+      await axiosInstance.post(`/product/purchaser/order`, orderDTO, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      // 페이지 이동
+      navigate("/PurchaserInfo");
+    } catch (error) {
+      console.log("주문 실패", error);
+    }
+  };
+
   const reFormLink = `/reform?productId=${productid}`;
 
-  
   return (
     <div>
       <TopBar />
@@ -248,8 +275,8 @@ const productLikeGet = async () => {
                 setLikeState={setLikeState}
                 likeState={likeState}
                 Likeresult={productLike}
-                productLikeGet = {productLikeGet}
-                handleLike = {handleLike}
+                productLikeGet={productLikeGet}
+                handleLike={handleLike}
               />{" "}
               {productLike}{" "}
             </div>
@@ -264,18 +291,14 @@ const productLikeGet = async () => {
                 width: "100%",
               }}
             >
-              <BasicBtn
-                onClick={() => {
-                  total === 0
-                    ? alert("사이즈와 색상을 선택해 주세요")
-                    : alert("구매 완료");
-                  window.location.replace(`/detail/${productid}`);
-                }}
-              >
-                구매하기
-              </BasicBtn>
+              <BasicBtn onClick={handleOrder}>주문하기</BasicBtn>
               <BasicBtn>
-                <Link to={reFormLink} style={{ textDecoration: "none", color:"white"}}>의뢰하기</Link>
+                <Link
+                  to={reFormLink}
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  의뢰하기
+                </Link>
               </BasicBtn>
               <BasicBtn onClick={addToCart}>장바구니</BasicBtn>
             </div>
@@ -286,44 +309,46 @@ const productLikeGet = async () => {
           <p>{productDetailInfo.itemDetail}</p>
         </div>
         <div className="buy-info" style={{ display: "flex" }}>
-        <div className="dropdown" style={{ display: "flex", marginTop: "3%" }}>
-          <Dropdown
-            text={size}
-            setArticleType={setChoiceSize}
-            articleType={choiceSize}
-            articleTypeList={SizeList}
-          />
-          <Dropdown
-            text={color}
-            setArticleType={setChoiceColor}
-            articleType={choiceColor}
-            articleTypeList={ColorList}
-          />
-        </div>
-        <div className="buy-info" style={{ marginLeft: "7%" }}>
-          <h4>제품명 : {productDetailInfo.productName}</h4>
-          <p style={{ marginBottom: "2%" }}>
-            결제 예정 금액 : {test.toLocaleString()}{" "}
-          </p>
-          <p>수량 : {total}</p>
-          <div classNale="selectOpt">
-            {myArray.map(function (choice, index) {
-              return (
-                <div
-                  className="user-choice"
-                  style={{ w0th: "180px", marginBottom: "10px" }}
-                >
-                  {choice.size + choice.color}{" "}
-                  <button className="choice-cancel">✖</button>
-                </div>
-              );
-            })}
+          <div
+            className="dropdown"
+            style={{ display: "flex", marginTop: "3%" }}
+          >
+            <Dropdown
+              text={size}
+              setArticleType={setChoiceSize}
+              articleType={choiceSize}
+              articleTypeList={SizeList}
+            />
+            <Dropdown
+              text={color}
+              setArticleType={setChoiceColor}
+              articleType={choiceColor}
+              articleTypeList={ColorList}
+            />
           </div>
+          <div className="buy-info" style={{ marginLeft: "7%" }}>
+            <h4>제품명 : {productDetailInfo.productName}</h4>
+            <p style={{ marginBottom: "2%" }}>
+              결제 예정 금액 : {test.toLocaleString()}{" "}
+            </p>
+            <p>수량 : {total}</p>
+            <div classNale="selectOpt">
+              {myArray.map(function (choice, index) {
+                return (
+                  <div
+                    className="user-choice"
+                    style={{ w0th: "180px", marginBottom: "10px" }}
+                  >
+                    {choice.size + choice.color}{" "}
+                    <button className="choice-cancel">✖</button>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <Kakao mapSize = {kakaoMapStyle}/>
+          <Kakao mapSize={kakaoMapStyle} />
         </div>
       </div>
-  
     </div>
   );
 }
