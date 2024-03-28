@@ -412,19 +412,29 @@ function CustomerOrderList() {
 
                                       <div className="flex">
                                         {/* 상품 체크박스 */}
-                                        <input
-                                          type="checkbox"
-                                          checked={product.checked}
-                                          onChange={() =>
-                                            handleCheckboxChange(product.id)
-                                          }
-                                        />
+                                        <label className="customCheckbox">
+                                          <input
+                                            type="checkbox"
+                                            checked={product.checked}
+                                            onChange={() =>
+                                              handleCheckboxChange(product.id)
+                                            }
+                                            style={{
+                                              transform: "scale(1.5)",
+                                              marginRight: "10px",
+                                              marginTop: "10px",
+                                            }}
+                                          />
+                                        </label>
 
                                         <button
                                           type="button"
                                           className="font-medium text-indigo-600 hover:text-indigo-500"
+                                          onClick={() =>
+                                            handleDelete(product.id)
+                                          }
                                         >
-                                          Remove
+                                          삭제하기
                                         </button>
                                       </div>
                                     </div>
