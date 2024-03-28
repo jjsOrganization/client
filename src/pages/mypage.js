@@ -77,6 +77,7 @@ function MyPages() {
         );
         setRegisterData(registerResponse.data);
         setSoldProduct(soldProductResponse.data.data);
+        console.log(soldProductResponse.data.data);
       } catch (error) {
         console.log("데이터 로드 실패", error);
       }
@@ -144,12 +145,19 @@ function MyPages() {
         )}
       </div>
       <p style={{ marginTop: "3%", marginBottom: "-12px", display: "flex" }}>
-      판매 상품</p><hr></hr>
-      {!soldProduct ? '판매된 상품이 존재하지 않습니다': 
-      <>
-      <div className="mypageSoldList" style={{ marginTop: "-4px", display: "flex" }}>
-        {soldProduct[0].orderDetails[0].price}
-      </div></>}
+        판매 상품
+      </p>
+      <hr></hr>
+      {!soldProduct <= 1 ? (
+        "판매된 상품이 존재하지 않습니다"
+      ) : (
+        <div
+          className="mypageSoldList"
+          style={{ marginTop: "-4px", display: "flex" }}
+        >
+          {soldProduct[0].orderDetails[0].price}
+        </div>
+      )}
     </div>
   );
 }
