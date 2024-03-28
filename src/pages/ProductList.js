@@ -11,7 +11,7 @@ const ProductList = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const itemsPerPage = 6; // 페이지당 보여줄 상품 수
+  const itemsPerPage = 8; // 페이지당 보여줄 상품 수
 
   const navigate = useNavigate();
   const { page } = useParams();
@@ -93,37 +93,37 @@ const ProductList = () => {
           <h2 className="sr-only">Products</h2>
 
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {products.map((product) => (
-              <a key={product.id} href={product.href} className="group">
-                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                  <Link
-                    to={`/detail/${product.id}`}
-                    style={{ textDecoration: "none" }}
-                  >
-                    {product.imgUrl && (
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <img
-                          src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${product.imgUrl}`}
-                          alt={product.productName}
-                          style={{ width: "500px", height: "500px" }}
-                        />
-                      </div>
-                    )}
-
-                    <p style={{ color: "black" }}>
-                      상품명 : {product.productName}
-                    </p>
-                    <p style={{ color: "black" }}>가격 : {product.price}</p>
-                  </Link>
-                </div>
-                <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-              </a>
+            {currentProducts.map((product) => (
+              <a key={product.id} href={product.href} className="group" style={{ textDecoration: 'none' }}>
+              <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <Link
+                  to={`/detail/${product.id}`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  {product.imgUrl && (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <img
+                        src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${product.imgUrl}`}
+                        alt={product.productName}
+                        style={{ width: "500px", height: "500px" }}
+                      />
+                    </div>
+                  )}
+            
+                  <p style={{ color: "black" }}>
+                    상품명 : {product.productName}
+                  </p>
+                  <p style={{ color: "black" }}>가격 : {product.price}</p>
+                </Link>
+              </div>
+              <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
+            </a>
             ))}
           </div>
         </div>
