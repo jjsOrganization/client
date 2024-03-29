@@ -133,7 +133,7 @@ const ProductList = () => {
                         <img
                           src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${product.imgUrl}`}
                           alt={product.productName}
-                          style={{ width: "500px", height: "500px" }}
+                          style={{ width: "350px", height: "350px" }}
                         />
                       </div>
                     )}

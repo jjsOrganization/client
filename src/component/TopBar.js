@@ -49,7 +49,6 @@ function TopBar() {
         {role === "ROLE_PURCHASER" && (
           <>
             <p onClick={() => navigate("/PurchaserMyPage")}>마이페이지</p>
-            <p onClick={() => navigate("/shoppingbasket")}>장바구니</p>
           </>
         )}
         {role === "ROLE_SELLER" && (

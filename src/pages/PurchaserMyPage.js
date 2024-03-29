@@ -157,7 +157,7 @@ function CustomerOrderList() {
 
   const totalPriceOfCheckedItems = customerShoppingBasket
     .filter((product) => product.checked)
-    .reduce((total, product) => total + product.totalPrice, 0);
+    .reduce((total, product) => total + product.price * product.count, 0);
 
   const setProductCount = (productId, newCount) => {
     setCustomerShoppingBasket((prevBasket) =>
@@ -382,6 +382,7 @@ function CustomerOrderList() {
                                         갯수 :
                                         <button
                                           className="basketCountButton"
+                                          style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
                                           onClick={() =>
                                             setProductCount(
                                               product.id,
