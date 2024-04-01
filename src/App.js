@@ -1,18 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-
-import "./pages/Visual.js";
-import "./pages/Login.js";
-import "./pages/ProductList.js";
-import "./pages/PurchaserMyPageDelivery.js";
-import "./component/TopBar.js";
-import "./pages/PurchaserInfo.js";
-import "./pages/PurchaserMyPage.js";
-import "./pages/PurchaserInfoEdit.js";
-import "./component/PurchaserPNumberEdit.js";
-import "./component/PurchaserPasswordEdit.js";
-import "./component/PurchaserAddressEdit.js";
-import "./pages/PortpolioList.js";
+import LiveChat from "./pages/LiveChat.js";
 import PortpolioList from "./pages/PortpolioList.js";
 import PurchaserAddressEdit from "./component/PurchaserAddressEdit.js";
 import PurchaserPasswordEdit from "./component/PurchaserPasswordEdit.js";
@@ -20,11 +8,10 @@ import PurchaserPNumberEdit from "./component/PurchaserPNumberEdit.js";
 import PurchaserInfoEdit from "./pages/PurchaserInfoEdit.js";
 import PurchaserMyPage from "./pages/PurchaserMyPage.js";
 import PurchaserInfo from "./pages/PurchaserInfo.js";
-
 import Login from "./pages/Login.js";
 import Visual from "./pages/Visual.js";
 import Reform from "./pages/Reform.js";
-import { ProductList, ProductDetail } from "./pages/ProductList.js";
+import ProductList from "./pages/ProductList.js";
 import PurchaserMypageDelivery from "./pages/PurchaserMyPageDelivery.js";
 import PurchaserShoppingBasket from "./pages/PurchaserShoppingBasket.js";
 import { Routes, Route } from "react-router-dom";
@@ -37,7 +24,6 @@ import ModifyPortfolio from "./pages/ModifyPortfolio.js";
 import RegisterPortfolio from "./pages/RegisterPortfolio.js";
 import DesignerReformState from "./pages/DesignerReformState.js";
 import Signup from "./pages/Signup.js";
-
 import data from "./data.js";
 import Detail from "./pages/Detail.js";
 import ProductUpdate from "./pages/productRegistration.js";
@@ -81,7 +67,6 @@ const App = () => {
 
         <Route path="products/:page?" element={<ProductList />} />
 
-        <Route path="product/:productId" element={<ProductDetail />} />
 
         <Route path="mypage/delivery" element={<PurchaserMypageDelivery />} />
 
@@ -90,8 +75,8 @@ const App = () => {
 
       <div className="App">
         <Routes>
-          <Route path="Signup" element={<Signup />} />
-          <Route path="/DesignerSearch" element={<DesignerSearch />} />
+          <Route path="/Signup" element={<Signup />} />
+          <Route path="/Designers/:page?" element={<DesignerSearch />} /> 
           <Route path="/DesignerProduct" element={<DesignerProduct />} />
           <Route path="/DesignerPortfolio" element={<DesignerPortfolio />} />
           <Route path="/DesignerRanking" element={<DesignerRanking />} />
@@ -143,6 +128,8 @@ const App = () => {
           <Route path="/PortpolioList" element={<PortpolioList />}></Route>
 
           <Route path = "/testpages" element = {<Example/>}></Route>
+          
+          <Route path = "/LiveChat" element = {<LiveChat/>}></Route>
           
         </Routes>
       </div>

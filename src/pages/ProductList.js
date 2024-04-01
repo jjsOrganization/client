@@ -162,22 +162,6 @@ const ProductList = () => {
   );
 };
 
-const ProductDetail = ({ products }) => {
-  const { productId } = useParams();
-  const product = products.find((p) => p.id === parseInt(productId, 10));
-
-  // 상품을 찾지 못한 경우에 대한 처리
-  if (!product) {
-    return <div>상품을 찾을 수 없습니다.</div>;
-  }
-
-  return (
-    <div>
-      <h2>{product.name} 상세 페이지</h2>
-    </div>
-  );
-};
-
 const Pagination = ({ totalPages, currentPage, handlePageChange }) => {
   const navigate = useNavigate();
 
@@ -254,4 +238,4 @@ const Pagination = ({ totalPages, currentPage, handlePageChange }) => {
   );
 };
 
-export { ProductList, ProductDetail };
+export default ProductList ;
