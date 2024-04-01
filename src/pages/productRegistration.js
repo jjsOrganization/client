@@ -86,8 +86,6 @@ function ProductUpdate(props) {
       alert("상품이 등록되었습니다.");
     } catch (error) {
       console.error("상품 등록 실패:", error);
-      console.log(selectedCategory)
-      console.log(categoryId)
       alert("상품 등록에 실패했습니다.");
     }
   };
@@ -172,7 +170,7 @@ function ProductUpdate(props) {
             value={titleValue}
             type="text"
             onChange={saveTitle}
-            style={{ width: "100%", marginBottom: "30px" }}
+            style={{ width: "100%", marginBottom: "30px",border : '1px solid #374d9a',borderRadius : '5px', padding : '8px', boxSizing : 'border-box' }}
           />
         </div>
         <div className="productRegisterContent">
@@ -181,7 +179,7 @@ function ProductUpdate(props) {
             value={contentValue}
             type="text"
             onChange={savecontent}
-            style={{ width: "100%", marginBottom: "30px" }}
+            style={{ width: "100%", marginBottom: "30px",border : '1px solid #374d9a',borderRadius : '5px', padding : '8px', boxSizing : 'border-box' }}
           />
         </div>
         <div className="productRegisterPrice">
@@ -190,7 +188,7 @@ function ProductUpdate(props) {
             value={priceValue}
             type="text"
             onChange={savePrice}
-            style={{ width: "100%", marginBottom: "30px" }}
+            style={{ width: "100%", marginBottom: "30px",border : '1px solid #374d9a',borderRadius : '5px', padding : '8px', boxSizing : 'border-box' }}
           />
         </div>
         <div className="productRegisterAmount">
@@ -199,7 +197,7 @@ function ProductUpdate(props) {
             value={amountValue}
             type="text"
             onChange={saveAmount}
-            style={{ width: "100%", marginBottom: "30px" }}
+            style={{ width: "100%", marginBottom: "30px",border : '1px solid #374d9a',borderRadius : '5px', padding : '8px', boxSizing : 'border-box' }}
           />
         </div>
         <div className = 'productRegisterCategory'>
@@ -213,13 +211,12 @@ function ProductUpdate(props) {
       />
         </div>
         <div className="productRegisterBtn" style={{ textAlign: "right" }}>
-          <RegisterBtn
+          <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
             onClick={() => {
               registerHandler();
-            }}
-          >
+            }}>
             상품등록
-          </RegisterBtn>
+          </button>
         </div>
         
       </div>

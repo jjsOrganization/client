@@ -21,7 +21,6 @@ function Detail(props) {
   const [myArray, setMyArray] = useState([]);
   let [sale, setSale] = useState(0.25);
   let [total, setTotal] = useState(0);
-  const [dropdownVisibility, setDropdownVisibility] = React.useState(false);
   let { productid } = useParams();
   const [productDetailInfo, setProductDetailInfo] = useState();
   const [sellerData, setSellerData] = useState();
@@ -332,7 +331,7 @@ function Detail(props) {
               결제 예정 금액 : {test.toLocaleString()}{" "}
             </p>
             <p>수량 : {total}</p>
-            <div classNale="selectOpt">
+            <div className="selectOpt">
               {myArray.map(function (choice, index) {
                 return (
                   <div
@@ -346,7 +345,7 @@ function Detail(props) {
               })}
             </div>
           </div>
-          <Kakao mapSize={kakaoMapStyle} />
+          
         </div>
       </div>
     </div>
