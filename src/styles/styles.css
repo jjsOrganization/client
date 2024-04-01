@@ -3,3 +3,4 @@
 @import 'tailwindcss/utilities';
 @import '@headlessui/react';
 @import '@heroicons/react/24/outline';
+@import '@tailwindcss/forms';

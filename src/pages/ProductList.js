@@ -133,7 +133,7 @@ const ProductList = () => {
                         <img
                           src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${product.imgUrl}`}
                           alt={product.productName}
-                          style={{ width: "500px", height: "500px" }}
+                          style={{ width: "350px", height: "350px" }}
                         />
                       </div>
                     )}
@@ -158,22 +158,6 @@ const ProductList = () => {
           handlePageChange={handlePageChange}
         />
       </div>
-    </div>
-  );
-};
-
-const ProductDetail = ({ products }) => {
-  const { productId } = useParams();
-  const product = products.find((p) => p.id === parseInt(productId, 10));
-
-  // 상품을 찾지 못한 경우에 대한 처리
-  if (!product) {
-    return <div>상품을 찾을 수 없습니다.</div>;
-  }
-
-  return (
-    <div>
-      <h2>{product.name} 상세 페이지</h2>
     </div>
   );
 };
@@ -254,4 +238,4 @@ const Pagination = ({ totalPages, currentPage, handlePageChange }) => {
   );
 };
 
-export { ProductList, ProductDetail };
+export default ProductList ;

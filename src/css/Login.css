@@ -1,4 +1,4 @@
-@keyframes gradientAnimation {
+/* @keyframes gradientAnimation {
   0% {
     background: linear-gradient(to right, #374D9A, #415AB4);
   }
@@ -20,7 +20,7 @@
   100% {
     background: linear-gradient(to right, #374D9A, #96A5D9);
   }
-}
+} */
 
 .Login {
   margin: 0;
@@ -28,7 +28,7 @@
   height: 100vh;
   overflow: hidden;
   animation: gradientAnimation 0.5s linear 1 forwards;
-  background: #374D9A;
+  background: #ffffff;
 
   display: flex;
   flex-direction: column;

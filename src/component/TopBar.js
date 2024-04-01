@@ -3,7 +3,22 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../pages/jwt.js";
 import "../css/TopBar.css";
 
-function TopBar() {
+import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
+import {
+  ArrowPathIcon,
+  Bars3Icon,
+  ChartPieIcon,
+  CursorArrowRaysIcon,
+  FingerPrintIcon,
+  SquaresPlusIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline'
+import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+
+
+
+
+export default function TopBar() {
   let navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState("");
@@ -34,44 +49,66 @@ function TopBar() {
     setIsLoggedIn(false);
     navigate("/login");
   };
-
+// bg-red-50 mb-4
   return (
-    <div>
-      <div className="loginMenu">
-        {isLoggedIn ? (
-          <p onClick={handleLogout}>로그아웃</p>
-        ) : (
-          <>
-            <p onClick={() => navigate("/login")}>로그인</p>
-            <p onClick={() => navigate("/signup")}>회원가입</p>
-          </>
-        )}
-        {role === "ROLE_PURCHASER" && (
-          <>
-            <p onClick={() => navigate("/PurchaserMyPage")}>마이페이지</p>
-            <p onClick={() => navigate("/shoppingbasket")}>장바구니</p>
-          </>
-        )}
-        {role === "ROLE_SELLER" && (
-          <>
-            <p onClick={() => navigate("/mypage2")}>마이페이지</p>
-          </>
-        )}
-        {role === "ROLE_DESIGNER" && (
-          <>
-            <p onClick={() => navigate("/DesignerMyPage")}>마이페이지</p>
-          </>
-        )}
-      </div>
-      <div className="topBarMenu">
-        <p onClick={() => navigate("/products/1")}>상품검색</p>
-        <p onClick={() => navigate("/DesignerSearch")}>디자이너검색</p>
-        <p onClick={() => navigate("/")}>메인페이지</p>
-        <p onClick={() => navigate("/visual")}>물 시각화</p>
-        <p onClick={() => navigate("/PortpolioList")}>포트폴리오 (작업물)</p>
-      </div>
-    </div>
+    <header className="bg-lime-50 mb-4">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+        <div className="flex lg:flex-1">
+          <a href="/" className="-m-1.5 p-1.5">
+            <span className="sr-only">Your Company</span>
+            <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+          </a>
+        </div>
+        <Popover.Group className="hidden lg:flex lg:gap-x-12">
+          <a href="/products" className="text-sm font-semibold leading-6 text-gray-900">
+            상품 검색
+          </a>
+          <a href="/designers" className="text-sm font-semibold leading-6 text-gray-900">
+            디자이너 검색
+          </a>
+          <a href="/visual" className="text-sm font-semibold leading-6 text-gray-900">
+            물 시각화
+          </a>
+          <a href="PortpolioList" className="text-sm font-semibold leading-6 text-gray-900">
+            포트폴리오(작업물)
+          </a>
+        </Popover.Group>
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          {isLoggedIn ? (
+            <div className="loginMenu">
+              {role === "ROLE_PURCHASER" && (
+                <>
+                  <a className="text-sm font-semibold leading-6 text-gray-900 mr-4" onClick={() => navigate("/PurchaserMyPage")}>
+                    마이페이지 <span aria-hidden="true" >&rarr;</span>
+                  </a>
+                </>
+              )}
+              {role === "ROLE_SELLER" && (
+                <a className="text-sm font-semibold leading-6 text-gray-900 mr-4" onClick={() => navigate("/mypage2")}>
+                  마이페이지 <span aria-hidden="true">&rarr;</span>
+                </a>
+              )}
+              {role === "ROLE_DESIGNER" && (
+                <a className="text-sm font-semibold leading-6 text-gray-900 mr-4" onClick={() => navigate("/DesignerMyPage")}>
+                  마이페이지 <span aria-hidden="true">&rarr;</span>
+                </a>
+              )}
+              <a className="text-sm font-semibold leading-6 text-gray-900" onClick={handleLogout}>
+                Log out <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          ) : (
+            <div className="loginMenu">
+              <a className="text-sm font-semibold leading-6 text-gray-900 mr-4" onClick={() => navigate("/login")}>
+                Log in <span aria-hidden="true">&rarr;</span>
+              </a>
+              <a className="text-sm font-semibold leading-6 text-gray-900" onClick={() => navigate("/signup")}>
+                Sign in <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          )}
+        </div>
+      </nav>
+    </header>
   );
 }
-
-export default TopBar;
