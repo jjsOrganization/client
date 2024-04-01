@@ -10,7 +10,7 @@ import PurchaserMyPage from "./pages/PurchaserMyPage.js";
 import PurchaserInfo from "./pages/PurchaserInfo.js";
 import Login from "./pages/Login.js";
 import Visual from "./pages/Visual.js";
-import Reform from "./pages/Reform.js";
+import Reform from "./pages/reform.js";
 import ProductList from "./pages/ProductList.js";
 import PurchaserMypageDelivery from "./pages/PurchaserMyPageDelivery.js";
 import PurchaserShoppingBasket from "./pages/PurchaserShoppingBasket.js";
