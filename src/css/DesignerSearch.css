@@ -1,0 +1,103 @@
+/* 기본 스타일 */
+
+.designerList {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.designerItem {
+  flex: 0 0 calc(32%);
+  margin: 5%;
+  box-sizing: border-box;
+}
+
+.designerItem img {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 30px;
+}
+
+.pagination span {
+  margin: 0 20px; 
+}
+
+
+.findDesigner {
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.findDesigner input {
+  width: 900px;
+  height: 40px;
+  font-size: 20px;
+  margin-top: 2%;
+}
+
+
+.sortButtons {
+  display: flex;
+  justify-content: center;
+  margin-right: 680px;
+}
+
+.sortButtons button {
+  width: 100px;
+  height: 30px;
+  font-size: 13px;
+  margin: 0 10px;
+}
+
+
+
+@media screen and (max-width: 1024px) {
+  .findDesigner input[type="text"] {
+    width: 900px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .designerItem {
+    flex-basis: calc(49% - 20px);
+    margin: 10px;
+  }
+
+  .pagination {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .findDesigner input[type="text"] {
+    width: 400px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .designerItem {
+    flex-basis: calc(100% - 20px);
+    margin: 10px;
+  }
+
+  .pagination {
+    font-size: 20px;
+  }
+
+  .sortButtons {
+    margin: 0;
+  }
+}
