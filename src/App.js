@@ -10,13 +10,8 @@ import PurchaserMyPage from "./pages/PurchaserMyPage.js";
 import PurchaserInfo from "./pages/PurchaserInfo.js";
 import Login from "./pages/Login.js";
 import Visual from "./pages/Visual.js";
-<<<<<<< HEAD
 import Reform from "./pages/reform.js";
 import { ProductList, ProductDetail } from "./pages/ProductList.js";
-=======
-import Reform from "./pages/Reform.js";
-import ProductList from "./pages/ProductList.js";
->>>>>>> 85de93ecb0cb1c43733b0aeed4b39d8ec3561c00
 import PurchaserMypageDelivery from "./pages/PurchaserMyPageDelivery.js";
 import PurchaserShoppingBasket from "./pages/PurchaserShoppingBasket.js";
 import { Routes, Route } from "react-router-dom";
