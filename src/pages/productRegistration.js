@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import axiosInstance from "../pages/jwt.js";
+import axiosInstance from "../component/jwt.js";
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 import Dropdown from "../component/dropdown";

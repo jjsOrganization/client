@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import axiosInstance from "../pages/jwt.js";
+import axiosInstance from "../component/jwt.js";
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../css/Login.css";
-import axiosInstance from "./jwt.js";
+import axiosInstance from "../component/jwt.js";
 import { useNavigate } from "react-router-dom";
 import Logo from "../images/로고01.png"
 

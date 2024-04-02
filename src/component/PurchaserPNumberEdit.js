@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axiosInstance from "../pages/jwt.js";
+import axiosInstance from "../component/jwt.js";
 import "../css/PurchaserPNumberEdit.css"
 
 function PurchaserPNumberEdit() {

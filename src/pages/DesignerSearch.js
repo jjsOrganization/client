@@ -1,7 +1,7 @@
 import "../css/DesignerSearch.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import axiosInstance from "./jwt.js";
+import axiosInstance from "../component/jwt.js";
 
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";

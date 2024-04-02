@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axiosInstance from "./jwt.js";
+import axiosInstance from "../component/jwt.js";
 import "../css/Signup.css";
 import { useNavigate } from "react-router-dom";
 import "../component/TopBar.js";

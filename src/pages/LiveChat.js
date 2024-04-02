@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import axiosInstance from "../pages/jwt.js";
+import axiosInstance from "../component/jwt.js";
 import { parse } from "postcss";
 
 const WebSocketComponent = () => {
+  const [msg,setMsg] = useState();
   const [messages, setMessages] = useState([]);
   const [stompClient, setStompClient] = useState(null);
   const [roomId, setRoomId] = useState();
@@ -111,7 +112,7 @@ const WebSocketComponent = () => {
         <h2>Messages:</h2>
         <input
           type="text"
-          value={messages}
+          value={msg}
           placeholder="메세지"
         />
       </div>
