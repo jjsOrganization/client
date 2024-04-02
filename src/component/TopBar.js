@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../pages/jwt.js";
+import axiosInstance from "../component/jwt.js";
 import "../css/TopBar.css";
 
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'

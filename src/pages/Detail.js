@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Dropdown from "../component/dropdown";
-import axiosInstance from "./jwt.js";
+import axiosInstance from "../component/jwt.js";
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 import LikeComponent from "../component/likeComponent.js";

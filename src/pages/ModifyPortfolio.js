@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
-import axiosInstance from "../pages/jwt.js";
+import axiosInstance from "../component/jwt.js";
 
 const Container = styled.div`
 display: flex;

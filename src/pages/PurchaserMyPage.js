@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import "../css/PurchaserMyPage.css";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "./jwt.js";
+import axiosInstance from "../component/jwt.js";
 
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";

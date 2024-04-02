@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import axiosInstance from "./jwt.js";
+import axiosInstance from "../component/jwt.js";
 import { useParams } from 'react-router-dom';
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";

@@ -24,7 +24,6 @@ import ModifyPortfolio from "./pages/ModifyPortfolio.js";
 import RegisterPortfolio from "./pages/RegisterPortfolio.js";
 import DesignerReformState from "./pages/DesignerReformState.js";
 import Signup from "./pages/Signup.js";
-import data from "./data.js";
 import Detail from "./pages/Detail.js";
 import ProductUpdate from "./pages/productRegistration.js";
 import StockList from "./pages/stockList.js";
@@ -101,15 +100,10 @@ const App = () => {
 
           <Route path="/productupdate" element={<ProductUpdate />}></Route>
 
-          <Route
-            path="/stockList"
-            element={<StockList data={data} mainImage={mainImage} />}
-          ></Route>
-
           <Route path="/stockupdater/:productid" element={<StockUpdater />} />
           <Route />
 
-          <Route path="/mypage2" element={<MyPages data={data} />}></Route>
+          <Route path="/mypage2" element={<MyPages/>}></Route>
 
           <Route path="/reform" element={<Reform />}></Route>
 

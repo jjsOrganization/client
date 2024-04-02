@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axiosInstance from "../pages/jwt.js";
+import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import "../css/PurchaserInfo.css";
 import { useNavigate } from "react-router-dom";
