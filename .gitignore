@@ -19,9 +19,10 @@
 .env.production.local
 .env.production
 
-pa
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 /src/pages/jwt.js
+.env

@@ -17,58 +17,60 @@ const WebSocketComponent = () => {
   };
 
   const connect = () => {
-    const socket = new SockJS("ws://3.38.128.50:8080/ws/chat/websocket");
+    const socket = new SockJS("http://3.38.128.50:8080/ws/chat");
     const stompClient = Stomp.over(socket);
 
     stompClient.connect(headers, () => {
-
       stompClient.subscribe("/sub/chat/room/3", (message) => {
         console.log("Received:", JSON.parse(message.body).content);
       });
 
-      const message = { roomId: roomId, sender: purchaserEmail, message: "오전1시35분" };
+      const message = {
+        roomId: roomId,
+        sender: purchaserEmail,
+        message: messages,
+      };
       const messageJSON = JSON.stringify(message);
-      stompClient.send("/pub/chat/message", messageJSON);
-
+      stompClient.send("/pub/chat/message", {}, messageJSON);
     });
-
-    // stomp.connect(
-    //   {},
-    //   (frame) => {
-    //     console.log("Connected: " + frame);
-    //     setStompClient(stomp);
-    //     stomp.subscribe("sub/chat/room/3", (message) => {
-    //       console.log("R :", JSON, parse(message.body).content);
-    //       // setMessages((prevMessages) => [
-    //       //   ...prevMessages,
-    //       //   JSON.parse(message.body),
-    //       // ]);
-    //     });
-    //   },
-    //   (error) => {
-    //     console.error("Connection error:", error);
-    //   }
-    // );
   };
 
-  const connectWebSocket = () => {
-    // const socket = new XMLHttpRequest();
-    const socket = new WebSocket("http://3.38.128.50:8080/ws/chat");
-    socket.onreadystatechange = function () {
-      if (socket.readyState === 4 && socket.status === 200) {
-        console.log("WebSocket 연결 성공!");
-        socket.onmessage = function (event) {
-          const message = event.data;
-          setMessages((prevMessages) => [...prevMessages, message]);
-        };
-      } else {
-        console.error("WebSocket 연결 실패");
-      }
-    };
-    // socket.open("GET", "http://3.38.128.50:8080/ws/chat");
-    // socket.send("POST", "http://3.38.128.50:8080/pub/chat/message");
-    setSocket(socket);
-  };
+  // stomp.connect(
+  //   {},
+  //   (frame) => {
+  //     console.log("Connected: " + frame);
+  //     setStompClient(stomp);
+  //     stomp.subscribe("sub/chat/room/3", (message) => {
+  //       console.log("R :", JSON, parse(message.body).content);
+  //       // setMessages((prevMessages) => [
+  //       //   ...prevMessages,
+  //       //   JSON.parse(message.body),
+  //       // ]);
+  //     });
+  //   },
+  //   (error) => {
+  //     console.error("Connection error:", error);
+  //   }
+  // );
+
+  // const connectWebSocket = () => {
+  //   const socket = new XMLHttpRequest();
+  //   const socket = new WebSocket("http://3.38.128.50:8080/ws/chat");
+  //   socket.onreadystatechange = function () {
+  //     if (socket.readyState === 4 && socket.status === 200) {
+  //       console.log("WebSocket 연결 성공!");
+  //       socket.onmessage = function (event) {
+  //         const message = event.data;
+  //         setMessages((prevMessages) => [...prevMessages, message]);
+  //       };
+  //     } else {
+  //       console.error("WebSocket 연결 실패");
+  //     }
+  //   };
+  //   socket.open("GET", "http://3.38.128.50:8080/ws/chat");
+  //   socket.send("POST", "http://3.38.128.50:8080/pub/chat/message");
+  //   setSocket(socket);
+  // };
 
   const fetchRoomData = async () => {
     try {
@@ -107,11 +109,11 @@ const WebSocketComponent = () => {
       <button onClick={postMessage}>메세지 보내기</button>
       <div>
         <h2>Messages:</h2>
-        <ul>
-          {messages.map((message, index) => (
-            <li key={index}>{message}</li>
-          ))}
-        </ul>
+        <input
+          type="text"
+          value={messages}
+          placeholder="메세지"
+        />
       </div>
     </div>
   );
