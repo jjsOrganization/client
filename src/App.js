@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import LiveChat from "./pages/LiveChat.js";
+import LiveChat from "./component/LiveChat.js";
 import PortpolioList from "./pages/PortpolioList.js";
 import PurchaserAddressEdit from "./component/PurchaserAddressEdit.js";
 import PurchaserPasswordEdit from "./component/PurchaserPasswordEdit.js";
