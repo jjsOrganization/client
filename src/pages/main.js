@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Carousel } from 'antd';
 import axiosInstance from "../component/jwt.js";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 import { Fragment } from 'react'
@@ -12,6 +12,7 @@ import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from
 
 
 function Main(){
+    let navigate = useNavigate();
     const [sort, setSort] = useState(true);
     const [productDesc,setProductDesc] = useState();
     const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
@@ -59,13 +60,10 @@ function Main(){
     };
 
     let carouselImage = ([
-        'https://i.postimg.cc/5yvZCPM1/1.png',
-        'https://i.postimg.cc/x19WXypD/2.png',
-        'https://i.postimg.cc/wTYKpdhB/3.png',
-        'https://i.postimg.cc/MptgVMgc/4.png',
-        'https://i.postimg.cc/jq7Vmjn9/5.png',
-        'https://i.postimg.cc/28QsjXw7/6.png',
-        'https://i.postimg.cc/0NQFf5qV/7.png'])
+        "https://i.postimg.cc/jd4cY735/3.png",
+    "https://i.postimg.cc/zv1C9znK/1.png",
+    "https://i.postimg.cc/JnX36DBR/2.png",
+    "https://i.postimg.cc/66dLCZX0/4.png",])
 
     const [productInfo,setProductInfo] = useState([{}])
     
@@ -96,7 +94,7 @@ function Main(){
         {filters[0].options.map((option, optionIdx) => (
             <div key={option.value} className="flex items-center">
             <input
-                onClick={() => {optionIdx === 0 ? setSort(true) : setSort(false); setOpen(false)}}
+                onClick={() => {optionIdx === 0 ? setSort(false) : setSort(true)}}
                 id={`filter-${filters[0].id}-${optionIdx}`}
                 name={`${filters[0].id}[]`}
                 defaultValue={option.value}
@@ -120,7 +118,13 @@ function Main(){
 </Disclosure></div>
                 {sort ? <MainProduct Endpoint = {Endpoint} product = {productInfo}></MainProduct> : <MainProduct Endpoint = {Endpoint} product = {productDesc}></MainProduct>} </>: 
                 '등록된 상품이 존재하지 않습니다'}
-            </div>
+                <div className = 'mainMoreButton' style = {{textAlign : 'center',marginTop : '-2%'}}>
+                <Link to="/products"> 
+                <button className="bg-transparent hover:bg-blue-500 text-black-700 font-semibold hover:text-white py-2 px-4 border1 border-black-500 hover:border-transparent rounded"
+                onClick = {() => {}} >
+                    더보기 
+                </button></Link></div>
+                </div>
             <div className = 'designerCarousel'>
                 <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
                 <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
@@ -131,19 +135,17 @@ function Main(){
 }
 
 function MainProduct(props){
-    let navigate = useNavigate();
     return(
     <div className = 'row'>
     {
-        props.product.map(function(a, i){
+        props.product.slice(0,6).map(function(a, i){ 
         return(
             <div className="col-6 col-md-4 rounded-lg" key={i} style = {{ height : '300px'}}>     
     {   
         props.product[i].imgUrl ?
-        (<img width = '100%' height = '70%' src = {props.Endpoint + props.product[i].imgUrl} style = {{marginRight : '5%'}} onClick={() => { navigate(`detail/${props.product[i].id}`) }}/>) : 
-        (<p onClick={() => { navigate(`detail/${props.product[i].id}`) }} > 이미지 준비중 </p>)}
+        (<img width = '100%' height = '70%' src = {props.Endpoint + props.product[i].imgUrl} style = {{marginRight : '5%'}} onClick={() => { props.navigate(`detail/${props.product[i].id}`) }}/>) : 
+        (<p onClick={() => { props.navigate(`detail/${props.product[i].id}`) }} > 이미지 준비중 </p>)}
         <h4>{props.product[i].productName}</h4>
-        
         </div>
         )})
     }
@@ -153,13 +155,12 @@ function MainProduct(props){
 
 function CarouselC(props)
 {
-    let navigate = useNavigate();
     return(
     <Carousel autoplay speed>
         {props.carouselImage.map((image, index) => (
         <div key={index}>
             <h3 style={props.carouselStyle}>
-            <img src={image} style={{ width: '100%', height: '100%' }} onClick = {() => { navigate(`detail/${props.product[index].id}`)}} />
+            <img src={image} style={{ width: '100%', height: '100%' }} onClick = {() => { props.navigate(`detail/${props.product[index].id}`)}} />
             </h3>
         </div>
         ))}
