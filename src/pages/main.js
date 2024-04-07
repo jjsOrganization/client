@@ -78,45 +78,12 @@ function Main(){
             </div>
             <div className="mainProduct">
                 {productInfo ? 
-                <><h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>상품</h4>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '3%' }}><Disclosure style = {{ justifyContent : 'flex-end'}} as="div" className="border-1 border-blue-500 py-6 w-22">
-{({ open }) => (
-    <>
-    <h3 className="-my-3 flow-root">
-        <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500 border-1 border-blue-500 h-10">
-        <span className="font-medium text-gray-900">{filters[0].name}</span>
-        <span className="ml-6 flex items-center">
-        </span>
-        </Disclosure.Button>
-    </h3>
-    <Disclosure.Panel className="pt-6">
-        <div className="space-y-4">
-        {filters[0].options.map((option, optionIdx) => (
-            <div key={option.value} className="flex items-center">
-            <input
-                onClick={() => {optionIdx === 0 ? setSort(false) : setSort(true)}}
-                id={`filter-${filters[0].id}-${optionIdx}`}
-                name={`${filters[0].id}[]`}
-                defaultValue={option.value}
-                type="radio"
-                defaultChecked={option.checked}
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-            />
-            <label
-                onClick={() => {optionIdx === 0 ? setSort(true) : setSort(false);setOpen(false)}}
-                htmlFor={`filter-${filters[0].id}-${optionIdx}`}
-                className="ml-3 text-sm text-gray-600"
-            >
-                {option.label}
-            </label>
-            </div>
-        ))}
-        </div>
-    </Disclosure.Panel>
-    </>
-)}
-</Disclosure></div>
-                {sort ? <MainProduct Endpoint = {Endpoint} product = {productInfo}></MainProduct> : <MainProduct Endpoint = {Endpoint} product = {productDesc}></MainProduct>} </>: 
+                <>
+                <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>상품</h4>
+                {sort ? <div><button className = "bg-white hover:bg-black border-0 text-black font-bold py-2 px-4 rounded" onClick = { () => { setSort(false)}}>인기순</button> <button className = 'd'style = {{background : 'white', border : 'none'}}>✔최신순</button> </div> :  <><button className = "bg-white hover:bg-blue-700 border-0 text-black font-bold py-2 px-4 rounded" onClick = { () => { setSort(false)}}>✔인기순</button> <button style = {{background : 'white', border : 'none'}} onClick = { () => { setSort(true)}}>최신순</button> </>}
+                {sort ? <MainProduct Endpoint = {Endpoint} product = {productInfo}></MainProduct> : <MainProduct Endpoint = {Endpoint} product = {productDesc}></MainProduct>}
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '3%' }}></div>
+                </>: 
                 '등록된 상품이 존재하지 않습니다'}
                 <div className = 'mainMoreButton' style = {{textAlign : 'center',marginTop : '-2%'}}>
                 <Link to="/products"> 
