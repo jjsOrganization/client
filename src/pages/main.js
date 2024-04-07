@@ -80,8 +80,8 @@ function Main(){
                 {productInfo ? 
                 <>
                 <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>상품</h4>
-                {sort ? <div><button className = "bg-white hover:bg-black border-0 text-black font-bold py-2 px-4 rounded" onClick = { () => { setSort(false)}}>인기순</button> <button className = 'd'style = {{background : 'white', border : 'none'}}>✔최신순</button> </div> :  <><button className = "bg-white hover:bg-blue-700 border-0 text-black font-bold py-2 px-4 rounded" onClick = { () => { setSort(false)}}>✔인기순</button> <button style = {{background : 'white', border : 'none'}} onClick = { () => { setSort(true)}}>최신순</button> </>}
-                {sort ? <MainProduct Endpoint = {Endpoint} product = {productInfo}></MainProduct> : <MainProduct Endpoint = {Endpoint} product = {productDesc}></MainProduct>}
+                {sort ? <div><button style = {{background : 'white', border: 'none'}} onClick = { () => { setSort(false)}}>인기순</button> <button style = {{background : 'white', border: 'none'}} >✔ 최신순</button> </div> : <div><button style = {{background : 'white', border: 'none'}}>✔ 인기순</button> <button style = {{background : 'white', border: 'none'}} onClick = { () => { setSort(true)}}>최신순</button> </div>}
+                {sort ? <MainProduct navigate = {navigate} Endpoint = {Endpoint} product = {productInfo}></MainProduct> : <MainProduct navigate = {navigate} Endpoint = {Endpoint} product = {productDesc}></MainProduct>}
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '3%' }}></div>
                 </>: 
                 '등록된 상품이 존재하지 않습니다'}
