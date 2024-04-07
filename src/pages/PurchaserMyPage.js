@@ -225,7 +225,7 @@ function CustomerOrderList() {
                   <button
                     className="OrderedBTN"
                     onClick={() => {
-                      navigate("/mypage/delivery");
+                      navigate(`/mypage/delivery/${index}`);
                     }}
                   >
                     자세히

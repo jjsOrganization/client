@@ -1,6 +1,8 @@
 import '../css/PurchaserMyPageDelivery.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, Link, useNavigate } from "react-router-dom";
 import exProductURL from "../images/exProduct.jpg"
+import axiosInstance from "../component/jwt.js";
 
 import 상품접수일반 from "../images/상품접수일반.png"
 import 상품접수선택 from "../images/상품접수선택.png"
@@ -22,7 +24,46 @@ import next from "../images/next.png"
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 
+
+
 function CustomerDelivery() {
+
+   let {index} = useParams();
+   const [deliveryState,setDeliveryState] = useState();
+   const [orderProduct, setOrderProduct] = useState();
+   const Endpoint = "https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/";
+
+   useEffect(() => {
+      const fetchData = async() => {
+         try{
+            const responseOrderList = await axiosInstance.get(`/order/purchaser-list`, {
+               headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }})
+            setOrderProduct(responseOrderList.data.data);
+         } catch(error){
+         console.log('주문상품 조회 실패')
+      }
+      }; fetchData()
+   },[])
+
+   useEffect(() => {
+      if (!orderProduct) return;
+      if (orderProduct[index].deliveryStatus === 'WAITING') {
+         setDeliveryState('배송 대기');
+      } else if (orderProduct[index].deliveryStatus === 'DELIVER_START') {
+         setDeliveryState('배송 시작')
+      } else if (orderProduct[index].deliveryStatus === 'DELIVERING') {
+         setDeliveryState('배송중')
+      } else if (orderProduct[index].deliveryStatus === 'DELIVER_COMPLETE') {
+         setDeliveryState('배송 완료')
+      }
+   },[orderProduct])
+   
+   
+   //이 아래는 준규형 코드
+
    const [customerDeliveryData, setCustomerDeliveryData] = useState([
       { date: '2023-11-25', time: '18:05', location: '대전성남(집)', state: '고객님의 상품을 접수하였습니다.' },
       { date: '2023-11-25', time: '19:03', location: '부천터미널', state: '고객님의 상품을 집하하여 부천터미널에 입고되었습니다.' }
@@ -52,6 +93,10 @@ function CustomerDelivery() {
    //          .catch(error => console.error('Error fetching data:', error));
    //  }, []);
 
+   if (!deliveryState) {
+      return <div>Loading...</div>; // 데이터를 가져오는 중에는 로딩 메시지를 표시
+}
+   
    return (
       <div className='customerD'>
          <TopBar />
@@ -69,77 +114,64 @@ function CustomerDelivery() {
             <h4>배송중인 상품</h4>
             <hr className='customerDeliveryFirstHr'></hr>
             {/* <h2>선택된 상품: {selectedProduct.name}</h2> */}
-            <h5>{customerSelectedProduct.date}</h5>
-            <img src={customerSelectedProduct.image} alt={customerSelectedProduct.name} />
-            <p>{customerSelectedProduct.name}</p>
-            <p>{customerSelectedProduct.price}원</p>
+            <h5>{orderProduct[index].orderDate}</h5>
+            <img src={Endpoint + orderProduct[index].imgUrl} alt={customerSelectedProduct.name} />
+            <p>{orderProduct[index].productName}</p>
+            <p>{orderProduct[index].price}원</p>
             <p>{customerSelectedProduct.options}</p>
-            <p>현재 배송 상태: {customerSelectedProduct.state}</p>
+            <p>현재 배송 상태: {deliveryState}</p>
             <hr className='customerDeliveryLastHr'></hr>
          </div>
 
          <div className='customerDeliveryStateImg'>
-            {customerSelectedProduct.state === '상품접수' ? (
+            {deliveryState === '배송 대기' ? (
                <div className="receiptImages">
                      <img src={상품접수선택} />
-                     <h2>상품접수</h2>
+                     <h2>배송 대기</h2>
                </div>
             ) : (
                <div className="receiptImages">
                      <img src={상품접수일반} />
-                     <h2>상품접수</h2>
+                     <h2>배송 대기</h2>
                </div>
             )}
             <img src={next} />
 
-            {customerSelectedProduct.state === '터미널입고' ? (
+            {deliveryState === '배송 시작' ? (
                <div className="terminalImages">
                      <img src={터미널입고선택} />
-                     <h2>터미널입고</h2>
+                     <h2>배송 시작</h2>
                </div>
             ) : (
                <div className="terminalImages">
                      <img src={터미널입고일반} />
-                     <h2>터미널입고</h2>
+                     <h2>배송 시작</h2>
                </div>
             )}
             <img src={next} />
 
-            {customerSelectedProduct.state === '배송터미널도착' ? (
+            {deliveryState === '배송중' ? (
                <div className="arrivalImages">
                      <img src={배송터미널도착선택} />
-                     <h2>배송터미널도착</h2>
+                     <h2>배송중</h2>
                </div>
             ) : (
                <div className="arrivalImages">
                      <img src={배송터미널도착일반} />
-                     <h2>배송터미널도착</h2>
+                     <h2>배송중</h2>
                </div>
             )}
             <img src={next} />
 
-            {customerSelectedProduct.state === '배송출발' ? (
+            {deliveryState === '배송 완료' ? (
                <div className="departureImages">
                      <img src={배송출발선택} />
-                     <h2>배송출발</h2>
+                     <h2>배송 완료</h2>
                </div>
             ) : (
                <div className="departureImages">
                      <img src={배송출발일반} />
-                     <h2>배송출발</h2>
-               </div>
-            )}
-            <img src={next} />
-
-            {customerSelectedProduct.state === '배송완료' ? (
-               <div className="finishImages">
-                     <img src={배송완료선택} />
-                     <h2>배송완료</h2>
-               </div>
-            ) : (
-               <div className="finishImages">
-                     <img src={배송완료일반} />
-                     <h2>배송완료</h2>
+                     <h2>배송 완료</h2>
                </div>
             )}
          </div>
