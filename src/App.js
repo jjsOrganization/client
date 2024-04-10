@@ -67,7 +67,7 @@ const App = () => {
         <Route path="products/:page?" element={<ProductList />} />
 
 
-        <Route path="mypage/delivery" element={<PurchaserMypageDelivery />} />
+        <Route path="/mypage/delivery/:index" element={<PurchaserMypageDelivery />} />
 
         <Route path="shoppingbasket" element={<PurchaserShoppingBasket />} />
       </Routes>

@@ -206,7 +206,7 @@ function CustomerOrderList() {
           <hr></hr>
           {purchaserOrderProducts
             .slice(0, showMore ? undefined : 2)
-            .map((product) => (
+            .map((product,index) => (
               <div key={product.id}>
                 <h5>
                   {product.orderDate[0]}년 {product.orderDate[1]}월{" "}
@@ -225,7 +225,7 @@ function CustomerOrderList() {
                   <button
                     className="OrderedBTN"
                     onClick={() => {
-                      navigate("/mypage/delivery");
+                      navigate(`/mypage/delivery/${index}`);
                     }}
                   >
                     자세히
