@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 
 import {
   Card,
@@ -33,69 +35,91 @@ export function DesignerMypage() {
   const [chatInfo, setChatInfo] = useState([]);
   const [requestNumber, setRequestNumber] = useState();
   let navigate = useNavigate();
-  const [roomExist, setRoomExist] = useState(false);
+  const [roomExist, setRoomExist] = useState(true);
+
+  const [msg, setMsg] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [stompClient, setStompClient] = useState(null);
+  const [roomIds, setRoomIds] = useState();
+  const [purchaserEmail, setPurchaserEmail] = useState();
+  const [designerEmail, setDesignerEmail] = useState();
+  const [connected, setConnected] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [messageData, setMessageData] = useState([]);
+
+  const headers = {
+    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  };
 
   useEffect(() => {
-    const fetchDesignerMypage = async () => {
-      try {
-        const responseDesignerInfo = await axiosInstance.get(
-          "/portfolio/designer",
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
-        const infoData = responseDesignerInfo.data;
-        // console.log(infoData);
-        setDesignerProfile(infoData);
-      } catch (error) {
-        setIsRegister(false);
-        console.log("데이터 로드 실패", error);
-      }
-    };
+    if (connected && chatOpen && roomIds) {
+      connect();
+      fetchMessageData();
+    }
+  }, [connected, chatOpen, roomIds]);
 
-    const fetchDesignerPortfolio = async () => {
-      try {
-        const response = await axiosInstance.get("/product/all", {
-          // 디자이너 포트폴리오 게시물 전체 조회 uri
+  const fetchDesignerMypage = async () => {
+    try {
+      const responseDesignerInfo = await axiosInstance.get(
+        "/portfolio/designer",
+        {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
-        });
-        const data = response.data;
-        setDesignerPortfolioresult(
-          data.data.map((product) => ({
-            ...product,
-          }))
-        ); // 첫 4개의 포트폴리오만 가져오도록 수정
-      } catch (error) {
-        // console.log("포트폴리오 작업물 조회 실패", error);
-      }
-    };
+        }
+      );
+      const infoData = responseDesignerInfo.data;
+      // console.log(infoData);
+      setDesignerProfile(infoData);
+    } catch (error) {
+      setIsRegister(false);
+      console.log("데이터 로드 실패", error);
+    }
+  };
 
-    const fetchRequestReform = async () => {
-      try {
-        const response = await axiosInstance.get(
-          `estimate/designer/requestForm`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
-        const data = response.data.data;
-        console.log(data);
-        setReformStatus(data.requestStatus);
-        setRequestReform(data);
-        setRequestNumber(data.requestNumber);
-      } catch (error) {
-        console.log("리폼요청 조회 실패", error);
-      }
-    };
+  const fetchDesignerPortfolio = async () => {
+    try {
+      const response = await axiosInstance.get("/product/all", {
+        // 디자이너 포트폴리오 게시물 전체 조회 uri
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      const data = response.data;
+      setDesignerPortfolioresult(
+        data.data.map((product) => ({
+          ...product,
+        }))
+      ); // 첫 4개의 포트폴리오만 가져오도록 수정
+    } catch (error) {
+      // console.log("포트폴리오 작업물 조회 실패", error);
+    }
+  };
+
+  const fetchRequestReform = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `estimate/designer/requestForm`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      const data = response.data.data;
+      console.log(data);
+      setReformStatus(data.requestStatus);
+      setRequestReform(data);
+      setRequestNumber(data.requestNumber);
+    } catch (error) {
+      console.log("리폼요청 조회 실패", error);
+    }
+  };
+
+  useEffect(() => {
     fetchRequestReform();
     fetchDesignerMypage();
     fetchDesignerPortfolio();
@@ -120,6 +144,7 @@ export function DesignerMypage() {
   };
 
   const fetchRoomData = async (requestNumber) => {
+    console.log(requestNumber);
     let roomExists = false;
     try {
       const response = await axiosInstance.get(`/chatroom`, {
@@ -128,24 +153,22 @@ export function DesignerMypage() {
         },
       });
       const roomDataArray = response.data.data;
-
       for (const roomData of roomDataArray) {
         if (requestNumber === roomData.requestId) {
           roomExists = true;
+          setRoomIds(roomData.roomId); // 올바른 방의 roomId 설정
+          setPurchaserEmail(roomData.purchaserEmail);
+          setDesignerEmail(roomData.designerEmail);
           break;
-        } else {
-          roomExists = false;
         }
       }
     } catch (error) {
       console.log("오류.", error);
     }
-    console.log(roomExists);
-    if (roomExists) {
-      setRoomExist(true);
-      handleClickChatButton();
+    if (roomExists === true) {
+      setConnected(true);
+      openChat();
     } else {
-      setRoomExist(false);
       fetchRequestReformDetailAndStartChat(requestNumber);
     }
   };
@@ -163,6 +186,7 @@ export function DesignerMypage() {
       );
       const data = response.data.data;
       console.log(data);
+      setRoomExist(false);
 
       const chatIn = {
         roomId: 0,
@@ -175,9 +199,8 @@ export function DesignerMypage() {
 
       setChatInfo(chatIn);
     } catch (error) {
-      console.log("조회 실패", error);
+      // console.log("조회 실패", error);
     }
-    
   };
 
   const handleStartChat = async () => {
@@ -219,9 +242,79 @@ export function DesignerMypage() {
     handleStartChat();
   }, [chatInfo, roomExist]);
 
-  const handleClickChatButton = () => {
-    // 채팅을 시작하는 로직을 여기에 작성하세요.
-    console.log("채팅을 시작합니다.");
+  const connect = () => {
+    const socket = new SockJS("http://3.38.128.50:8080/ws/chat");
+    const stompClient = Stomp.over(socket);
+
+    if (stompClient && stompClient.connected) {
+      console.log("이미 WebSocket에 연결되어 있습니다.");
+      return;
+    }
+
+    stompClient.connect(headers, () => {
+      console.log("WebSocket에 연결됨");
+      setStompClient(stompClient);
+      stompClient.subscribe(`/sub/chat/room/${roomIds}`, (message) => {
+        console.log("Received:", JSON.parse(message.body).content);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          JSON.parse(message.body),
+        ]);
+      });
+    });
+  };
+
+  const fetchMessageData = async () => {
+    try {
+      const response = await axiosInstance.get(`/chatroom/${roomIds}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      setMessageData(response.data.data);
+    } catch (error) {
+      console.log("정보가 없습니다.", error);
+    }
+  };
+
+  const disconnectWebSocket = () => {
+    if (stompClient) {
+      stompClient.disconnect();
+      console.log("WebSocket 연결이 해제되었습니다.");
+      setStompClient(null);
+      setConnected(false);
+    } else {
+      console.log("WebSocket 연결이 이미 해제되었습니다.");
+    }
+  };
+
+  const postMessage = () => {
+    if (stompClient) {
+      const message = {
+        roomId: roomIds,
+        sender: purchaserEmail,
+        message: msg,
+      };
+      const messageJSON = JSON.stringify(message);
+      stompClient.send("/pub/chat/message", {}, messageJSON);
+      setMsg("");
+
+      setMessageData([
+        ...messageData,
+        { sender: purchaserEmail, message: msg },
+      ]);
+    } else {
+      console.error("WebSocket 연결이 없습니다.");
+    }
+  };
+
+  const openChat = () => {
+    setChatOpen(true);
+  };
+
+  const closeChat = () => {
+    disconnectWebSocket();
+    setChatOpen(false);
   };
 
   const handleShowMore = () => {
@@ -382,37 +475,24 @@ export function DesignerMypage() {
                     <Typography variant="body" color="blue-gray">
                       요청 가격: {reform.requestPrice}
                     </Typography>
-                    {/* 채팅방 정보의 requestNumber와 요청 번호가 일치하는지 확인하여 조건에 따라 버튼을 생성합니다. */}
-                    {chatInfo &&
-                    chatInfo.requestNumber === reform.requestNumber ? (
-                      <button
-                        onClick={handleClickChatButton}
-                        style={{
-                          backgroundColor: "lightblue",
-                          color: "white",
-                          padding: "8px 16px",
-                          border: "none",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        채팅시작
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => fetchRoomData(reform.requestNumber)}
-                        style={{
-                          backgroundColor: "lightblue",
-                          color: "white",
-                          padding: "8px 16px",
-                          border: "none",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        채팅방생성 또는 채팅시작
-                      </button>
-                    )}
+
+                    <button
+                      onClick={() => {
+                        fetchRoomData(reform.requestNumber);
+                      }}
+                      style={{
+                        backgroundColor: "lightblue",
+                        color: "white",
+                        padding: "8px 16px",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      채팅방생성 또는 채팅시작
+                    </button>
+                    <button onClick={closeChat}>WebSocket 연결 끊기</button>
+
                     {/* 요청이 수락되지 않은 경우 상태 변경을 위한 드롭다운 메뉴를 표시합니다. */}
                     {reform.requestStatus !== "REQUEST_ACCEPTED" &&
                       reform.requestStatus !== "REQUEST_REJECTED" && (
