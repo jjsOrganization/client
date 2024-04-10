@@ -152,11 +152,13 @@ export function DesignerMypage() {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
+      console.log(response.data);
       const roomDataArray = response.data.data;
       for (const roomData of roomDataArray) {
         if (requestNumber === roomData.requestId) {
           roomExists = true;
-          setRoomIds(roomData.roomId); // 올바른 방의 roomId 설정
+          console.log(roomData);
+          setRoomIds(roomData.roomId);
           setPurchaserEmail(roomData.purchaserEmail);
           setDesignerEmail(roomData.designerEmail);
           break;
@@ -292,7 +294,7 @@ export function DesignerMypage() {
     if (stompClient) {
       const message = {
         roomId: roomIds,
-        sender: purchaserEmail,
+        sender: designerEmail,
         message: msg,
       };
       const messageJSON = JSON.stringify(message);
@@ -301,7 +303,7 @@ export function DesignerMypage() {
 
       setMessageData([
         ...messageData,
-        { sender: purchaserEmail, message: msg },
+        { sender: designerEmail, message: msg },
       ]);
     } else {
       console.error("WebSocket 연결이 없습니다.");
@@ -491,7 +493,6 @@ export function DesignerMypage() {
                     >
                       채팅방생성 또는 채팅시작
                     </button>
-                    <button onClick={closeChat}>WebSocket 연결 끊기</button>
 
                     {/* 요청이 수락되지 않은 경우 상태 변경을 위한 드롭다운 메뉴를 표시합니다. */}
                     {reform.requestStatus !== "REQUEST_ACCEPTED" &&
@@ -517,6 +518,31 @@ export function DesignerMypage() {
           </Card>
         </>
         /
+      </div>
+      <div>
+        {chatOpen ? (
+          <div>
+            <h1>WebSocket 통신</h1>
+            <button onClick={closeChat}>WebSocket 연결 끊기</button>
+            <div>
+              <h2>Messages:</h2>
+              {messageData.map((data, index) => (
+                <div key={index}>
+                  <p>
+                    {data.sender}: {data.message}
+                  </p>
+                </div>
+              ))}
+              <input
+                type="text"
+                value={msg}
+                placeholder="메시지"
+                onChange={(e) => setMsg(e.target.value)}
+              />
+              <button onClick={postMessage}>메시지 보내기</button>
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );
