@@ -57,6 +57,7 @@ const WebSocketComponent = () => {
       setRoomId(response.data.data[0].roomId);
       setPurchaserEmail(response.data.data[0].purchaserEmail);
       setDesignerEmail(response.data.data[0].designerEmail);
+      console.log(response.data.data);
       console.log(roomId);
       console.log(purchaserEmail);
       console.log(designerEmail);
@@ -109,7 +110,6 @@ const WebSocketComponent = () => {
 
   const openChat = () => {
     fetchRoomData();
-    fetchMessageData();
     setChatOpen(true);
   };
 
