@@ -13,7 +13,6 @@ import Visual from "./pages/Visual.js";
 import Reform from "./pages/Reform.js";
 import ProductList from "./pages/ProductList.js";
 import PurchaserMypageDelivery from "./pages/PurchaserMyPageDelivery.js";
-import PurchaserShoppingBasket from "./pages/PurchaserShoppingBasket.js";
 import { Routes, Route } from "react-router-dom";
 import DesignerSearch from "./pages/DesignerSearch";
 import DesignerMypage from "./pages/DesignerMypage.js";
@@ -56,7 +55,6 @@ const App = () => {
 
         <Route path="/mypage/delivery/:index" element={<PurchaserMypageDelivery />} />
 
-        <Route path="shoppingbasket" element={<PurchaserShoppingBasket />} />
       </Routes>
 
       <div className="App">
