@@ -1,18 +1,13 @@
-import "../css/ProductList.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../component/jwt.js";
-
-import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("");
-  const [sort, setSort] = useState(true);
-  const itemsPerPage = 8; // 페이지당 보여줄 상품 수
+  const itemsPerPage = 8;
 
   const navigate = useNavigate();
   const { page } = useParams();
@@ -29,9 +24,7 @@ const ProductList = () => {
         });
         setProducts(response.data);
         setFilteredProducts(response.data);
-        console.log(response.data);
       } catch (error) {
-        console.log("데이터 로드 실패", error);
       }
     };
 
@@ -62,7 +55,6 @@ const ProductList = () => {
   };
 
   const handleSortByLatest = () => {
-    setSortBy("latest");
     setFilteredProducts(products);
     setFilteredProducts((prevProducts) =>
       prevProducts.slice().sort((a, b) => b.id - a.id)
@@ -82,10 +74,7 @@ const ProductList = () => {
       );
       setFilteredProducts(products);
       setFilteredProducts(resopnseLikeDesc.data.data);
-
-      console.log(resopnseLikeDesc.data.data);
     } catch (error) {
-      console.log("데이터 로드 실패", error);
     }
   };
 
@@ -151,7 +140,6 @@ const ProductList = () => {
         </div>
       </div>
       <div>
-        {/* 페이지네이션 */}
         <Pagination
           totalPages={totalPages}
           currentPage={currentPage}
@@ -178,7 +166,7 @@ const Pagination = ({ totalPages, currentPage, handlePageChange }) => {
   };
 
   const renderPageNumbers = () => {
-    const maxVisiblePages = 5; // 최대 페이지 조절
+    const maxVisiblePages = 5;
     const pageNumbers = [];
 
     if (totalPages <= maxVisiblePages) {
