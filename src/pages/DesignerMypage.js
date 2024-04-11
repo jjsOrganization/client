@@ -301,10 +301,7 @@ export function DesignerMypage() {
       stompClient.send("/pub/chat/message", {}, messageJSON);
       setMsg("");
 
-      setMessageData([
-        ...messageData,
-        { sender: designerEmail, message: msg },
-      ]);
+      setMessageData([...messageData, { sender: designerEmail, message: msg }]);
     } else {
       console.error("WebSocket 연결이 없습니다.");
     }
@@ -477,23 +474,23 @@ export function DesignerMypage() {
                     <Typography variant="body" color="blue-gray">
                       요청 가격: {reform.requestPrice}
                     </Typography>
-
-                    <button
-                      onClick={() => {
-                        fetchRoomData(reform.requestNumber);
-                      }}
-                      style={{
-                        backgroundColor: "lightblue",
-                        color: "white",
-                        padding: "8px 16px",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      채팅방생성 또는 채팅시작
-                    </button>
-
+                    {reform.requestStatus !== "REQUEST_WAITING" ? (
+                      <button
+                        onClick={() => {
+                          fetchRoomData(reform.requestNumber);
+                        }}
+                        style={{
+                          backgroundColor: "lightblue",
+                          color: "white",
+                          padding: "8px 16px",
+                          border: "none",
+                          borderRadius: "4px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        채팅방생성 또는 채팅시작
+                      </button>
+                    ) : null}
                     {/* 요청이 수락되지 않은 경우 상태 변경을 위한 드롭다운 메뉴를 표시합니다. */}
                     {reform.requestStatus !== "REQUEST_ACCEPTED" &&
                       reform.requestStatus !== "REQUEST_REJECTED" && (

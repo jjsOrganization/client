@@ -2,23 +2,31 @@ import React, { Fragment, useEffect, useState } from "react";
 import "../css/PurchaserMyPage.css";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../component/jwt.js";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
-import { ZoomInOutlined } from "@ant-design/icons";
 
 function CustomerOrderList() {
   const [orderList, setOrderList] = useState([]);
   const [open, setOpen] = useState(true);
   const [customerShoppingBasket, setCustomerShoppingBasket] = useState([]);
   let navigate = useNavigate();
-  console.log(customerShoppingBasket);
 
   const [purchaserOrderProducts, setPurchaserOrderProducts] = useState([]);
   const [purchaserReformProducts, setPurchaserReformProducts] = useState([]);
   const [showMore, setShowMore] = useState(false);
+
+  const [msg, setMsg] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [stompClient, setStompClient] = useState(null);
+  const [roomId, setRoomId] = useState();
+  const [purchaserEmail, setPurchaserEmail] = useState();
+  const [connected, setConnected] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [messageData, setMessageData] = useState([]);
 
   useEffect(() => {
     const fetchOrderList = async () => {
@@ -44,7 +52,13 @@ function CustomerOrderList() {
 
         const reformData = responseReform.data.data;
         console.log(reformData);
-        setPurchaserReformProducts(reformData);
+        const reformArray = [];
+        for (const reformRequest of reformData) {
+          if (reformRequest.requestStatus !== "REQUEST_REJECTED") {
+            reformArray.push(reformRequest);
+          }
+        }
+        setPurchaserReformProducts(reformArray);
 
         const purchaseData = responsePurchase.data.data;
         console.log(purchaseData);
@@ -196,6 +210,120 @@ function CustomerOrderList() {
     });
   };
 
+  const fetchRoomData = async (requestN) => {
+    try {
+      const response = await axiosInstance.get(`/chatroom`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      const roomDataArray = response.data.data;
+      for (const roomData of roomDataArray) {
+        if (requestN === roomData.requestId) {
+          console.log(roomData);
+          setPurchaserEmail(roomData.purchaserEmail);
+          setRoomId(roomData.roomId);
+          setConnected(true);
+          break;
+        }
+      }
+      console.log(roomId);
+    } catch (error) {
+      console.log("오류.", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRoomData();
+  }, [roomId]);
+
+  const headers = {
+    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  };
+
+  useEffect(() => {
+    if (connected && chatOpen && roomId) {
+      connect();
+      fetchMessageData();
+    }
+  }, [connected, chatOpen, roomId]);
+
+  const connect = () => {
+    const socket = new SockJS("http://3.38.128.50:8080/ws/chat");
+    const stompClient = Stomp.over(socket);
+
+    if (stompClient && stompClient.connected) {
+      console.log("이미 WebSocket에 연결되어 있습니다.");
+      return;
+    }
+
+    stompClient.connect(headers, () => {
+      console.log("WebSocket에 연결됨");
+      setStompClient(stompClient);
+      stompClient.subscribe(`/sub/chat/room/${roomId}`, (message) => {
+        console.log("Received:", JSON.parse(message.body).content);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          JSON.parse(message.body),
+        ]);
+      });
+    });
+  };
+
+  const fetchMessageData = async () => {
+    try {
+      const response = await axiosInstance.get(`/chatroom/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      setMessageData(response.data.data);
+    } catch (error) {
+      console.log("정보가 없습니다.", error);
+    }
+  };
+
+  const disconnectWebSocket = () => {
+    if (stompClient) {
+      stompClient.disconnect();
+      console.log("WebSocket 연결이 해제되었습니다.");
+      setStompClient(null);
+      setConnected(false);
+    } else {
+      console.log("WebSocket 연결이 이미 해제되었습니다.");
+    }
+  };
+
+  const postMessage = () => {
+    if (stompClient) {
+      const message = {
+        roomId: roomId,
+        sender: purchaserEmail,
+        message: msg,
+      };
+      const messageJSON = JSON.stringify(message);
+      stompClient.send("/pub/chat/message", {}, messageJSON);
+      setMsg("");
+
+      setMessageData([
+        ...messageData,
+        { sender: purchaserEmail, message: msg },
+      ]);
+    } else {
+      console.error("WebSocket 연결이 없습니다.");
+    }
+  };
+
+  const openChat = (requestN) => {
+    fetchRoomData(requestN);
+    setChatOpen(true);
+  };
+
+  const closeChat = () => {
+    disconnectWebSocket();
+    setChatOpen(false);
+  };
+
   return (
     <div>
       <TopBar />
@@ -206,7 +334,7 @@ function CustomerOrderList() {
           <hr></hr>
           {purchaserOrderProducts
             .slice(0, showMore ? undefined : 2)
-            .map((product,index) => (
+            .map((product, index) => (
               <div key={product.id}>
                 <h5>
                   {product.orderDate[0]}년 {product.orderDate[1]}월{" "}
@@ -268,6 +396,18 @@ function CustomerOrderList() {
                     자세히
                   </button>
                 </p>
+
+                <p>
+                  1대1 채팅 : {product.id}{" "}
+                  <button
+                    className="OrderedBTN"
+                    onClick={() => {
+                      openChat(product.id);
+                    }}
+                  >
+                    시작
+                  </button>
+                </p>
                 <hr></hr>
               </div>
             ))}
@@ -277,6 +417,29 @@ function CustomerOrderList() {
             </button>
           )}
         </div>
+        {chatOpen ? (
+          <div>
+            <h1>WebSocket 통신</h1>
+            <button onClick={closeChat}>WebSocket 연결 끊기</button>
+            <div>
+              <h2>Messages:</h2>
+              {messageData.map((data, index) => (
+                <div key={index}>
+                  <p>
+                    {data.sender}: {data.message}
+                  </p>
+                </div>
+              ))}
+              <input
+                type="text"
+                value={msg}
+                placeholder="메시지"
+                onChange={(e) => setMsg(e.target.value)}
+              />
+              <button onClick={postMessage}>메시지 보내기</button>
+            </div>
+          </div>
+        ) : null}
       </div>
       <div className="UserCorrection">
         <button onClick={handlePurchaserInfoEdit}>회원정보 수정하기</button>
@@ -382,7 +545,10 @@ function CustomerOrderList() {
                                         갯수 :
                                         <button
                                           className="basketCountButton"
-                                          style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
+                                          style={{
+                                            padding: "0.25rem 0.5rem",
+                                            fontSize: "0.75rem",
+                                          }}
                                           onClick={() =>
                                             setProductCount(
                                               product.id,
