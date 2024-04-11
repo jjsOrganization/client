@@ -65,7 +65,6 @@ function Detail(props) {
         );
         setProductDetailInfo(response.data);
       } catch (error) {
-        console.log("상품 상세 데이터 로드 실패", error);
       }
     };
     fetchDetailData();
@@ -85,7 +84,6 @@ function Detail(props) {
           }
         );
       } catch (error) {
-        console.log("판매자 데이터 로드 실패", error);
       }
     };
     fetchSellerData();
@@ -96,7 +94,6 @@ function Detail(props) {
     if (productDetailInfo && productLike) {
       setSalePrice(productDetailInfo.price * (1 - sale));
     }
-    console.log(productDetailInfo);
   }, [productDetailInfo, sale]);
 
   const handleLike = async () => {
@@ -112,7 +109,6 @@ function Detail(props) {
       setLikeState(likeStateInfo.data.data);
       productLikeGet();
     } catch (error) {
-      console.log("좋아요 처리 에러", error);
     }
   };
 
@@ -127,11 +123,9 @@ function Detail(props) {
       );
       setProductLike(productLikeCount.data.data);
     } catch (error) {
-      console.log("좋아요 get에러", error);
     }
   };
 
-  //상품 좋아요 여부 확인
   useEffect(() => {
     const LikeCheckGet = async () => {
       try {
@@ -140,7 +134,6 @@ function Detail(props) {
         );
         setLikeState(likeStateInfo.data.data);
       } catch (error) {
-        console.log("좋아요 상태 체크 에러", error);
       }
     };
     LikeCheckGet();
@@ -170,7 +163,6 @@ function Detail(props) {
           },
         }
       );
-      console.log("장바구니에 상품 추가:", response.data);
       // 크롬 알림표시 사용 예정
     } catch (error) {
       console.error("장바구니에 상품 추가 실패:", error);
@@ -198,10 +190,8 @@ function Detail(props) {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      // 페이지 이동
       navigate("/PurchaserInfo");
     } catch (error) {
-      console.log("주문 실패", error);
     }
   };
 
