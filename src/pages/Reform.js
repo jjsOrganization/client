@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import styled from "styled-components";
 import axiosInstance from "../component/jwt.js";
-import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 import { useLocation } from "react-router-dom";
 
@@ -16,13 +15,9 @@ function Reform() {
   const [requestInfo, setRequestInfo] = useState("");
   const [requestPrice, setRequestPrice] = useState("");
   const [designers, setDesigners] = useState([]);
-  const [Image, setImage] = useState("");
-
   const [thumbnailImage, setThumbnailImage] = useState();
   const [thumbnailImageFile, setThumbnailImageFile] = useState();
-
   const [selectedDesigner, setSelectedDesigner] = useState(null);
-
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const productId = searchParams.get("productId");
@@ -58,7 +53,6 @@ function Reform() {
       formData.append("requestImg", thumbnailImageFile);
       formData.append("requestPrice", requestPrice);
       formData.append("designerEmail", selectedDesigner.value);
-
       const response = await axiosInstance.post(
         `/reform-request/purchaser/creation/${productId}`,
         formData,
@@ -68,11 +62,8 @@ function Reform() {
           },
         }
       );
-
-      console.log("리폼요청 성공:", response.data);
       alert("리폼요청이 성공적으로 등록되었습니다.");
     } catch (error) {
-      console.error("리폼요청 실패:", error);
       alert("리폼요청 등록에 실패했습니다.");
     }
   };
@@ -86,10 +77,8 @@ function Reform() {
           },
         });
         const data = response.data.data;
-        console.log(data);
         setDesigners(data);
       } catch (error) {
-        console.error("디자이너 조회 실패:", error);
         alert("디자이너 조회 실패함.");
       }
     };
@@ -97,7 +86,6 @@ function Reform() {
   }, []);
 
   const handleDesignerSelect = (selectedOption) => {
-    console.log("선택한 디자이너:", selectedOption);
     setSelectedDesigner(selectedOption);
   };
 

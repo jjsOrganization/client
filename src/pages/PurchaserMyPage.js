@@ -4,9 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../component/jwt.js";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-
 import { Dialog, Transition } from "@headlessui/react";
-import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 
 function CustomerOrderList() {
@@ -51,7 +49,6 @@ function CustomerOrderList() {
         );
 
         const reformData = responseReform.data.data;
-        console.log(reformData);
         const reformArray = [];
         for (const reformRequest of reformData) {
           if (reformRequest.requestStatus !== "REQUEST_REJECTED") {
@@ -61,10 +58,8 @@ function CustomerOrderList() {
         setPurchaserReformProducts(reformArray);
 
         const purchaseData = responsePurchase.data.data;
-        console.log(purchaseData);
         setPurchaserOrderProducts(purchaseData);
       } catch (error) {
-        console.log("데이터 로드 실패", error);
       }
     };
 
@@ -85,7 +80,6 @@ function CustomerOrderList() {
           }))
         );
       } catch (error) {
-        console.log("데이터 로드 실패", error);
       }
     };
 
@@ -149,7 +143,6 @@ function CustomerOrderList() {
       // 페이지 이동
       navigate("/PurchaserInfo");
     } catch (error) {
-      console.log("주문 실패", error);
     }
   };
 
@@ -165,7 +158,6 @@ function CustomerOrderList() {
         prevBasket.filter((product) => product.id !== productId)
       );
     } catch (error) {
-      console.log("상품 삭제 실패", error);
     }
   };
 
@@ -220,16 +212,13 @@ function CustomerOrderList() {
       const roomDataArray = response.data.data;
       for (const roomData of roomDataArray) {
         if (requestN === roomData.requestId) {
-          console.log(roomData);
           setPurchaserEmail(roomData.purchaserEmail);
           setRoomId(roomData.roomId);
           setConnected(true);
           break;
         }
       }
-      console.log(roomId);
     } catch (error) {
-      console.log("오류.", error);
     }
   };
 
@@ -255,16 +244,13 @@ function CustomerOrderList() {
     const stompClient = Stomp.over(socket);
 
     if (stompClient && stompClient.connected) {
-      console.log("이미 WebSocket에 연결되어 있습니다.");
       return;
     }
 
     stompClient.connect(headers, () => {
-      console.log("WebSocket에 연결됨");
       setStompClient(stompClient);
       stompClient.subscribe(`/sub/chat/room/${roomId}`, (message) => {
         const newMessage = JSON.parse(message.body);
-        console.log("Received:", newMessage.content);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
       });
     });
@@ -283,18 +269,15 @@ function CustomerOrderList() {
       });
       setMessageData(response.data.data);
     } catch (error) {
-      console.log("정보가 없습니다.", error);
     }
   };
 
   const disconnectWebSocket = () => {
     if (stompClient) {
       stompClient.disconnect();
-      console.log("WebSocket 연결이 해제되었습니다.");
       setStompClient(null);
       setConnected(false);
     } else {
-      console.log("WebSocket 연결이 이미 해제되었습니다.");
     }
   };
 

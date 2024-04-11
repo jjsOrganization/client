@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-
 import axiosInstance from "../component/jwt.js";
-import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
-
 import { PhotoIcon } from '@heroicons/react/24/solid'
 import { useNavigate } from "react-router-dom";
 
@@ -37,7 +34,6 @@ const RegisterPortfolio = (props) => {
     };
   };
 
-  // 디자이너 등록 함수
   const registerHandler = async () => {
     try {
       const formData = new FormData();
@@ -54,12 +50,9 @@ const RegisterPortfolio = (props) => {
           },
         }
       );
-      console.log("디자이너 포트폴리오가 등록되었습니다:", response.data); // 데이터 확인용
       window.location.replace(`/DesignerMypage`);
       alert("디자이너 포트폴리오가 등록되었습니다.")
     } catch (error) {
-      console.error("포트폴리오 등록 실패:", error);
-      console.log("데이터 전송 실패");
       alert("디자이너 포트폴리오 등록에 실패하였습니다. 다시 확인해주세요.");
     }
   };
@@ -87,10 +80,10 @@ const RegisterPortfolio = (props) => {
                 </label>
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10" >
                   <div className="text-center">
-                    {thumbnailImage && ( // 이미지가 업로드되었을 때만 보여줌
+                    {thumbnailImage && (
                       <img src={thumbnailImage} alt="Thumbnail" className="mx-auto h-40 w-auto" />
                     )}
-                    {!thumbnailImage && ( // 이미지가 없을 때는 placeholder 아이콘 보여줌
+                    {!thumbnailImage && (
                       <PhotoIcon className="mx-auto h-15 w-15 text-gray-300" aria-hidden="true" />
                     )}
                     <div className="mt-4 flex text-sm leading-6 text-gray-600 text-center">

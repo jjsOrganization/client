@@ -33,7 +33,6 @@ function PurchaserInfo() {
       alert("구매가 완료되었습니다.");
       navigate("/");
     } catch (error) {
-      console.log("주문 실패", error);
     }
   };
 

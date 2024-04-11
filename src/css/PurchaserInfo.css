@@ -30,20 +30,20 @@
 .purchaserInfo .deliveryRequest input {
   width: 100%; /* 부모 요소 너비와 똑같이 하기위해 설정 */
   padding: 2%;
-  border: 1px solid #6ad8a0;
+  border: 1px solid #374d9a;
 }
 
 .purchaserInfo .basketOrderButton {
   display: block;
   width: 100%; 
   padding: 2%;
-  background-color: #6ad8a0;
+  background-color: #374d9a;
   color: #fff;
   cursor: pointer;
 }
 
 .purchaserInfo .basketOrderButton:hover {
-  background-color: #9fe5c1;
+  background-color: #374ea3;
 }
 
 @media (max-width: 720px) {

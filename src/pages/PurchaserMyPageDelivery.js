@@ -60,14 +60,11 @@ function CustomerDelivery() {
          setDeliveryState('배송 완료')
       }
    },[orderProduct])
-   
-   
-   //이 아래는 준규형 코드
 
    const [customerDeliveryData, setCustomerDeliveryData] = useState([
       { date: '2023-11-25', time: '18:05', location: '대전성남(집)', state: '고객님의 상품을 접수하였습니다.' },
       { date: '2023-11-25', time: '19:03', location: '부천터미널', state: '고객님의 상품을 집하하여 부천터미널에 입고되었습니다.' }
-  ]); // DB에서 가져온 데이터 예시 더미 데이터
+  ]);
    let [customerSelectedProduct, setCustomerSelectedProduct] = useState({ 
       id: 1, 
       name: '테스트 상품', 
@@ -77,21 +74,7 @@ function CustomerDelivery() {
       description: '상품 설명',
       date: '2023-11-23(20231123-00024)',
       state: '배송출발'
-   }); // DB에서 가져온 데이터 예시 더미 데이터
-
-   // const handleDeliveryStateChange = (newState) => {
-   //    setCustomerSelectedDeliveryState(newState);
-   //    customerDeliveryState = selectedCustomerDeliveryState;
-   // };
-
-    // DB에서 데이터를 가져오는 함수
-   //  useEffect(() => {
-   //      // 예시: fetch를 사용하여 서버에서 데이터를 가져옴
-   //      fetch('URL')
-   //          .then(response => response.json())
-   //          .then(data => setCustomerDeliveryData(data))
-   //          .catch(error => console.error('Error fetching data:', error));
-   //  }, []);
+   });
 
    if (!deliveryState) {
       return <div>Loading...</div>; // 데이터를 가져오는 중에는 로딩 메시지를 표시
@@ -101,19 +84,10 @@ function CustomerDelivery() {
       <div className='customerD'>
          <TopBar />
 
-         {/* <select value={selectedCustomerDeliveryState} onChange={(e) => handleDeliveryStateChange(e.target.value)}>
-         {customerDeliveryState.map((state, index) => (
-            <option key={index} value={state}>{state}</option>
-         ))}
-         </select> */}
-
          <h1>마이페이지</h1>
-
-         {/* 선택된 상품 정보 */}
          <div className='customerSelectedProduct'>
             <h4>배송중인 상품</h4>
             <hr className='customerDeliveryFirstHr'></hr>
-            {/* <h2>선택된 상품: {selectedProduct.name}</h2> */}
             <h5>{orderProduct[index].orderDate}</h5>
             <img src={Endpoint + orderProduct[index].imgUrl} alt={customerSelectedProduct.name} />
             <p>{orderProduct[index].productName}</p>

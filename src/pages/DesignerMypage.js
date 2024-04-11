@@ -10,38 +10,22 @@ import {
   CardBody,
   CardHeader,
   CardFooter,
-  Avatar,
   Typography,
-  Tabs,
-  TabsHeader,
-  Tab,
-  Switch,
   Tooltip,
 } from "@material-tailwind/react";
-import {
-  HomeIcon,
-  ChatBubbleLeftEllipsisIcon,
-  Cog6ToothIcon,
-  PencilIcon,
-} from "@heroicons/react/24/solid";
+import { PencilIcon } from "@heroicons/react/24/solid";
 
 export function DesignerMypage() {
   const [isRegister, setIsRegister] = useState(true);
   const [designerProfile, setDesignerProfile] = useState([]);
-  const [showMore, setShowMore] = useState(false);
   const [designerPortfolioResult, setDesignerPortfolioresult] = useState([]);
   const [requestReform, setRequestReform] = useState([]);
-  const [reformStatus, setReformStatus] = useState();
   const [chatInfo, setChatInfo] = useState([]);
-  const [requestNumber, setRequestNumber] = useState();
   let navigate = useNavigate();
   const [roomExist, setRoomExist] = useState(true);
-
   const [msg, setMsg] = useState("");
-  const [messages, setMessages] = useState([]);
   const [stompClient, setStompClient] = useState(null);
   const [roomIds, setRoomIds] = useState();
-  const [purchaserEmail, setPurchaserEmail] = useState();
   const [designerEmail, setDesignerEmail] = useState();
   const [connected, setConnected] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
@@ -70,18 +54,15 @@ export function DesignerMypage() {
         }
       );
       const infoData = responseDesignerInfo.data;
-      // console.log(infoData);
       setDesignerProfile(infoData);
     } catch (error) {
       setIsRegister(false);
-      console.log("데이터 로드 실패", error);
     }
   };
 
   const fetchDesignerPortfolio = async () => {
     try {
       const response = await axiosInstance.get("/product/all", {
-        // 디자이너 포트폴리오 게시물 전체 조회 uri
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -92,10 +73,8 @@ export function DesignerMypage() {
         data.data.map((product) => ({
           ...product,
         }))
-      ); // 첫 4개의 포트폴리오만 가져오도록 수정
-    } catch (error) {
-      // console.log("포트폴리오 작업물 조회 실패", error);
-    }
+      );
+    } catch (error) {}
   };
 
   const fetchRequestReform = async () => {
@@ -110,12 +89,8 @@ export function DesignerMypage() {
         }
       );
       const data = response.data.data;
-      console.log(data);
-      setReformStatus(data.requestStatus);
       setRequestReform(data);
-      setRequestNumber(data.requestNumber);
     } catch (error) {
-      console.log("리폼요청 조회 실패", error);
     }
   };
 
@@ -137,14 +112,10 @@ export function DesignerMypage() {
           },
         }
       );
-      console.log("요청 상태가 성공적으로 변경되었습니다.");
-    } catch (error) {
-      console.log("요청 상태 변경 실패:", error);
-    }
+    } catch (error) {}
   };
 
   const fetchRoomData = async (requestNumber) => {
-    console.log(requestNumber);
     let roomExists = false;
     try {
       const response = await axiosInstance.get(`/chatroom`, {
@@ -152,21 +123,16 @@ export function DesignerMypage() {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(response.data);
       const roomDataArray = response.data.data;
       for (const roomData of roomDataArray) {
         if (requestNumber === roomData.requestId) {
           roomExists = true;
-          console.log(roomData);
           setRoomIds(roomData.roomId);
-          setPurchaserEmail(roomData.purchaserEmail);
           setDesignerEmail(roomData.designerEmail);
           break;
         }
       }
-    } catch (error) {
-      console.log("오류.", error);
-    }
+    } catch (error) {}
     if (roomExists === true) {
       setConnected(true);
       openChat();
@@ -187,7 +153,6 @@ export function DesignerMypage() {
         }
       );
       const data = response.data.data;
-      console.log(data);
       setRoomExist(false);
 
       const chatIn = {
@@ -197,12 +162,8 @@ export function DesignerMypage() {
         productNumber: data[0].productNumber,
         requestNumber: data[0].requestNumber,
       };
-      console.log(chatIn);
-
       setChatInfo(chatIn);
-    } catch (error) {
-      // console.log("조회 실패", error);
-    }
+    } catch (error) {}
   };
 
   const handleStartChat = async () => {
@@ -227,17 +188,12 @@ export function DesignerMypage() {
               },
             }
           );
-          console.log("채팅방 생성 완료");
           setRoomExist(false);
         } else {
-          console.log("채팅 정보가 올바르게 설정되지 않았습니다.");
         }
       } else {
-        console.log("이미 채팅방이 존재합니다.");
       }
-    } catch (error) {
-      console.log("채팅방 생성 실패:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -249,17 +205,13 @@ export function DesignerMypage() {
     const stompClient = Stomp.over(socket);
 
     if (stompClient && stompClient.connected) {
-      console.log("이미 WebSocket에 연결되어 있습니다.");
       return;
     }
 
     stompClient.connect(headers, () => {
-      console.log("WebSocket에 연결됨");
       setStompClient(stompClient);
       stompClient.subscribe(`/sub/chat/room/${roomIds}`, (message) => {
         const newMessage = JSON.parse(message.body);
-        console.log("Received:", newMessage.content);
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
       });
     });
   };
@@ -276,19 +228,15 @@ export function DesignerMypage() {
         },
       });
       setMessageData(response.data.data);
-    } catch (error) {
-      console.log("정보가 없습니다.", error);
-    }
+    } catch (error) {}
   };
 
   const disconnectWebSocket = () => {
     if (stompClient) {
       stompClient.disconnect();
-      console.log("WebSocket 연결이 해제되었습니다.");
       setStompClient(null);
       setConnected(false);
     } else {
-      console.log("WebSocket 연결이 이미 해제되었습니다.");
     }
   };
 
@@ -305,7 +253,6 @@ export function DesignerMypage() {
 
       setMessageData([...messageData, { sender: designerEmail, message: msg }]);
     } else {
-      console.error("WebSocket 연결이 없습니다.");
     }
   };
 
@@ -316,10 +263,6 @@ export function DesignerMypage() {
   const closeChat = () => {
     disconnectWebSocket();
     setChatOpen(false);
-  };
-
-  const handleShowMore = () => {
-    setShowMore(true);
   };
 
   const handleDesignerInfoEdit = () => {

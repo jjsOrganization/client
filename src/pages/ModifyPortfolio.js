@@ -68,30 +68,25 @@ const ModifyPortfolio = () => {
 const portfolidId = useParams()
 const navigate = useNavigate();
 const [designerIntro, setDesignerIntro] = useState("소개글을 작성해주세요.");
-const [profileImage, setProfileImage] = useState(""); // 프로필 사진 상태 추가
+const [profileImage, setProfileImage] = useState("");
 const [portfolio, setPortfolio] = useState({
     explanation: "",
     designerImage: "",
     designerName: "",
 });
 
-// 디자이너 소개글 수정 상태
 const [isEditingIntro, setIsEditingIntro] = useState(false);
 
-// 수정 완료 버튼 클릭 시 소개글 수정 완료
 const handleFinishEditingIntro = () => {
 setIsEditingIntro(false);
-// 수정된 소개글을 저장하거나 다른 작업을 수행할 수 있습니다.
 };
 
-// 프로필 사진 업로드 및 변경 함수
 const handleImageUpload = (event) => {
 const imageFile = event.target.files[0];
 const imageUrl = URL.createObjectURL(imageFile);
 setProfileImage(imageUrl);
 };
 
-// 작업물 등록 페이지로 이동하는 함수
 const gotoRegisterPage = () => {
 navigate("/DesignerMypage/ModifyPortfolio/RegisterPortfolio");
 };
@@ -112,9 +107,7 @@ const handleRegister = async () => {
         },
         }
     );
-      console.log(formData); // 데이터 확인용
     } catch (error) {
-    console.log("데이터 전송 실패", error);
     }
 };
 
@@ -124,12 +117,10 @@ return (
 <Container>
     <h2>디자이너 포트폴리오 수정</h2>
     
-    {/* 디자이너 사진 & 소개글 */}
     <ProfileSection>
     <ProfileImage src={profileImage} alt="프로필 이미지" />
     <DesignerIntro>
         <h3>디자이너 소개</h3>
-        {/* 수정 버튼 클릭 시 소개글 수정 가능 */}
         {isEditingIntro ? (
         <>
             <Textarea 
@@ -165,35 +156,28 @@ return (
         <tr>
         <Td>디자인</Td>
         <Td>
-            {/* 가격 입력란 */}
             <Input type="text" placeholder="가격 입력" />
         </Td>
         <Td>기장</Td>
         <Td>
-            {/* 가격 입력란 */}
             <Input type="text" placeholder="가격 입력" />
         </Td>
         </tr>
         <tr>
         <Td>사이즈</Td>
         <Td>
-            {/* 가격 입력란 */}
             <Input type="text" placeholder="가격 입력" />
         </Td>
         <Td>장식</Td>
         <Td>
-            {/* 가격 입력란 */}
             <Input type="text" placeholder="가격 입력" />
         </Td>
         </tr>
-        {/* 필요한 만큼 행 추가 */}
     </tbody>
     </Table>
     
-    {/* 작업물 리스트 */}
     <h2>작업물 리스트</h2>
     
-    {/* 작업물 등록 버튼 */}
     <Button onClick={gotoRegisterPage}>작업물 등록</Button>
 </Container>
 );

@@ -1,18 +1,13 @@
-import "../css/ProductList.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../component/jwt.js";
-
-import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 
 const PortpolioList = () => {
   const [portfolios, setPortfolios] = useState([]);
   const [filteredPortfolios, setFilteredPortfolios] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("");
-  const itemsPerPage = 6; // 페이지당 보여줄 포트폴리오(작업물)
-
+  const itemsPerPage = 6;
   const navigate = useNavigate();
   const { page } = useParams();
   const currentPage = page ? parseInt(page, 10) : 1;
@@ -26,14 +21,11 @@ const PortpolioList = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(response.data.data);
         setPortfolios(response.data.data);
         setFilteredPortfolios(response.data.data);
       } catch (error) {
-        console.log("데이터 로드 실패", error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -61,14 +53,12 @@ const PortpolioList = () => {
   };
 
   const handleSortByLatest = () => {
-    setSortBy("latest");
     setFilteredPortfolios((prevProducts) =>
       prevProducts.slice().sort((a, b) => b.id - a.id)
     );
   };
 
   const handleSortByPopular = () => {
-    setSortBy("popular");
     //인기도 순으로 상품을 정렬
   };
 
@@ -91,7 +81,6 @@ const PortpolioList = () => {
       <div className="productList">
         {currentProducts.map((portfolio) => (
           <div key={portfolio.id} className="productItem">
-            {/* 링크 추가 */}
             <Link to={`/detail/${portfolio.id}`} style={{ textDecoration: "none"}}>
               {portfolio.designerImagePath && (
                 <img
@@ -106,7 +95,6 @@ const PortpolioList = () => {
         ))}
       </div>
       <div>
-        {/* 페이지네이션 */}
         <Pagination
           totalPages={totalPages}
           currentPage={currentPage}
@@ -133,7 +121,7 @@ const Pagination = ({ totalPages, currentPage, handlePageChange }) => {
   };
 
   const renderPageNumbers = () => {
-    const maxVisiblePages = 5; // 최대 페이지 조절
+    const maxVisiblePages = 5;
     const pageNumbers = [];
 
     if (totalPages <= maxVisiblePages) {

@@ -4,10 +4,8 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Dropdown from "../component/dropdown";
 import axiosInstance from "../component/jwt.js";
-import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 import LikeComponent from "../component/likeComponent.js";
-import Kakao from "../component/kakaoMap.js";
 
 let BasicBtn = styled.button`
   padding: 1%;
@@ -23,13 +21,11 @@ function Detail(props) {
   let [total, setTotal] = useState(0);
   let { productid } = useParams();
   const [productDetailInfo, setProductDetailInfo] = useState();
-  const [sellerData, setSellerData] = useState();
   const [salePrice, setSalePrice] = useState();
   const [productLike, setProductLike] = useState();
   const [likeState, setLikeState] = useState(false);
   const Endpoint = "https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/";
 
-  //Dropdown 관련 변수
   const SizeList = ["S", "M", "L", "XL"];
   const ColorList = ["검정", "아이보리", "그레이", "챠콜"];
   const size = "Size";
@@ -37,15 +33,6 @@ function Detail(props) {
   const test = total * salePrice;
   const [choiceSize, setChoiceSize] = useState(null);
   const [choiceColor, setChoiceColor] = useState(null);
-
-  const kakaoMapStyle = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "200px",
-    width: "250px",
-    marginLeft: "15%",
-  };
 
   const addValue = () => {
     setMyArray((prevArray) => [
@@ -78,7 +65,6 @@ function Detail(props) {
         );
         setProductDetailInfo(response.data);
       } catch (error) {
-        console.log("상품 상세 데이터 로드 실패", error);
       }
     };
     fetchDetailData();
@@ -97,9 +83,7 @@ function Detail(props) {
             },
           }
         );
-        setSellerData(sellerInfo.data);
       } catch (error) {
-        console.log("판매자 데이터 로드 실패", error);
       }
     };
     fetchSellerData();
@@ -110,7 +94,6 @@ function Detail(props) {
     if (productDetailInfo && productLike) {
       setSalePrice(productDetailInfo.price * (1 - sale));
     }
-    console.log(productDetailInfo);
   }, [productDetailInfo, sale]);
 
   const handleLike = async () => {
@@ -126,7 +109,6 @@ function Detail(props) {
       setLikeState(likeStateInfo.data.data);
       productLikeGet();
     } catch (error) {
-      console.log("좋아요 처리 에러", error);
     }
   };
 
@@ -141,11 +123,9 @@ function Detail(props) {
       );
       setProductLike(productLikeCount.data.data);
     } catch (error) {
-      console.log("좋아요 get에러", error);
     }
   };
 
-  //상품 좋아요 여부 확인
   useEffect(() => {
     const LikeCheckGet = async () => {
       try {
@@ -154,7 +134,6 @@ function Detail(props) {
         );
         setLikeState(likeStateInfo.data.data);
       } catch (error) {
-        console.log("좋아요 상태 체크 에러", error);
       }
     };
     LikeCheckGet();
@@ -184,7 +163,6 @@ function Detail(props) {
           },
         }
       );
-      console.log("장바구니에 상품 추가:", response.data);
       // 크롬 알림표시 사용 예정
     } catch (error) {
       console.error("장바구니에 상품 추가 실패:", error);
@@ -212,10 +190,8 @@ function Detail(props) {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      // 페이지 이동
       navigate("/PurchaserInfo");
     } catch (error) {
-      console.log("주문 실패", error);
     }
   };
 
