@@ -1,6 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
+import { useState } from "react";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import Dropdown from "../component/dropdown";
@@ -74,11 +73,9 @@ function ProductUpdate(props) {
           },
         }
       );
-      console.log("상품 등록 성공:", response.data);
       window.location.replace(`/productupdate`);
       alert("상품이 등록되었습니다.");
     } catch (error) {
-      console.error("상품 등록 실패:", error);
       alert("상품 등록에 실패했습니다.");
     }
   };
