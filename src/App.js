@@ -16,6 +16,7 @@ import PurchaserMypageDelivery from "./pages/PurchaserMyPageDelivery.js";
 import { Routes, Route } from "react-router-dom";
 import DesignerSearch from "./pages/DesignerSearch";
 import DesignerMypage from "./pages/DesignerMypage.js";
+import ModifyPortfolio from "./pages/ModifyPortfolio.js";
 import RegisterPortfolio from "./pages/RegisterPortfolio.js";
 import Signup from "./pages/Signup.js";
 import Detail from "./pages/Detail.js";
@@ -62,6 +63,7 @@ const App = () => {
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Designers/:page?" element={<DesignerSearch />} /> 
           <Route path="/DesignerMypage" element={<DesignerMypage />} />
+          <Route path="/DesignerMypage/ModifyPortfolio/:portfolidId" element={<ModifyPortfolio />} />
           <Route path="/DesignerMypage/ModifyPortfolio/RegisterPortfolio" element={<RegisterPortfolio />} />
         </Routes>
 

@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-
 import axiosInstance from "../component/jwt.js";
-import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
-
 import { PhotoIcon } from '@heroicons/react/24/solid'
 import { useNavigate } from "react-router-dom";
 
