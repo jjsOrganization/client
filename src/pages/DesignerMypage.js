@@ -257,14 +257,16 @@ export function DesignerMypage() {
       console.log("WebSocket에 연결됨");
       setStompClient(stompClient);
       stompClient.subscribe(`/sub/chat/room/${roomIds}`, (message) => {
-        console.log("Received:", JSON.parse(message.body).content);
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          JSON.parse(message.body),
-        ]);
+        const newMessage = JSON.parse(message.body);
+        console.log("Received:", newMessage.content);
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
       });
     });
   };
+
+  useEffect(() => {
+    fetchMessageData();
+  }, [messageData]);
 
   const fetchMessageData = async () => {
     try {

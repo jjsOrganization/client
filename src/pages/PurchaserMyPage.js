@@ -248,6 +248,8 @@ function CustomerOrderList() {
     }
   }, [connected, chatOpen, roomId]);
 
+  
+
   const connect = () => {
     const socket = new SockJS("http://3.38.128.50:8080/ws/chat");
     const stompClient = Stomp.over(socket);
@@ -261,14 +263,16 @@ function CustomerOrderList() {
       console.log("WebSocket에 연결됨");
       setStompClient(stompClient);
       stompClient.subscribe(`/sub/chat/room/${roomId}`, (message) => {
-        console.log("Received:", JSON.parse(message.body).content);
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          JSON.parse(message.body),
-        ]);
+        const newMessage = JSON.parse(message.body);
+        console.log("Received:", newMessage.content);
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
       });
     });
   };
+
+  useEffect(()=>{
+    fetchMessageData();
+  },[messageData])
 
   const fetchMessageData = async () => {
     try {
