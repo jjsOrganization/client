@@ -24,7 +24,6 @@ import ProductUpdate from "./pages/productRegistration.js";
 import StockUpdater from "./pages/stockUpdater.js";
 import MyPages from "./pages/mypage.js";
 import Main from "./pages/main.js";
-import Example from './pages/test'
 
 
 const App = () => {
@@ -102,8 +101,6 @@ const App = () => {
           <Route path="/Mypage/PurchaserInfoEdit/PurchaserAddressEdit" element={<PurchaserAddressEdit />}></Route>
 
           <Route path="/PortpolioList" element={<PortpolioList />}></Route>
-
-          <Route path = "/testpages" element = {<Example/>}></Route>
           
           <Route path = "/LiveChat" element = {<LiveChat/>}></Route>
           
