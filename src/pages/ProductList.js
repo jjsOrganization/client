@@ -1,3 +1,4 @@
+import "../css/ProductList.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../component/jwt.js";
