@@ -2,16 +2,12 @@ import "../css/DesignerSearch.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../component/jwt.js";
-
-import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 
 const DesignerSearch = () => {
     const [designers, setDesigners] = useState([]);
     const [filteredDesigners, setFilteredDesigners] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [sortBy, setSortBy] = useState("");
-    //const [sort, setSort] = useState(true);
     const itemsPerPage = 8;
 
     const navigate = useNavigate();
@@ -29,9 +25,7 @@ const DesignerSearch = () => {
                 });
                 setDesigners(response.data.data);
                 setFilteredDesigners(response.data.data);
-                console.log(response.data.data);
             } catch (error) {
-                console.log("데이터 로드 실패", error);
             }
         };
 
@@ -62,7 +56,6 @@ const DesignerSearch = () => {
     };
 
     const handleSortByLatest = () => {
-        setSortBy("latest");
         setFilteredDesigners(designers);
         setFilteredDesigners((prevDesigners) =>
             prevDesigners.slice().sort((a, b) => b.id - a.id)
@@ -82,10 +75,7 @@ const DesignerSearch = () => {
             );
             setFilteredDesigners(designers);
             setFilteredDesigners(resopnseLikeDesc.data.data);
-
-            console.log(resopnseLikeDesc.data);
         }catch (error) {
-            console.log("데이터 로드 실패", error);
         }
     };
 

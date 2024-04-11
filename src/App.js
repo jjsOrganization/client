@@ -16,17 +16,12 @@ import PurchaserMypageDelivery from "./pages/PurchaserMyPageDelivery.js";
 import PurchaserShoppingBasket from "./pages/PurchaserShoppingBasket.js";
 import { Routes, Route } from "react-router-dom";
 import DesignerSearch from "./pages/DesignerSearch";
-import DesignerProduct from "./pages/DesignerProduct";
-import DesignerPortfolio from "./pages/DesignerPortfolio";
-import DesignerRanking from "./pages/DesignerRanking";
 import DesignerMypage from "./pages/DesignerMypage.js";
 import ModifyPortfolio from "./pages/ModifyPortfolio.js";
 import RegisterPortfolio from "./pages/RegisterPortfolio.js";
-import DesignerReformState from "./pages/DesignerReformState.js";
 import Signup from "./pages/Signup.js";
 import Detail from "./pages/Detail.js";
 import ProductUpdate from "./pages/productRegistration.js";
-import StockList from "./pages/stockList.js";
 import StockUpdater from "./pages/stockUpdater.js";
 import MyPages from "./pages/mypage.js";
 import Main from "./pages/main.js";
@@ -34,13 +29,6 @@ import Example from './pages/test'
 
 
 const App = () => {
-
-  let [mainImage, setMainImage] = useState([
-    "https://i.postimg.cc/zfrVFgNL/1.png",
-    "https://i.postimg.cc/zv6fbLpG/2.png",
-    "https://i.postimg.cc/6QfTjp6M/3.png",
-  ]);
-
   const [selectedTab, setSelectedTab] = useState(1);
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -76,13 +64,9 @@ const App = () => {
         <Routes>
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Designers/:page?" element={<DesignerSearch />} /> 
-          <Route path="/DesignerProduct" element={<DesignerProduct />} />
-          <Route path="/DesignerPortfolio" element={<DesignerPortfolio />} />
-          <Route path="/DesignerRanking" element={<DesignerRanking />} />
           <Route path="/DesignerMypage" element={<DesignerMypage />} />
           <Route path="/DesignerMypage/ModifyPortfolio/:portfolidId" element={<ModifyPortfolio />} />
           <Route path="/DesignerMypage/ModifyPortfolio/RegisterPortfolio" element={<RegisterPortfolio />} />
-          <Route path="/DesignerMypage/ReformState" element={<DesignerReformState />} />
         </Routes>
 
         <Routes>
