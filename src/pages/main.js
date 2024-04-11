@@ -3,12 +3,7 @@ import { useEffect, useState } from 'react';
 import { Carousel } from 'antd';
 import axiosInstance from "../component/jwt.js";
 import { useNavigate,Link } from 'react-router-dom';
-import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
-import { Fragment } from 'react'
-import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 
 
 function Main(){
@@ -16,17 +11,7 @@ function Main(){
     const [sort, setSort] = useState(true);
     const [productDesc,setProductDesc] = useState();
     const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
-    const filters = [
-        {
-        id: '정렬 방식',
-        name: '정렬 방식',
-        options: [
-            { value: '인기순', label: '인기순', checked: false },
-            { value: '최신순', label: '최신순', checked: false },
-        ],
-        },]
-    const [open,setOpen] = useState(false);
-
+   
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -45,7 +30,6 @@ function Main(){
                     setProductDesc(resopnseLikeDesc.data.data);
                 }
             catch(error) {
-                console.log('데이터 로드 실패', error);
             }
         };
         fetchData();
