@@ -2,14 +2,8 @@ import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axiosInstance from "../component/jwt.js";
-import "../component/TopBar.js";
 import TopBar from "../component/TopBar.js";
 import Dropdown from "../component/dropdown";
-
-let RegisterBtn = styled.button`
-  color: white;
-  background: black;
-`;
 
 function ProductUpdate(props) {
   const [titleValue, setTitleValue] = useState();
@@ -18,7 +12,6 @@ function ProductUpdate(props) {
   const [amountValue, setAmountValue] = useState();
   const [thumbnailImage, setThumbnailImage] = useState();
   const [thumbnailImageFile, setThumbnailImageFile] = useState();
-  const [categoryData, setCategoryData] = useState();
   const categoryDropDown = ['상의','아우터','바지','스커트','원피스','모자']
   const [categoryId, setCategoryId] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -89,29 +82,6 @@ function ProductUpdate(props) {
       alert("상품 등록에 실패했습니다.");
     }
   };
-  /*
-  useEffect(() => {
-    const fetchCategoryData = async () => {
-      try {
-        const response = await axiosInstance.get(`/products/category/1`, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            'Authorization': `Bearer ${localStorage.getItem("accessToken")}`
-          }
-        });
-        setCategoryData(response.data);
-      } catch (error) {
-        console.log('카테고리 데이터 로드 실패', error);
-      }
-    };
-    fetchCategoryData();
-  }, []);*/
-
-  useEffect(() => {
-    if(categoryData){
-      console.log(categoryData)
-    }
-  })
 
   return (
     <div>
