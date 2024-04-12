@@ -4,6 +4,7 @@ import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import DesignerWriteEstimate from "../component/DesignerWriteEstimate.js";
 
 import {
   Card,
@@ -272,12 +273,8 @@ export function DesignerMypage() {
     navigate("/DesignerMyPage/ModifyPortfolio/RegisterPortfolio");
   };
 
-  const openWriteEstimate = () => {
-    window.open(
-      "/Mypage/Designer/Estimate",
-      "WriteEstimate",
-      "width=400,height=400"
-    );
+  const openWriteEstimate = (requestNumber) => {
+    window.open(`/Mypage/Designer/Estimate?requestNumber=${requestNumber}`);
   };
 
   return (
@@ -448,7 +445,7 @@ export function DesignerMypage() {
                         {/* 두 번째 버튼 */}
                         <button
                           onClick={() => {
-                            openWriteEstimate();
+                            openWriteEstimate(reform.requestNumber);
                           }}
                           style={{
                             backgroundColor: "darkblue",
