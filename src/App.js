@@ -24,6 +24,7 @@ import ProductUpdate from "./pages/productRegistration.js";
 import StockUpdater from "./pages/stockUpdater.js";
 import MyPages from "./pages/mypage.js";
 import Main from "./pages/main.js";
+import DesignerWriteEstimate from "./component/DesignerWriteEstimate.js"
 
 
 const App = () => {
@@ -103,6 +104,8 @@ const App = () => {
           <Route path="/PortpolioList" element={<PortpolioList />}></Route>
           
           <Route path = "/LiveChat" element = {<LiveChat/>}></Route>
+
+          <Route path="/Mypage/Designer/Estimate" element={<DesignerWriteEstimate />}></Route>
           
         </Routes>
       </div>

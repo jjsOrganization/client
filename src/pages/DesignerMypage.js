@@ -90,8 +90,7 @@ export function DesignerMypage() {
       );
       const data = response.data.data;
       setRequestReform(data);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -273,6 +272,14 @@ export function DesignerMypage() {
     navigate("/DesignerMyPage/ModifyPortfolio/RegisterPortfolio");
   };
 
+  const openWriteEstimate = () => {
+    window.open(
+      "/Mypage/Designer/Estimate",
+      "WriteEstimate",
+      "width=400,height=400"
+    );
+  };
+
   return (
     <div>
       <TopBar />
@@ -420,21 +427,41 @@ export function DesignerMypage() {
                       요청 가격: {reform.requestPrice}
                     </Typography>
                     {reform.requestStatus !== "REQUEST_WAITING" ? (
-                      <button
-                        onClick={() => {
-                          fetchRoomData(reform.requestNumber);
-                        }}
-                        style={{
-                          backgroundColor: "lightblue",
-                          color: "white",
-                          padding: "8px 16px",
-                          border: "none",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        채팅방생성 또는 채팅시작
-                      </button>
+                      <div>
+                        {/* 첫 번째 버튼 */}
+                        <button
+                          onClick={() => {
+                            fetchRoomData(reform.requestNumber);
+                          }}
+                          style={{
+                            backgroundColor: "lightblue",
+                            color: "white",
+                            padding: "8px 16px",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            marginRight: "10px", // 첫 번째 버튼과의 간격을 위한 스타일
+                          }}
+                        >
+                          채팅방 생성 또는 시작
+                        </button>
+                        {/* 두 번째 버튼 */}
+                        <button
+                          onClick={() => {
+                            openWriteEstimate();
+                          }}
+                          style={{
+                            backgroundColor: "darkblue",
+                            color: "white",
+                            padding: "8px 16px",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          견적서 작성
+                        </button>
+                      </div>
                     ) : null}
                     {/* 요청이 수락되지 않은 경우 상태 변경을 위한 드롭다운 메뉴를 표시합니다. */}
                     {reform.requestStatus !== "REQUEST_ACCEPTED" &&
