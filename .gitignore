@@ -4,10 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
-/component/jwt.js
-/component/LiveChat.js
-/pages/DesignerMypage.js
-/pages/PurchaserMyPage.js
+src/component/jwt.js
+src/component/LiveChat.js
+src/pages/DesignerMypage.js
+src/pages/PurchaserMyPage.js
 
 # testing
 /coverage
