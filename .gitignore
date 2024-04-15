@@ -4,10 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-src/component/jwt.js
 src/component/LiveChat.js
-src/pages/DesignerMypage.js
-src/pages/PurchaserMyPage.js
 
 # testing
 /coverage
