@@ -150,12 +150,12 @@
 }
 
 .send-button {
-  background-color: #28a745; /* 진한 녹색으로 변경 */
+  background-color: #28a745;
   color: white;
 }
 
 .close-button {
-  background-color: #dc3545; /* 진한 빨간색으로 변경 */
+  background-color: #000000;
   color: white;
 }
 

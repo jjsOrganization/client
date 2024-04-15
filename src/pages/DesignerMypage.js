@@ -193,7 +193,7 @@ export function DesignerMypage() {
   }, [chatInfo, roomExist]);
 
   const connect = () => {
-    const socket = new SockJS("http://3.38.128.50:8080/ws/chat");
+    const socket = new SockJS("");
     const stompClient = Stomp.over(socket);
 
     if (stompClient && stompClient.connected) {
@@ -434,7 +434,6 @@ export function DesignerMypage() {
                     </Typography>
                     {reform.requestStatus !== "REQUEST_WAITING" ? (
                       <div>
-                        {/* 첫 번째 버튼 */}
                         <button
                           onClick={() => {
                             fetchRoomData(reform.requestNumber);
@@ -446,12 +445,11 @@ export function DesignerMypage() {
                             border: "none",
                             borderRadius: "4px",
                             cursor: "pointer",
-                            marginRight: "10px", // 첫 번째 버튼과의 간격을 위한 스타일
+                            marginRight: "10px",
                           }}
                         >
                           채팅방 생성 또는 시작
                         </button>
-                        {/* 두 번째 버튼 */}
                         <button
                           onClick={() => {
                             openWriteEstimate();
@@ -469,7 +467,6 @@ export function DesignerMypage() {
                         </button>
                       </div>
                     ) : null}
-                    {/* 요청이 수락되지 않은 경우 상태 변경을 위한 드롭다운 메뉴를 표시합니다. */}
                     {reform.requestStatus !== "REQUEST_ACCEPTED" &&
                       reform.requestStatus !== "REQUEST_REJECTED" && (
                         <select

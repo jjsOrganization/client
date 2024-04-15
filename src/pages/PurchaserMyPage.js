@@ -441,10 +441,8 @@ function CustomerOrderList() {
         <button onClick={handlePurchaserInfoEdit}>회원정보 수정하기</button>
       </div>
 
-      {/* 다이얼로그 */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={setOpen}>
-          {/* 다이얼로그 내부 */}
           <Transition.Child
             as={Fragment}
             enter="ease-in-out duration-500"
@@ -486,7 +484,6 @@ function CustomerOrderList() {
                             >
                               <span className="absolute -inset-0.5" />
                               <span className="sr-only">Close panel</span>
-                              {/* 아이콘 */}
                               <svg
                                 className="h-6 w-6"
                                 xmlns="http://www.w3.org/2000/svg"
