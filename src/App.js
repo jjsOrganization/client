@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./App.css";
-import LiveChat from "./component/LiveChat.js";
 import PortpolioList from "./pages/PortpolioList.js";
 import PurchaserAddressEdit from "./component/PurchaserAddressEdit.js";
 import PurchaserPasswordEdit from "./component/PurchaserPasswordEdit.js";
@@ -102,8 +101,6 @@ const App = () => {
           <Route path="/Mypage/PurchaserInfoEdit/PurchaserAddressEdit" element={<PurchaserAddressEdit />}></Route>
 
           <Route path="/PortpolioList" element={<PortpolioList />}></Route>
-          
-          <Route path = "/LiveChat" element = {<LiveChat/>}></Route>
 
           <Route path="/Mypage/Designer/Estimate" element={<DesignerWriteEstimate />}></Route>
           

@@ -47,8 +47,8 @@
   margin-top: -10px;
 }
 
-.purchaserReformedProduct h4{
-   margin-top: 10%;
+.purchaserReformedProduct h4 {
+  margin-top: 10%;
 }
 
 .OrderedBTN {
@@ -71,8 +71,8 @@
   margin-left: 37%;
 }
 
-.UserCorrection button{
-   background: #374d9a;
+.UserCorrection button {
+  background: #374d9a;
   color: white;
   width: 400px;
   height: 75px;
@@ -91,6 +91,74 @@
 .purchaserOrderReformProduct h4 {
   font-size: 2em;
 }
+
+.chat-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f0f0f0; /* 배경색을 조금 더 밝게 조정 */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff; /* 밝은 색으로 변경 */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); /* 내부 그림자 효과 추가 */
+  color: black; /* 텍스트 색상을 검은색으로 변경 */
+}
+
+.message {
+  display: flex;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 10px;
+  color: white; /* 텍스트 색상 변경 */
+  min-width: 100px;
+  max-width: 90%;
+  word-wrap: break-word;
+}
+
+.left {
+  justify-content: flex-start;
+  background-color: #007bff; /* 밝은 파란색으로 변경 */
+  color: white;
+}
+
+.right {
+  justify-content: flex-end;
+  background-color: #f8f9fa; /* 매우 연한 회색으로 변경 */
+  color: black; /* 텍스트 색상을 검은색으로 변경 */
+  border: 1px solid #dee2e6; /* 경계선 추가 */
+}
+
+.message-input, .send-button, .close-button {
+  width: 92%;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.message-input {
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+.send-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.close-button {
+  background-color: #000000;
+  color: white;
+}
+
 
 @media screen and (max-width: 720px) {
   .purchaserOrederedProduct p {
