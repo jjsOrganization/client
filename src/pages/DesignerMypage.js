@@ -35,13 +35,6 @@ export function DesignerMypage() {
     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
   };
 
-  useEffect(() => {
-    if (connected && chatOpen && roomIds) {
-      connect();
-      fetchMessageData();
-    }
-  }, [connected, chatOpen, roomIds]);
-
   const fetchDesignerMypage = async () => {
     try {
       const responseDesignerInfo = await axiosInstance.get(
@@ -200,7 +193,7 @@ export function DesignerMypage() {
   }, [chatInfo, roomExist]);
 
   const connect = () => {
-    const socket = new SockJS("");
+    const socket = new SockJS("http://3.38.128.50:8080/ws/chat");
     const stompClient = Stomp.over(socket);
 
     if (stompClient && stompClient.connected) {
@@ -214,10 +207,6 @@ export function DesignerMypage() {
       });
     });
   };
-
-  useEffect(() => {
-    fetchMessageData();
-  }, [messageData]);
 
   const fetchMessageData = async () => {
     try {
@@ -279,6 +268,23 @@ export function DesignerMypage() {
       "width=400,height=400"
     );
   };
+
+  useEffect(() => {
+    if (connected && chatOpen && roomIds) {
+      connect();
+    }
+  }, [connected, chatOpen, roomIds]);
+
+  useEffect(() => {
+    if (connected) {
+      const fetchDataInterval = setInterval(() => {
+        fetchMessageData();
+      }, 1000); // 1초마다 데이터를 불러옴
+
+      // 의존성이 변경될 때마다 interval을 클리어하여 메모리 누수를 방지
+      return () => clearInterval(fetchDataInterval);
+    }
+  }, [connected, messageData]);
 
   return (
     <div>
@@ -490,25 +496,35 @@ export function DesignerMypage() {
       </div>
       <div>
         {chatOpen ? (
-          <div>
-            <h1>WebSocket 통신</h1>
-            <button onClick={closeChat}>WebSocket 연결 끊기</button>
-            <div>
-              <h2>Messages:</h2>
+          <div className="chat-container">
+            <h1>메세지</h1>
+            <div className="message-container">
+              <h2>채팅내역:</h2>
               {messageData.map((data, index) => (
-                <div key={index}>
+                <div
+                  className={`message ${
+                    data.sender === designerEmail ? "right" : "left"
+                  }`}
+                  key={index}
+                >
                   <p>
-                    {data.sender}: {data.message}
+                    <strong>{data.sender}:</strong> {data.message}
                   </p>
                 </div>
               ))}
               <input
+                className="message-input"
                 type="text"
                 value={msg}
                 placeholder="메시지"
                 onChange={(e) => setMsg(e.target.value)}
               />
-              <button onClick={postMessage}>메시지 보내기</button>
+              <button className="send-button" onClick={postMessage}>
+                메시지 보내기
+              </button>
+              <button className="close-button" onClick={closeChat}>
+                채팅방 연결 종료
+              </button>
             </div>
           </div>
         ) : null}
