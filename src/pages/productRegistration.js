@@ -11,19 +11,33 @@ function ProductUpdate(props) {
   const [amountValue, setAmountValue] = useState();
   const [thumbnailImage, setThumbnailImage] = useState();
   const [thumbnailImageFile, setThumbnailImageFile] = useState();
-  const categoryDropDown = ['상의','아우터','바지','스커트','원피스','모자']
+  const categoryDropDown = [
+    "상의",
+    "아우터",
+    "바지",
+    "스커트",
+    "원피스",
+    "모자",
+  ];
   const [categoryId, setCategoryId] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const categoryText = '카테고리'
+  const categoryText = "카테고리";
 
-  const categoryHandler = ((selectedCategory) => {
-    if(selectedCategory === '상의'){setCategoryId(1);}
-    else if(selectedCategory === '아우터'){setCategoryId(2)}
-    else if(selectedCategory === '바지'){setCategoryId(3)}
-    else if(selectedCategory === '스커트'){setCategoryId(4)}
-    else if(selectedCategory === '원피스'){setCategoryId(5)}
-    else if(selectedCategory === '모자'){setCategoryId(6)}
-  })
+  const categoryHandler = (selectedCategory) => {
+    if (selectedCategory === "상의") {
+      setCategoryId(1);
+    } else if (selectedCategory === "아우터") {
+      setCategoryId(2);
+    } else if (selectedCategory === "바지") {
+      setCategoryId(3);
+    } else if (selectedCategory === "스커트") {
+      setCategoryId(4);
+    } else if (selectedCategory === "원피스") {
+      setCategoryId(5);
+    } else if (selectedCategory === "모자") {
+      setCategoryId(6);
+    }
+  };
 
   const savecontent = (event) => {
     setContentValue(event.target.value);
@@ -61,10 +75,11 @@ function ProductUpdate(props) {
       formData.append("productStock", amountValue);
       formData.append("productImgDtoList.imgUrl", thumbnailImage);
       formData.append("itemImgFile", thumbnailImageFile);
-      formData.append("categoryId.id", categoryId)
-      formData.append("categoryId.categoryName", selectedCategory)
+      formData.append("categoryId.id", categoryId);
+      formData.append("categoryId.categoryName", selectedCategory);
 
-      const response = await axiosInstance.post("/product/seller/register",
+      const response = await axiosInstance.post(
+        "/product/seller/register",
         formData,
         {
           headers: {
@@ -83,109 +98,144 @@ function ProductUpdate(props) {
   return (
     <div>
       <TopBar />
-      <div style={{ marginTop: "5%", marginLeft: "7%" }} ClassName="title">
-        <h3>상품등록</h3>
-      </div>
-      <div
-        className="image"
-        style={{
-          height: "300px",
-          border: "1px solid black",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <img
-          src={thumbnailImage}
-          height="90%"
-          style={{ marginTop: "1.8%" }}
-        ></img>
-      </div>
-
-      <div className="productRegisterContainer">
+      <div style={{ marginLeft: "15%", marginRight: "15%" }}>
+        <div style={{ marginTop: "5%", marginLeft: "7%" }} ClassName="title">
+          <h3>상품등록</h3>
+        </div>
         <div
-          className="productRegisterImageUpdate"
-          style={{ justifyItems: "end", display: "grid", marginBottom: "30px" }}
+          className="image"
+          style={{
+            height: "300px",
+            border: "1px solid black",
+            display: "flex",
+            justifyContent: "center",
+          }}
         >
-          <label
-            htmlFor="fileInput"
-            className="inputLabel"
+          <img
+            src={thumbnailImage}
+            height="90%"
+            style={{ marginTop: "1.8%" }}
+          ></img>
+        </div>
+
+        <div className="productRegisterContainer">
+          <div
+            className="productRegisterImageUpdate"
             style={{
-              padding: "10px",
-              margin: "5px 0 20px 0",
-              fontWeight: "bold",
-              color: "red",
-              cursor: "pointer",
-              display: "inline-block",
-              border: "1px solid red",
+              justifyItems: "end",
+              display: "grid",
+              marginBottom: "30px",
             }}
           >
-            사진 업로드
-          </label>
+            <label
+              htmlFor="fileInput"
+              className="inputLabel"
+              style={{
+                padding: "10px",
+                margin: "5px 0 20px 0",
+                fontWeight: "bold",
+                color: "red",
+                cursor: "pointer",
+                display: "inline-block",
+                border: "1px solid red",
+              }}
+            >
+              사진 업로드
+            </label>
 
-          <input
-            id="fileInput"
-            type="file"
-            multiple
-            onChange={(event) => encodeImageFile(event)}
-            style={{ display: "none" }}
-          />
+            <input
+              id="fileInput"
+              type="file"
+              multiple
+              onChange={(event) => encodeImageFile(event)}
+              style={{ display: "none" }}
+            />
+          </div>
+          <div className="productRegisterTitle">
+            <p style={{ fontWeight: "700", margin: "0" }}>상품 제목</p>
+            <input
+              value={titleValue}
+              type="text"
+              onChange={saveTitle}
+              style={{
+                width: "100%",
+                marginBottom: "30px",
+                border: "1px solid #374d9a",
+                borderRadius: "5px",
+                padding: "8px",
+                boxSizing: "border-box",
+              }}
+            />
+          </div>
+          <div className="productRegisterContent">
+            <p style={{ fontWeight: "700", margin: "0" }}>상품 정보</p>
+            <input
+              value={contentValue}
+              type="text"
+              onChange={savecontent}
+              style={{
+                width: "100%",
+                marginBottom: "30px",
+                border: "1px solid #374d9a",
+                borderRadius: "5px",
+                padding: "8px",
+                boxSizing: "border-box",
+              }}
+            />
+          </div>
+          <div className="productRegisterPrice">
+            <p style={{ fontWeight: "700", margin: "0" }}>상품 가격</p>
+            <input
+              value={priceValue}
+              type="text"
+              onChange={savePrice}
+              style={{
+                width: "100%",
+                marginBottom: "30px",
+                border: "1px solid #374d9a",
+                borderRadius: "5px",
+                padding: "8px",
+                boxSizing: "border-box",
+              }}
+            />
+          </div>
+          <div className="productRegisterAmount">
+            <p style={{ fontWeight: "700", margin: "0" }}>재고수</p>
+            <input
+              value={amountValue}
+              type="text"
+              onChange={saveAmount}
+              style={{
+                width: "100%",
+                marginBottom: "30px",
+                border: "1px solid #374d9a",
+                borderRadius: "5px",
+                padding: "8px",
+                boxSizing: "border-box",
+              }}
+            />
+          </div>
+          <div className="productRegisterCategory">
+            <Dropdown
+              cate={categoryHandler}
+              text={categoryText}
+              setArticleType={setSelectedCategory}
+              articleTypeList={categoryDropDown}
+              articleType={selectedCategory}
+              category="dd"
+            />
+          </div>
+          <div className="productRegisterBtn" style={{ textAlign: "right" }}>
+            <button
+              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
+              onClick={() => {
+                registerHandler();
+              }}
+            >
+              상품등록
+            </button>
+          </div>
         </div>
-        <div className="productRegisterTitle">
-          <p style={{ fontWeight: "700", margin: "0" }}>상품 제목</p>
-          <input
-            value={titleValue}
-            type="text"
-            onChange={saveTitle}
-            style={{ width: "100%", marginBottom: "30px",border : '1px solid #374d9a',borderRadius : '5px', padding : '8px', boxSizing : 'border-box' }}
-          />
-        </div>
-        <div className="productRegisterContent">
-          <p style={{ fontWeight: "700", margin: "0" }}>상품 정보</p>
-          <input
-            value={contentValue}
-            type="text"
-            onChange={savecontent}
-            style={{ width: "100%", marginBottom: "30px",border : '1px solid #374d9a',borderRadius : '5px', padding : '8px', boxSizing : 'border-box' }}
-          />
-        </div>
-        <div className="productRegisterPrice">
-          <p style={{ fontWeight: "700", margin: "0" }}>상품 가격</p>
-          <input
-            value={priceValue}
-            type="text"
-            onChange={savePrice}
-            style={{ width: "100%", marginBottom: "30px",border : '1px solid #374d9a',borderRadius : '5px', padding : '8px', boxSizing : 'border-box' }}
-          />
-        </div>
-        <div className="productRegisterAmount">
-          <p style={{ fontWeight: "700", margin: "0" }}>재고수</p>
-          <input
-            value={amountValue}
-            type="text"
-            onChange={saveAmount}
-            style={{ width: "100%", marginBottom: "30px",border : '1px solid #374d9a',borderRadius : '5px', padding : '8px', boxSizing : 'border-box' }}
-          />
-        </div>
-        <div className = 'productRegisterCategory'>
-        <Dropdown
-        cate ={categoryHandler} 
-        text = {categoryText}
-        setArticleType = {setSelectedCategory}
-        articleTypeList = {categoryDropDown}
-        articleType= {selectedCategory}
-        category = 'dd'
-      />
-        </div>
-        <div className="productRegisterBtn" style={{ textAlign: "right" }}>
-          <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
-            onClick={() => {
-              registerHandler();
-            }}>
-            상품등록
-          </button>
-        </div>
-        
       </div>
     </div>
   );
