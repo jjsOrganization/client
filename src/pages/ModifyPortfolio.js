@@ -178,7 +178,7 @@ return (
     
     <h2>작업물 리스트</h2>
     
-    <Button onClick={gotoRegisterPage}>작업물 등록</Button>
+    <Button onClick={handleRegister}>작업물 등록</Button>
 </Container>
 );
 };

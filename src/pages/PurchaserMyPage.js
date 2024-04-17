@@ -314,7 +314,7 @@ function CustomerOrderList() {
     <div>
       <TopBar />
       <div className="purchaserOrderReformProduct">
-        <h1>마이페이지</h1>
+        <h1 style={{ marginLeft: "15%"}}>마이페이지</h1>
         <div className="purchaserOrederedProduct">
           <h4>구매목록</h4>
           <hr></hr>

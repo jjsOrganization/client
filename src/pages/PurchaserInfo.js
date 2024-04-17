@@ -39,7 +39,7 @@ function PurchaserInfo() {
   return (
     <div>
       <TopBar />
-      <h1>구매자 정보 입력</h1>
+      <h1 style={{ marginLeft: "15%", marginRight: "15%" }}>구매자 정보 입력</h1>
       <div className="purchaserInfo">
         <h4>배송지 정보 입력</h4>
         <div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../component/jwt.js";
 import "../css/TopBar.css";
+import logo from "../images/logo.png"
 
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
@@ -49,14 +50,14 @@ export default function TopBar() {
     setIsLoggedIn(false);
     navigate("/login");
   };
-// bg-red-50 mb-4
+
   return (
-    <header className="bg-lime-50 mb-4">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+    <header className="bg-gray-100 mb-4">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between p-1 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
-            <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+            <span className="sr-only">재고처리반</span>
+            <img className="h-20 w-30" src={logo} alt="" />
           </a>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
