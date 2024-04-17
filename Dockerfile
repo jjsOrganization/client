@@ -29,3 +29,19 @@ EXPOSE 80
 
 # Nginx 실행
 CMD ["nginx", "-g", "daemon off;"]
+
+
+
+
+# # SSL 설정을 위한 SSL 인증서 및 키 복사
+# COPY nginx/nginx.crt /etc/nginx/nginx.crt
+# COPY nginx/nginx.key /etc/nginx/nginx.key
+
+# # HTTPS를 위한 Nginx 구성 파일 복사
+# COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
+# # 포트 443을 노출 (HTTPS)
+# EXPOSE 443
+
+# # Nginx 실행
+# CMD ["nginx", "-g", "daemon off;"]
