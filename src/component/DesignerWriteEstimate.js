@@ -42,8 +42,9 @@ function DesignerWriteEstimate() {
           },
         }
       );
+      window.alert("견적서 작성이 완료되었습니다. 계속 수정이 가능합니다.");
     } catch (error) {
-      console.error("Error writing estimate:", error);
+      window.alert("오류로 견적서 작성이 되지 않았습니다.");
     }
   };
 
@@ -58,12 +59,13 @@ function DesignerWriteEstimate() {
         }
       );
       const data = response.data.data;
-      console.log(data);
       setEstimateInfo(data.estimateInfo);
       setEstimateImg(data.estimateImg);
       setReformPrice(data.price);
       setEstimateNumber(data.estimateNumber);
-    } catch (error) {}
+    } catch (error) {
+      window.alert("오류로 견적서 내용을 불러오지 못했습니다.");
+    }
   };
 
   useEffect(() => {
@@ -76,7 +78,6 @@ function DesignerWriteEstimate() {
       formData.append("estimateInfo", estimateInfo);
       formData.append("estimateImg", estimateImg);
       formData.append("reformPrice", reformPrice);
-      console.log(formData);
       const request = await axiosInstance.put(
         `/estimate/designer/estimateForm/${estimateNumber}`,
         formData,
@@ -87,8 +88,9 @@ function DesignerWriteEstimate() {
           },
         }
       );
+      window.alert("견적서 수정이 완료되었습니다. 계속 수정이 가능합니다.");
     } catch (error) {
-      console.error("Error writing estimate:", error);
+      window.alert("오류로 견적서 수정이 되지 않았습니다.. 다시 시도해주세요.");
     }
   };
 
