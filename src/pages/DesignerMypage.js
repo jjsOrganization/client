@@ -261,11 +261,11 @@ export function DesignerMypage() {
     navigate("/DesignerMyPage/ModifyPortfolio/RegisterPortfolio");
   };
 
-  const openWriteEstimate = () => {
+  const openWriteEstimate = (requestNumber) => {
     window.open(
-      "/Mypage/Designer/Estimate",
+      `/Mypage/Designer/Estimate/${requestNumber}`,
       "WriteEstimate",
-      "width=400,height=400"
+      "width=600,height=750"
     );
   };
 
@@ -452,7 +452,7 @@ export function DesignerMypage() {
                         </button>
                         <button
                           onClick={() => {
-                            openWriteEstimate();
+                            openWriteEstimate(reform.requestNumber);
                           }}
                           style={{
                             backgroundColor: "darkblue",

@@ -102,7 +102,7 @@ const App = () => {
 
           <Route path="/PortpolioList" element={<PortpolioList />}></Route>
 
-          <Route path="/Mypage/Designer/Estimate" element={<DesignerWriteEstimate />}></Route>
+          <Route path="/Mypage/Designer/Estimate/:requestNumber" element={<DesignerWriteEstimate />}></Route>
           
         </Routes>
       </div>
