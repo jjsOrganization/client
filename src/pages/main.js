@@ -4,6 +4,7 @@ import { Carousel } from 'antd';
 import axiosInstance from "../component/jwt.js";
 import { useNavigate,Link } from 'react-router-dom';
 import TopBar from "../component/TopBar.js";
+import { postRefreshToken } from '../component/jwt.js';
 
 
 function Main(){
@@ -64,6 +65,7 @@ function Main(){
                 {productInfo ? 
                 <>
                 <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>상품</h4>
+                <button onClick={(() => postRefreshToken())}>토큰 재발급 버튼</button>
                 {sort ? <div><button style = {{background : 'white', border: 'none'}} onClick = { () => { setSort(false)}}>인기순</button> <button style = {{background : 'white', border: 'none'}} >✔ 최신순</button> </div> : <div><button style = {{background : 'white', border: 'none'}}>✔ 인기순</button> <button style = {{background : 'white', border: 'none'}} onClick = { () => { setSort(true)}}>최신순</button> </div>}
                 {sort ? <MainProduct navigate = {navigate} Endpoint = {Endpoint} product = {productInfo}></MainProduct> : <MainProduct navigate = {navigate} Endpoint = {Endpoint} product = {productDesc}></MainProduct>}
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '3%' }}></div>
