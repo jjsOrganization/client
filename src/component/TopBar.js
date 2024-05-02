@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../component/jwt.js";
 import "../css/TopBar.css";
 import logo from "../images/logo.png"
-
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
   ArrowPathIcon,
@@ -15,7 +14,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-
+import { postRefreshToken } from "../component/jwt.js";
 
 
 
@@ -28,22 +27,24 @@ export default function TopBar() {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       setIsLoggedIn(true);
-      axiosInstance
-        .get("/user/role", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+      axiosInstance.get("/user/role", {
+        headers : {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
         })
-        .then((response) => {
+        .then(async (response) => {
           setRole(response.data.data.role);
         })
-        .catch((error) => {
-          console.error("사용자 역할 가져오기 실패:", error);
+        .catch(async (error) => {
+          console.error('요청 실패:', error);
+          const response = postRefreshToken();
+          console.log(response)
         });
     } else {
       setIsLoggedIn(false);
     }
   }, []);
+
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");

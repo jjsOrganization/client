@@ -17,6 +17,7 @@ function Login() {
       if (response.data && response.data.data.accessToken) {
         localStorage.setItem("memberId", userEmail);
         localStorage.setItem("accessToken", response.data.data.accessToken);
+        localStorage.setItem("refreshToken", response.data.data.refreshToken);
         document.cookie = `accessToken=${response.data.data.accessToken}; path=/;`;
         navigate("/");
       } else {
