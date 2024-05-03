@@ -6,7 +6,7 @@ function DesignerWriteEstimate() {
   const [estimateInfo, setEstimateInfo] = useState("");
   const [estimateImg, setEstimateImg] = useState(null);
   const [reformPrice, setReformPrice] = useState("");
-  const [estimateNumber, setEstimateNumber] = useState("");
+  const [estimateNumber, setEstimateNumber] = useState(null);
   const { requestNumber } = useParams();
 
   const handleChange = (e) => {
@@ -20,7 +20,6 @@ function DesignerWriteEstimate() {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    console.log("Uploaded file:", file);
     setEstimateImg(file);
   };
 
@@ -31,8 +30,7 @@ function DesignerWriteEstimate() {
       formData.append("estimateInfo", estimateInfo);
       formData.append("estimateImg", estimateImg);
       formData.append("reformPrice", reformPrice);
-      console.log(formData);
-      const request = await axiosInstance.post(
+      const response = await axiosInstance.post(
         `/estimate/designer/estimateForm/${requestNumber}`,
         formData,
         {
@@ -42,6 +40,7 @@ function DesignerWriteEstimate() {
           },
         }
       );
+      setEstimateNumber(response.data.estimateNumber);
       window.alert("견적서 작성이 완료되었습니다. 계속 수정이 가능합니다.");
     } catch (error) {
       window.alert("오류로 견적서 작성이 되지 않았습니다.");
@@ -59,9 +58,9 @@ function DesignerWriteEstimate() {
         }
       );
       const data = response.data.data;
-      setEstimateInfo(data.estimateInfo);
+      setEstimateInfo(data.estimateInfo || "");
       setEstimateImg(data.estimateImg);
-      setReformPrice(data.price);
+      setReformPrice(data.price || "");
       setEstimateNumber(data.estimateNumber);
     } catch (error) {
       window.alert("오류로 견적서 내용을 불러오지 못했습니다.");
@@ -69,16 +68,19 @@ function DesignerWriteEstimate() {
   };
 
   useEffect(() => {
-    fetchEstimateData();
-  }, []);
+    if (requestNumber) {
+      fetchEstimateData();
+    }
+  }, [requestNumber]);
 
-  const handleReSubmit = async () => {
+  const handleReSubmit = async (e) => {
+    e.preventDefault();
     try {
       const formData = new FormData();
       formData.append("estimateInfo", estimateInfo);
       formData.append("estimateImg", estimateImg);
       formData.append("reformPrice", reformPrice);
-      const request = await axiosInstance.put(
+      await axiosInstance.put(
         `/estimate/designer/estimateForm/${estimateNumber}`,
         formData,
         {
@@ -90,7 +92,7 @@ function DesignerWriteEstimate() {
       );
       window.alert("견적서 수정이 완료되었습니다. 계속 수정이 가능합니다.");
     } catch (error) {
-      window.alert("오류로 견적서 수정이 되지 않았습니다.. 다시 시도해주세요.");
+      window.alert("오류로 견적서 수정이 되지 않았습니다. 다시 시도해주세요.");
     }
   };
 
@@ -125,28 +127,11 @@ function DesignerWriteEstimate() {
           onChange={handleChange}
         />
       </div>
+
       <div>
-        {estimateInfo === null ? (
+        {estimateInfo !== "" && estimateNumber ? (
           <button
-            onClick={() => {
-              handleSubmit();
-            }}
-            style={{
-              backgroundColor: "darkblue",
-              color: "white",
-              padding: "8px 16px",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            견적서 작성
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              handleReSubmit();
-            }}
+            onClick={handleReSubmit}
             style={{
               backgroundColor: "darkblue",
               color: "white",
@@ -157,6 +142,20 @@ function DesignerWriteEstimate() {
             }}
           >
             견적서 수정
+          </button>
+        ) : (
+          <button
+            onClick={handleSubmit}
+            style={{
+              backgroundColor: "darkblue",
+              color: "white",
+              padding: "8px 16px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            견적서 작성
           </button>
         )}
       </div>
