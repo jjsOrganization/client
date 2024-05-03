@@ -36,7 +36,6 @@ function Main(){
         fetchData();
     }, []);
 
-    
     const contentStyle = {
         height: '400px', 
         width: '100%', 
@@ -45,13 +44,13 @@ function Main(){
     };
 
     let carouselImage = ([
-        "https://i.postimg.cc/jd4cY735/3.png",
+    "https://i.postimg.cc/jd4cY735/3.png",
     "https://i.postimg.cc/zv1C9znK/1.png",
     "https://i.postimg.cc/JnX36DBR/2.png",
     "https://i.postimg.cc/66dLCZX0/4.png",])
 
     const [productInfo,setProductInfo] = useState([{}])
-    
+
     return(
     <div>
         <div>
