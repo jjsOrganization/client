@@ -55,8 +55,8 @@ instance.interceptors.response.use(
       const response = await postRefreshToken();
       //instance.defaults.headers에 토큰을 저장함으로써 이후에 보내게 될 모든 요청에 엑세스 토큰이 자동으로 포함됨
       instance.defaults.headers.common.Authorization = `Bearer ${response.data.data.accessToken}`;          
-      //config.headers에 토큰을 저장함으로써 패한 요청의 설정인 originRequest 객체에도 엑세스 토큰을 저장
-      //이전에 실패한 요청을 다시 보낼 때 기존의 요청 설정에 새로 발급받은 엑세스 토큰을 포함하여 보내야 함
+      //config.headers에 토큰을 저장함으로써 실패한 요청에도 엑세스 토큰을 저장
+      //이전에 실패한 요청을 다시 보낼 때 기존의 설정에 새로 발급받은 엑세스 토큰을 포함하여 보내야 함
       error.config.headers.Authorization = `Bearer ${response.data.data.accessToken}`;
       return (await axios.get(error.config.url, error.config)).data,window.location.reload();
 }})

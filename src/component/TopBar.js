@@ -14,9 +14,6 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-import { postRefreshToken } from "../component/jwt.js";
-
-
 
 export default function TopBar() {
   let navigate = useNavigate();
@@ -34,11 +31,10 @@ export default function TopBar() {
         })
         .then(async (response) => {
           setRole(response.data.data.role);
+         localStorage.setItem('role',response.data.data.role)
         })
         .catch(async (error) => {
           console.error('요청 실패:', error);
-          const response = postRefreshToken();
-          console.log(response)
         });
     } else {
       setIsLoggedIn(false);

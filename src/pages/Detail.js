@@ -23,7 +23,7 @@ function Detail(props) {
   const [productDetailInfo, setProductDetailInfo] = useState();
   const [salePrice, setSalePrice] = useState();
   const [productLike, setProductLike] = useState();
-  const [likeState, setLikeState] = useState(false);
+  const [likeState, setLikeState] = useState();
   const Endpoint = "https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/";
 
   const SizeList = ["S", "M", "L", "XL"];
@@ -98,7 +98,9 @@ function Detail(props) {
 
   const handleLike = async () => {
     try {
-      if (likeState) {
+      if (localStorage.getItem('role') != 'ROLE_PURCHASER') {
+        return alert('일반 회원만 가능한 기능입니다.')
+      }else if(likeState) {
         await axiosInstance.delete(`/product/all/detail/${productid}/like`);
       } else {
         await axiosInstance.post(`/product/all/detail/${productid}/like`);
@@ -127,16 +129,21 @@ function Detail(props) {
   };
 
   useEffect(() => {
-    const LikeCheckGet = async () => {
-      try {
-        const likeStateInfo = await axiosInstance.get(
-          `/product/all/detail/${productid}/like-status`
-        );
-        setLikeState(likeStateInfo.data.data);
-      } catch (error) {
-      }
-    };
-    LikeCheckGet();
+    if(localStorage.getItem('role') == 'ROLE_PURCHASER'){
+      const LikeCheckGet = async () => {
+        try {
+          const likeStateInfo = await axiosInstance.get(
+            `/product/all/detail/${productid}/like-status`
+          );
+          setLikeState(likeStateInfo.data.data);
+        } catch (error) {
+        }
+      };
+      LikeCheckGet();
+    }else{
+      setLikeState(false);
+    }
+    
   }, []);
 
   if (!productDetailInfo) {
