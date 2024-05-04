@@ -1,7 +1,7 @@
 ---
 name: "\U0001F528 [chore]"
 about: 기능 수정 템플릿 입니다.
-title: ''
+title: "\U0001F528 [chore]"
 labels: ''
 assignees: ''
 
