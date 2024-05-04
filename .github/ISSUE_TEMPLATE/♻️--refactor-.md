@@ -1,13 +1,13 @@
 ---
 name: "♻️ [refactor]"
 about: 리팩토링 관련 템플릿입니다.
-title: "\U0001F528[refactor]"
+title: "♻️[refactor]"
 labels: ":recycle: refactor"
 assignees: ''
 
 ---
 
-# 🔨 리팩토링이 필요한 부분 
+# ♻️ 리팩토링이 필요한 부분 
 
 # 리팩토링 작업 브렌치
 <!-- refactor/issue-47-->
