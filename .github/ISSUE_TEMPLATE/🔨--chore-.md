@@ -1,6 +1,6 @@
 ---
 name: "\U0001F528 [chore]"
-about: 수정 및 업데이트
+about: 기능 수정 템플릿 입니다.
 title: ''
 labels: ''
 assignees: ''
