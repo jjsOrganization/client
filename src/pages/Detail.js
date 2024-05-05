@@ -64,37 +64,18 @@ function Detail(props) {
           }
         );
         setProductDetailInfo(response.data);
+        setSalePrice(productDetailInfo.price * sale)
       } catch (error) {
       }
     };
     fetchDetailData();
   }, []);
 
-  //판매자 데이터 get (매장 위치 표시위한)
   useEffect(() => {
-    const fetchSellerData = async () => {
-      try {
-        const sellerInfo = await axiosInstance.get(
-          `/product/all/detail/${productid}/seller`,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
-      } catch (error) {
-      }
-    };
-    fetchSellerData();
-  }, []);
-
-  //할인가 계산 및 좋아요 유무에 판단을 위함
-  useEffect(() => {
-    if (productDetailInfo && productLike) {
+    if(productDetailInfo){
       setSalePrice(productDetailInfo.price * (1 - sale));
     }
-  }, [productDetailInfo, sale]);
+  },[productDetailInfo])
 
   const handleLike = async () => {
     try {
@@ -145,7 +126,7 @@ function Detail(props) {
     }
     
   }, []);
-
+  
   if (!productDetailInfo) {
     return <div>데이터를 로드하는 중입니다...</div>;
   }
@@ -201,9 +182,8 @@ function Detail(props) {
     } catch (error) {
     }
   };
-
+  console.log(salePrice)
   const reFormLink = `/reform?productId=${productid}`;
-
   return (
     <div>
       <TopBar />
@@ -250,7 +230,7 @@ function Detail(props) {
             </p>
             <p style={{ fontWeight: "800", color: "red" }}>{sale * 100}%</p>
             <p style={{ fontWeight: "bold" }}>
-              할인가 : {salePrice && salePrice.toLocaleString()}{" "}
+              할인가 : {salePrice }{" "}
             </p>
             <div className="productLikeContainer" style={{ marginTop: "-3%" }}>
               <LikeComponent
@@ -286,11 +266,7 @@ function Detail(props) {
             </div>
           </div>
         </div>
-
-        <div className="productField">
-          <p>{productDetailInfo.itemDetail}</p>
-        </div>
-        <div className="buy-info" style={{ display: "flex" }}>
+        <div className="buyInfoContainer" style={{ display: "flex" }}>
           <div
             className="dropdown"
             style={{ display: "flex", marginTop: "3%" }}
@@ -308,7 +284,7 @@ function Detail(props) {
               articleTypeList={ColorList}
             />
           </div>
-          <div className="buy-info" style={{ marginLeft: "7%" }}>
+          <div className="buyInfo" style={{ marginLeft: "7%" }}>
             <h4>제품명 : {productDetailInfo.productName}</h4>
             <p style={{ marginBottom: "2%" }}>
               결제 예정 금액 : {test.toLocaleString()}{" "}
@@ -328,8 +304,19 @@ function Detail(props) {
               })}
             </div>
           </div>
-          
         </div>
+        <div className="productField">
+        {productDetailInfo.productImg.slice(1).map((image, index) => (
+            <img
+            key={index}
+            src={Endpoint + image.imgUrl}
+            width="75%"
+            height="100%"
+            style = {{margin : '0 0 3% 12%'}}
+          />
+          ))}
+        </div>
+        
       </div>
     </div>
   );
