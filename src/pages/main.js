@@ -51,6 +51,8 @@ function Main(){
 
     const [productInfo,setProductInfo] = useState([{}])
 
+    console.log(productInfo)
+
     return(
     <div>
         <div>

@@ -14,6 +14,9 @@ function ProductUpdate(props) {
   const [amountValue, setAmountValue] = useState();
   const [thumbnailImage, setThumbnailImage] = useState();
   const [thumbnailImageFile, setThumbnailImageFile] = useState();
+  const [imgFiles, setImgFiles] = useState([]);
+  const [img, setImg] = useState([]);
+  const [files, setFiles] = useState(); 
   const categoryDropDown = ['상의','아우터','바지','스커트','원피스','모자']
   const [categoryId, setCategoryId] = useState();
   const [selectedCategory, setSelectedCategory] = useState("카테고리");
@@ -46,16 +49,27 @@ function ProductUpdate(props) {
     setTitleValue(event.target.value);
   };
 
-  const encodeImageFile = (event) => {
+  const thumbnailImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
-
     reader.onload = () => {
       setThumbnailImage(reader.result);
       setThumbnailImageFile(file);
     };
   };
+
+  const imageUpload = (event) => {
+    const files = event.target.files;
+    const newImgFiles = [...imgFiles];
+    const newImg = [...img];
+    for (let i = 0; i < files.length; i++) {
+      newImgFiles.push(files[i]);
+      newImg.push(URL.createObjectURL(files[i]));
+    }
+    setImgFiles(newImgFiles);
+    setImg(newImg);
+  }
 
   const dropdownRef = useRef(null); // 드롭다운 리스트를 참조할 ref 생성
 
@@ -73,10 +87,11 @@ function ProductUpdate(props) {
       formData.append("price", priceValue);
       formData.append("itemDetail", contentValue);
       formData.append("productStock", amountValue);
-      formData.append("productImgDtoList.imgUrl", thumbnailImage);
-      formData.append("itemImgFile", thumbnailImageFile);
       formData.append("categoryId.id", categoryId)
       formData.append("categoryId.categoryName", selectedCategory)
+      for(let i = 0 ; i < imgFiles.length; i++){
+        formData.append("itemImgFile", imgFiles[i]);
+      }
 
       const response = await axiosInstance.post("/product/seller/register",
         formData,
@@ -113,7 +128,7 @@ function ProductUpdate(props) {
               
               <div className="col-span-full">
                 <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
-                  상품 사진
+                  썸네일 사진
                 </label>
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10" >
                   <div className="text-center">
@@ -125,11 +140,37 @@ function ProductUpdate(props) {
                     )}
                     <div className="mt-4 flex text-sm leading-6 text-gray-600 text-center">
                       <label
+                        htmlFor="thumbnailFile-upload"
+                        className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                      >
+                        <span>Upload a file</span>
+                        <input id="thumbnailFile-upload" name="thumbnailFile-upload" type="file" className="sr-only" onChange={(event) => thumbnailImageUpload(event)} style={{display: "none"}} />
+                      </label>
+                      <p className="pl-1">or drag and drop</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-span-full">
+                <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
+                  상품 사진
+                </label>
+                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10" >
+                  <div className="text-center">
+                    {
+                    img[0] ? 
+                    img.map(function(imgUrl,index){
+                    return <img style = {{margin : '30px'}} src={imgUrl} alt="사진을 등록해주세요" className="mx-auto" height = '200px' width = 'auto'/>}):
+                    <PhotoIcon className="mx-auto h-15 w-15 text-gray-300" aria-hidden="true" />
+                    }
+                    <div className="mt-4 flex text-sm leading-6 text-gray-600 text-center">
+                      <label
                         htmlFor="file-upload"
                         className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                       >
                         <span>Upload a file</span>
-                        <input id="file-upload" name="file-upload" type="file" className="sr-only" multiple onChange={(event) => encodeImageFile(event)} style={{display: "none"}} />
+                        <input id="file-upload" name="file-upload" type="file" className="sr-only" multiple onChange={(event) => imageUpload(event)} style={{display: "none"}} />
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
@@ -155,24 +196,6 @@ function ProductUpdate(props) {
                     />
                   </div>
                 </div>
-              </div>
-
-              <div className="col-span-full">
-                <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                  상품 정보
-                </label>
-                <div className="mt-2">
-                  <textarea
-                    id="about"
-                    name="about"
-                    rows={3}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    defaultValue={''}
-                    value={contentValue}
-                    onChange={savecontent}
-                  />
-                </div>
-                <p className="mt-3 text-sm leading-6 text-gray-600">상품 정보를 입력해주세요.</p>
               </div>
 
               <div className="sm:col-span-4">
