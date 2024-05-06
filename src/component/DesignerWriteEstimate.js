@@ -50,7 +50,7 @@ function DesignerWriteEstimate() {
   const fetchEstimateData = async () => {
     try {
       const response = await axiosInstance.get(
-        `/estimate/designer/estimateForm/${requestNumber}`,
+        `/estimate/estimateForm/${requestNumber}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

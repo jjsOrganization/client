@@ -294,10 +294,21 @@ function CustomerOrderList() {
       setMessageData([
         ...messageData,
         { sender: purchaserEmail, message: msg },
-      ]);
+      ]); 
     } else {
       console.error("WebSocket 연결이 없습니다.");
     }
+  };
+
+  const fetchEstimateData = async (requestNumber) => {
+    try {
+      const response = await axiosInstance.get(`/estimate/estimateForm/${requestNumber}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      console.log(response);
+    } catch (error) {}
   };
 
   const openChat = (requestN) => {
@@ -372,11 +383,11 @@ function CustomerOrderList() {
                 <p>가격 : {product.requestPrice}원</p>
                 <p>상태 : {product.requestStatus}</p>
                 <p>
-                  형상관리 : {product.state}{" "}
+                  견적서 확인 : {product.state}{" "}
                   <button
                     className="OrderedBTN"
                     onClick={() => {
-                      navigate("/mypage/delivery");
+                      fetchEstimateData(product.id);
                     }}
                   >
                     자세히
