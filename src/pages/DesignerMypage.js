@@ -104,6 +104,7 @@ export function DesignerMypage() {
           },
         }
       );
+      window.location.reload();
     } catch (error) {}
   };
 
@@ -464,6 +465,22 @@ export function DesignerMypage() {
                           }}
                         >
                           견적서 작성
+                        </button>
+                        <button
+                          onClick={() => {
+                            // openWriteEstimate(reform.requestNumber);
+                          }}
+                          style={{
+                            backgroundColor: "darkblue",
+                            color: "white",
+                            padding: "8px 16px",
+                            border: "none",
+                            marginLeft: "8px",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          견적서 제출
                         </button>
                       </div>
                     ) : null}
