@@ -30,6 +30,7 @@ export function DesignerMypage() {
   const [connected, setConnected] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [messageData, setMessageData] = useState([]);
+  const [status, setStatus] = useState("");
 
   const headers = {
     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -270,6 +271,39 @@ export function DesignerMypage() {
     );
   };
 
+  const submitWriteEstimate = async (requestNumber) => {
+    try {
+      const request = await axiosInstance.patch(
+        `/estimate/designer/estimateForm/${requestNumber}/submit`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      window.location.reload();
+    } catch (error) {}
+  };
+
+  const fetchEstimateData = async (requestNumber) => {
+    try {
+      const response = await axiosInstance.get(
+        `/estimate/designer/estimateForm/${requestNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      const data = response.data.data;
+      const R = data.estimateStatus;
+      return R;
+    } catch (error) {
+      throw new Error("오류로 견적서 내용을 불러오지 못했습니다.");
+    }
+  };
+
   useEffect(() => {
     if (connected && chatOpen && roomIds) {
       connect();
@@ -452,8 +486,19 @@ export function DesignerMypage() {
                           채팅방 생성 또는 시작
                         </button>
                         <button
-                          onClick={() => {
-                            openWriteEstimate(reform.requestNumber);
+                          onClick={async () => {
+                            try {
+                              const R = await fetchEstimateData(
+                                reform.requestNumber
+                              );
+                              if (R === "WRITING") {
+                                openWriteEstimate(reform.requestNumber);
+                              } else {
+                                window.alert("이미 견적서를 제출했습니다.");
+                              }
+                            } catch (error) {
+                              window.alert(error.message);
+                            }
                           }}
                           style={{
                             backgroundColor: "darkblue",
@@ -467,8 +512,20 @@ export function DesignerMypage() {
                           견적서 작성
                         </button>
                         <button
-                          onClick={() => {
-                            // openWriteEstimate(reform.requestNumber);
+                          onClick={async () => {
+                            try {
+                              const R = await fetchEstimateData(
+                                reform.requestNumber
+                              );
+                              if (R === "WRITING") {
+                                submitWriteEstimate(reform.requestNumber);
+                                window.alert("견적서 제출을 완료했습니다.");
+                              } else {
+                                window.alert("이미 견적서를 제출했습니다.");
+                              }
+                            } catch (error) {
+                              window.alert(error.message);
+                            }
                           }}
                           style={{
                             backgroundColor: "darkblue",

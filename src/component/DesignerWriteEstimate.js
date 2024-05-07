@@ -50,7 +50,7 @@ function DesignerWriteEstimate() {
   const fetchEstimateData = async () => {
     try {
       const response = await axiosInstance.get(
-        `/estimate/estimateForm/${requestNumber}`,
+        `/estimate/designer/estimateForm/${requestNumber}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -58,6 +58,7 @@ function DesignerWriteEstimate() {
         }
       );
       const data = response.data.data;
+      console.log(data);
       setEstimateInfo(data.estimateInfo || "");
       setEstimateImg(data.estimateImg);
       setReformPrice(data.price || "");
@@ -112,9 +113,11 @@ function DesignerWriteEstimate() {
       </div>
       <div>
         <label>견적서 사진 : </label>
+        <p>수정시에도 사진을 꼭 넣어주세요.</p>
         <input
           type="file"
           accept="image/png, image/jpeg, image/jpg"
+          // value={estimateImg}
           onChange={handleImageUpload}
         />
       </div>
