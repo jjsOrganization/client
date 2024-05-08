@@ -25,6 +25,8 @@ function CustomerOrderList() {
   const [connected, setConnected] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [messageData, setMessageData] = useState([]);
+  const [estimateNumber, setEstimateNumber] = useState(null);
+  const [requestNumberEstimate, setRequestNumberEstimate] = useState(null);
 
   useEffect(() => {
     const fetchOrderList = async () => {
@@ -294,7 +296,7 @@ function CustomerOrderList() {
       setMessageData([
         ...messageData,
         { sender: purchaserEmail, message: msg },
-      ]); 
+      ]);
     } else {
       console.error("WebSocket 연결이 없습니다.");
     }
@@ -302,12 +304,59 @@ function CustomerOrderList() {
 
   const fetchEstimateData = async (requestNumber) => {
     try {
-      const response = await axiosInstance.get(`/estimate/estimateForm/${requestNumber}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      console.log(response);
+      const response = await axiosInstance.get(
+        `/estimate/purchaser/estimateForm/${requestNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      const data = response.data.data;
+      setEstimateNumber(data.estimateNumber);
+      setRequestNumberEstimate(data.requestNumber);
+
+      if (data !== null) {
+        const popupWindow = window.open("", "_blank", "width=600,height=400");
+        popupWindow.document.write(`
+        <h1>제출된 견적서</h1>
+        <p><strong>의뢰자 이메일:</strong> ${data.clientEmail}</p>
+        <p><strong>디자이너 이메일:</strong> ${data.designerEmail}</p>
+        <p><strong>견적서 정보:</strong> ${data.estimateInfo}</p>
+        <p><strong>제시한 가격:</strong> ${data.price}</p>
+        <p><strong>제시된 가격:</strong> ${data.totalPrice}</p>
+      `);
+      } else {
+        alert("견적서가 아직 제출되지 않았습니다.");
+      }
+    } catch (error) {}
+  };
+
+  const estimateReject = async () => {
+    try {
+      const response = await axiosInstance.patch(
+        `/estimate/purchaser/${estimateNumber}/reject`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      alert("견적을 거절했습니다.");
+    } catch (error) {}
+  };
+
+  const estimateAccept = async () => {
+    try {
+      const response = await axiosInstance.post(
+        `/estimate/purchaser/${estimateNumber}/accept`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      alert("견적을 수락했습니다. 배송지 입력 페이지로 이동합니다.");
     } catch (error) {}
   };
 
@@ -325,7 +374,7 @@ function CustomerOrderList() {
     <div>
       <TopBar />
       <div className="purchaserOrderReformProduct">
-        <h1 style={{ marginLeft: "15%"}}>마이페이지</h1>
+        <h1 style={{ marginLeft: "15%" }}>마이페이지</h1>
         <div className="purchaserOrederedProduct">
           <h4>구매목록</h4>
           <hr></hr>
@@ -392,6 +441,27 @@ function CustomerOrderList() {
                   >
                     자세히
                   </button>
+                  {requestNumberEstimate === product.id && (
+                    <>
+                      <button
+                        className="OrderedBTN"
+                        onClick={() => {
+                          estimateAccept();
+                        }}
+                      >
+                        수락
+                      </button>
+
+                      <button
+                        className="OrderedBTN"
+                        onClick={() => {
+                          estimateReject();
+                        }}
+                      >
+                        거절
+                      </button>
+                    </>
+                  )}
                 </p>
 
                 <p>

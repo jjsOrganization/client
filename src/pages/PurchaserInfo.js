@@ -5,7 +5,7 @@ import "../css/PurchaserInfo.css";
 import { useNavigate } from "react-router-dom";
 
 
-function PurchaserInfo() {
+function PurchaserInfo({ isReform }) {
   let navigate = useNavigate();
   const [orderInfo, setOrderInfo] = useState({
     postCode: "",
@@ -25,12 +25,13 @@ function PurchaserInfo() {
 
   const handleOrder = async () => {
     try {
-      await axiosInstance.put(`/cart/purchaser/order`, orderInfo, {
+      const endpoint = isReform ? `/estimate/purchaser/acceptReformOrder/${estimateNumber}` : '/cart/purchaser/order';
+      await axiosInstance.put(endpoint, orderInfo, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      alert("구매가 완료되었습니다.");
+      alert("주문이 완료되었습니다.");
       navigate("/");
     } catch (error) {
     }
