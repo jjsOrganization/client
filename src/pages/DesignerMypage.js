@@ -30,6 +30,7 @@ export function DesignerMypage() {
   const [connected, setConnected] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [messageData, setMessageData] = useState([]);
+  const [status, setStatus] = useState("");
 
   const headers = {
     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -104,6 +105,7 @@ export function DesignerMypage() {
           },
         }
       );
+      window.location.reload();
     } catch (error) {}
   };
 
@@ -261,12 +263,46 @@ export function DesignerMypage() {
     navigate("/DesignerMyPage/ModifyPortfolio/RegisterPortfolio");
   };
 
-  const openWriteEstimate = () => {
+  const openWriteEstimate = (requestNumber) => {
     window.open(
-      "/Mypage/Designer/Estimate",
+      `/Mypage/Designer/Estimate/${requestNumber}`,
       "WriteEstimate",
-      "width=400,height=400"
+      "width=600,height=750"
     );
+  };
+
+  const submitWriteEstimate = async (requestNumber) => {
+    try {
+      const request = await axiosInstance.patch(
+        `/estimate/designer/estimateForm/${requestNumber}/submit`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      window.location.reload();
+    } catch (error) {}
+  };
+
+  const fetchEstimateData = async (requestNumber) => {
+    try {
+      const response = await axiosInstance.get(
+        `/estimate/designer/estimateForm/${requestNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      const data = response.data.data;
+      const R = data.estimateStatus;
+      console.log(R);
+      return R;
+    } catch (error) {
+      throw new Error("오류로 견적서 내용을 불러오지 못했습니다.");
+    }
   };
 
   useEffect(() => {
@@ -451,8 +487,19 @@ export function DesignerMypage() {
                           채팅방 생성 또는 시작
                         </button>
                         <button
-                          onClick={() => {
-                            openWriteEstimate();
+                          onClick={async () => {
+                            try {
+                              const R = await fetchEstimateData(
+                                reform.requestNumber
+                              );
+                              if (R === "WRITING" || R === undefined) {
+                                openWriteEstimate(reform.requestNumber);
+                              } else {
+                                window.alert("이미 견적서를 제출했습니다.");
+                              }
+                            } catch (error) {
+                              window.alert(error.message);
+                            }
                           }}
                           style={{
                             backgroundColor: "darkblue",
@@ -464,6 +511,34 @@ export function DesignerMypage() {
                           }}
                         >
                           견적서 작성
+                        </button>
+                        <button
+                          onClick={async () => {
+                            try {
+                              const R = await fetchEstimateData(
+                                reform.requestNumber
+                              );
+                              if (R === "WRITING") {
+                                submitWriteEstimate(reform.requestNumber);
+                                window.alert("견적서 제출을 완료했습니다.");
+                              } else {
+                                window.alert("이미 견적서를 제출했습니다.");
+                              }
+                            } catch (error) {
+                              window.alert(error.message);
+                            }
+                          }}
+                          style={{
+                            backgroundColor: "darkblue",
+                            color: "white",
+                            padding: "8px 16px",
+                            border: "none",
+                            marginLeft: "8px",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          견적서 제출
                         </button>
                       </div>
                     ) : null}

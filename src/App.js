@@ -23,47 +23,45 @@ import ProductUpdate from "./pages/productRegistration.js";
 import StockUpdater from "./pages/stockUpdater.js";
 import MyPages from "./pages/mypage.js";
 import Main from "./pages/main.js";
-import DesignerWriteEstimate from "./component/DesignerWriteEstimate.js"
-
+import DesignerWriteEstimate from "./component/DesignerWriteEstimate.js";
+import PurchaserReformInfo from "./pages/PurchaserReformInfo.js";
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState(1);
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [estimateNumber, setEstimateNumber] = useState(null);
+  const [isReform, setIsReform] = useState(false);
+
   return (
     <div>
       <Routes>
-        <Route
-          path="login"
-          element={
-            <Login
-              selectedTab={selectedTab}
-              setSelectedTab={setSelectedTab}
-              userEmail={userEmail}
-              setUserEmail={setUserEmail}
-              password={password}
-              setPassword={setPassword}
-            />
-          }
-        />
+        <Route path="login" element={<Login />} />
 
         <Route path="visual" element={<Visual />} />
 
         <Route path="products/:page?" element={<ProductList />} />
 
-
-        <Route path="/mypage/delivery/:index" element={<PurchaserMypageDelivery />} />
-
+        <Route
+          path="/mypage/delivery/:index"
+          element={<PurchaserMypageDelivery />}
+        />
       </Routes>
 
       <div className="App">
         <Routes>
           <Route path="/Signup" element={<Signup />} />
-          <Route path="/Designers/:page?" element={<DesignerSearch />} /> 
+          <Route path="/Designers/:page?" element={<DesignerSearch />} />
           <Route path="/DesignerMypage" element={<DesignerMypage />} />
-          <Route path="/DesignerMypage/ModifyPortfolio/:portfolidId" element={<ModifyPortfolio />} />
-          <Route path="/DesignerMypage/ModifyPortfolio/RegisterPortfolio" element={<RegisterPortfolio />} />
+          <Route
+            path="/DesignerMypage/ModifyPortfolio/:portfolidId"
+            element={<ModifyPortfolio />}
+          />
+          <Route
+            path="/DesignerMypage/ModifyPortfolio/RegisterPortfolio"
+            element={<RegisterPortfolio />}
+          />
         </Routes>
 
         <Routes>
@@ -84,26 +82,42 @@ const App = () => {
           <Route path="/stockupdater/:productid" element={<StockUpdater />} />
           <Route />
 
-          <Route path="/mypage2" element={<MyPages/>}></Route>
+          <Route path="/mypage2" element={<MyPages />}></Route>
 
           <Route path="/reform" element={<Reform />}></Route>
 
           <Route path="/PurchaserInfo" element={<PurchaserInfo />}></Route>
 
+          <Route path="/PurchaserReformInfo/:estimateNumber" element={<PurchaserReformInfo />}></Route>
+
           <Route path="/PurchaserMyPage" element={<PurchaserMyPage />}></Route>
 
-          <Route path="/Mypage/PurchaserInfoEdit" element={<PurchaserInfoEdit />}></Route>
+          <Route
+            path="/Mypage/PurchaserInfoEdit"
+            element={<PurchaserInfoEdit />}
+          ></Route>
 
-          <Route path="/Mypage/PurchaserInfoEdit/PurchaserPNumberEdit" element={<PurchaserPNumberEdit />}></Route>
+          <Route
+            path="/Mypage/PurchaserInfoEdit/PurchaserPNumberEdit"
+            element={<PurchaserPNumberEdit />}
+          ></Route>
 
-          <Route path="/Mypage/PurchaserInfoEdit/PurchaserPasswordEdit" element={<PurchaserPasswordEdit />}></Route>
-          
-          <Route path="/Mypage/PurchaserInfoEdit/PurchaserAddressEdit" element={<PurchaserAddressEdit />}></Route>
+          <Route
+            path="/Mypage/PurchaserInfoEdit/PurchaserPasswordEdit"
+            element={<PurchaserPasswordEdit />}
+          ></Route>
+
+          <Route
+            path="/Mypage/PurchaserInfoEdit/PurchaserAddressEdit"
+            element={<PurchaserAddressEdit />}
+          ></Route>
 
           <Route path="/PortpolioList" element={<PortpolioList />}></Route>
 
-          <Route path="/Mypage/Designer/Estimate" element={<DesignerWriteEstimate />}></Route>
-          
+          <Route
+            path="/Mypage/Designer/Estimate/:requestNumber"
+            element={<DesignerWriteEstimate />}
+          ></Route>
         </Routes>
       </div>
     </div>

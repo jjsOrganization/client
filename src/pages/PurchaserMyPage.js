@@ -25,6 +25,8 @@ function CustomerOrderList() {
   const [connected, setConnected] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [messageData, setMessageData] = useState([]);
+  const [estimateNumber, setEstimateNumber] = useState(null);
+  const [requestNumberEstimate, setRequestNumberEstimate] = useState(null);
 
   useEffect(() => {
     const fetchOrderList = async () => {
@@ -134,11 +136,9 @@ function CustomerOrderList() {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      // 주문이 성공적으로 완료되면 선택된 상품을 장바구니에서 삭제
       for (const product of selectedProducts) {
         await handleDelete(product.id);
       }
-      // 페이지 이동
       navigate("/PurchaserInfo");
     } catch (error) {}
   };
@@ -183,6 +183,7 @@ function CustomerOrderList() {
         return product;
       })
     );
+
     setOrderList((prevOrderList) => {
       const selectedProduct = prevOrderList.find(
         (product) => product.id === productId
@@ -238,7 +239,6 @@ function CustomerOrderList() {
         fetchMessageData();
       }, 1000); // 1초마다 데이터를 불러옴
 
-      // 의존성이 변경될 때마다 interval을 클리어하여 메모리 누수를 방지
       return () => clearInterval(fetchDataInterval);
     }
   }, [connected, messageData]);
@@ -300,6 +300,67 @@ function CustomerOrderList() {
     }
   };
 
+  const fetchEstimateData = async (requestNumber) => {
+    try {
+      const response = await axiosInstance.get(
+        `/estimate/purchaser/estimateForm/${requestNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      const data = response.data.data;
+      setEstimateNumber(data.estimateNumber);
+      setRequestNumberEstimate(data.requestNumber);
+
+      if (data !== null) {
+        const popupWindow = window.open(`estimateNumber`, `estimateNumber`, "width=600,height=400");
+        popupWindow.document.write(`
+        <h1>제출된 견적서</h1>
+        <p><strong>의뢰자 이메일:</strong> ${data.clientEmail}</p>
+        <p><strong>디자이너 이메일:</strong> ${data.designerEmail}</p>
+        <p><strong>견적서 정보:</strong> ${data.estimateInfo}</p>
+        <p><strong>제시한 가격:</strong> ${data.price}</p>
+        <p><strong>제시된 가격:</strong> ${data.totalPrice}</p>
+      `);
+      } else {
+        alert("견적서가 아직 제출되지 않았습니다.");
+      }
+    } catch (error) {}
+  };
+
+  const estimateReject = async () => {
+    try {
+      const response = await axiosInstance.patch(
+        `/estimate/purchaser/${estimateNumber}/reject`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      alert("견적을 거절했습니다.");
+    } catch (error) {
+
+    }
+  };
+
+  const estimateAccept = async () => {
+    try {
+      const response = await axiosInstance.post(
+        `/estimate/purchaser/${estimateNumber}/accept`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      alert("견적을 수락했습니다. 배송지 입력 페이지로 이동합니다.");
+      navigate(`/PurchaserReformInfo/${estimateNumber}`);
+    } catch (error) {}
+  };
+
   const openChat = (requestN) => {
     fetchRoomData(requestN);
     setChatOpen(true);
@@ -314,7 +375,7 @@ function CustomerOrderList() {
     <div>
       <TopBar />
       <div className="purchaserOrderReformProduct">
-        <h1 style={{ marginLeft: "15%"}}>마이페이지</h1>
+        <h1 style={{ marginLeft: "15%" }}>마이페이지</h1>
         <div className="purchaserOrederedProduct">
           <h4>구매목록</h4>
           <hr></hr>
@@ -372,15 +433,36 @@ function CustomerOrderList() {
                 <p>가격 : {product.requestPrice}원</p>
                 <p>상태 : {product.requestStatus}</p>
                 <p>
-                  형상관리 : {product.state}{" "}
+                  견적서 확인 : {product.state}{" "}
                   <button
                     className="OrderedBTN"
                     onClick={() => {
-                      navigate("/mypage/delivery");
+                      fetchEstimateData(product.id);
                     }}
                   >
                     자세히
                   </button>
+                  {requestNumberEstimate === product.id && (
+                    <>
+                      <button
+                        className="OrderedBTN"
+                        onClick={() => {
+                          estimateAccept();
+                        }}
+                      >
+                        수락
+                      </button>
+
+                      <button
+                        className="OrderedBTN"
+                        onClick={() => {
+                          estimateReject();
+                        }}
+                      >
+                        거절
+                      </button>
+                    </>
+                  )}
                 </p>
 
                 <p>
