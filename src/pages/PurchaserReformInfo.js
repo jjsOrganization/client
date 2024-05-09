@@ -10,6 +10,7 @@ function PurchaserInfo() {
   const [productPrice, setProductPrice] = useState(null);
   const [reformPrice, setReformPrice] = useState(null);
   const [totlaPrice, setTotalPrice] = useState(null);
+  const [status, setStatus] = useState(false);
   const [orderInfo, setOrderInfo] = useState({
     postcode: "",
     address: "",
@@ -27,7 +28,6 @@ function PurchaserInfo() {
   };
 
   const handleReform = async () => {
-    console.log(orderInfo);
     try {
       await axiosInstance.patch(
         `/estimate/purchaser/acceptReformOrder/${estimateNumber}`,
@@ -39,6 +39,21 @@ function PurchaserInfo() {
         }
       );
       alert("견적서 승인이 완료되었습니다.");
+      setStatus(true);
+    } catch (error) {}
+  };
+
+  const handleReformFinal = async () => {
+    try {
+      await axiosInstance.patch(
+        `/estimate/purchaser/acceptReformOrder/${estimateNumber}/complete`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      alert("견적서가 최종 승인이 완료되었습니다.");
       navigate("/");
     } catch (error) {}
   };
@@ -146,10 +161,15 @@ function PurchaserInfo() {
         </div>
 
         <div>
-          {}
+          {status === false ?  (
           <button className="basketOrderButton" onClick={handleReform}>
-            주문하기
+            배송정보 저장
           </button>
+          ) : (
+          <button className="basketOrderButton" onClick={handleReformFinal}>
+            배송정보 최종승인
+          </button>
+          )}
         </div>
       </div>
     </div>
