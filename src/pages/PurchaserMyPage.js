@@ -136,11 +136,9 @@ function CustomerOrderList() {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      // 주문이 성공적으로 완료되면 선택된 상품을 장바구니에서 삭제
       for (const product of selectedProducts) {
         await handleDelete(product.id);
       }
-      // 페이지 이동
       navigate("/PurchaserInfo");
     } catch (error) {}
   };
@@ -185,6 +183,7 @@ function CustomerOrderList() {
         return product;
       })
     );
+
     setOrderList((prevOrderList) => {
       const selectedProduct = prevOrderList.find(
         (product) => product.id === productId
@@ -240,7 +239,6 @@ function CustomerOrderList() {
         fetchMessageData();
       }, 1000); // 1초마다 데이터를 불러옴
 
-      // 의존성이 변경될 때마다 interval을 클리어하여 메모리 누수를 방지
       return () => clearInterval(fetchDataInterval);
     }
   }, [connected, messageData]);
@@ -317,7 +315,7 @@ function CustomerOrderList() {
       setRequestNumberEstimate(data.requestNumber);
 
       if (data !== null) {
-        const popupWindow = window.open("", "_blank", "width=600,height=400");
+        const popupWindow = window.open(`estimateNumber`, `estimateNumber`, "width=600,height=400");
         popupWindow.document.write(`
         <h1>제출된 견적서</h1>
         <p><strong>의뢰자 이메일:</strong> ${data.clientEmail}</p>
@@ -343,7 +341,9 @@ function CustomerOrderList() {
         }
       );
       alert("견적을 거절했습니다.");
-    } catch (error) {}
+    } catch (error) {
+
+    }
   };
 
   const estimateAccept = async () => {
@@ -357,6 +357,7 @@ function CustomerOrderList() {
         }
       );
       alert("견적을 수락했습니다. 배송지 입력 페이지로 이동합니다.");
+      navigate(`/PurchaserReformInfo/${estimateNumber}`);
     } catch (error) {}
   };
 

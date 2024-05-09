@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import "../css/PurchaserInfo.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function PurchaserInfo() {
   let navigate = useNavigate();
+  const { estimateNumber } = useParams();
+  const [productPrice, setProductPrice] = useState(null);
+  const [reformPrice, setReformPrice] = useState(null);
+  const [totlaPrice, setTotalPrice] = useState(null);
   const [orderInfo, setOrderInfo] = useState({
-    postCode: "",
+    postcode: "",
     address: "",
     detailAddress: "",
     phoneNumber: "",
@@ -22,17 +26,43 @@ function PurchaserInfo() {
     });
   };
 
-  const handleOrder = async () => {
+  const handleReform = async () => {
+    console.log(orderInfo);
     try {
-      await axiosInstance.put(`/cart/purchaser/order`, orderInfo, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      alert("구매가 완료되었습니다.");
+      await axiosInstance.patch(
+        `/estimate/purchaser/acceptReformOrder/${estimateNumber}`,
+        orderInfo,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      alert("견적서 승인이 완료되었습니다.");
       navigate("/");
     } catch (error) {}
   };
+
+  const fetchPrice = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/estimate/purchaser/acceptReformOrder/${estimateNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      const data = response.data.data;
+      setProductPrice(data.productPrice);
+      setReformPrice(data.reformPrice);
+      setTotalPrice(data.totalPrice);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchPrice();
+  }, []);
 
   return (
     <div>
@@ -43,6 +73,17 @@ function PurchaserInfo() {
       <div className="purchaserInfo">
         <h4>배송지 정보 입력</h4>
         <div>
+          <div className="totalPrice">
+            <label>
+              <span>상품 금액</span>
+              <p>{productPrice}</p>
+              <span>리폼 금액</span>
+              <p>{reformPrice}</p>
+              <span>총 금액</span>
+              <p>{totlaPrice}</p>
+            </label>
+          </div>
+
           <div className="postCode">
             <label>
               <span>우편번호</span>
@@ -105,7 +146,8 @@ function PurchaserInfo() {
         </div>
 
         <div>
-          <button className="basketOrderButton" onClick={handleOrder}>
+          {}
+          <button className="basketOrderButton" onClick={handleReform}>
             주문하기
           </button>
         </div>

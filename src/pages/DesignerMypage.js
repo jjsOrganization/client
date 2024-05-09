@@ -298,6 +298,7 @@ export function DesignerMypage() {
       );
       const data = response.data.data;
       const R = data.estimateStatus;
+      console.log(R);
       return R;
     } catch (error) {
       throw new Error("오류로 견적서 내용을 불러오지 못했습니다.");
@@ -491,7 +492,7 @@ export function DesignerMypage() {
                               const R = await fetchEstimateData(
                                 reform.requestNumber
                               );
-                              if (R === "WRITING") {
+                              if (R === "WRITING" || R === undefined) {
                                 openWriteEstimate(reform.requestNumber);
                               } else {
                                 window.alert("이미 견적서를 제출했습니다.");
