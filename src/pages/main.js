@@ -110,7 +110,7 @@ function MainProduct(props){
 function CarouselC(props)
 {
     return(
-    <Carousel autoplay speed>
+    <Carousel autoplay speed = {5500}>
         {props.carouselImage.map((image, index) => (
         <div key={index}>
             <h3 style={props.carouselStyle}>

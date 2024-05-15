@@ -21,7 +21,7 @@ function MyPages() {
 
   const productDeleteHandler = async (i) => {
     try {
-      const deleteProduct = await axiosInstance.delete(
+      const deleteProduct = await axiosInstance.patch(
         `/product/seller/register/${registerData[i].id}`,
         {
           headers: {
