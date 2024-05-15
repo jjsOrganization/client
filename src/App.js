@@ -25,6 +25,8 @@ import MyPages from "./pages/mypage.js";
 import Main from "./pages/main.js";
 import DesignerWriteEstimate from "./component/DesignerWriteEstimate.js";
 import PurchaserReformInfo from "./pages/PurchaserReformInfo.js";
+import ConfigurationManagement from './pages/designerConfigurationManagement.js'
+
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState(1);
@@ -118,6 +120,10 @@ const App = () => {
             path="/Mypage/Designer/Estimate/:requestNumber"
             element={<DesignerWriteEstimate />}
           ></Route>
+
+          <Route
+            path = 'ConfigurationManagement/:estimateId'
+            element = {<ConfigurationManagement/>}></Route>
         </Routes>
       </div>
     </div>

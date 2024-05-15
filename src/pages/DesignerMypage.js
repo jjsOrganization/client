@@ -31,6 +31,7 @@ export function DesignerMypage() {
   const [chatOpen, setChatOpen] = useState(false);
   const [messageData, setMessageData] = useState([]);
   const [status, setStatus] = useState("");
+  const estimateId = [];
 
   const headers = {
     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -105,8 +106,10 @@ export function DesignerMypage() {
           },
         }
       );
-      window.location.reload();
     } catch (error) {}
+    finally{
+      fetchRequestReform();
+    }
   };
 
   const fetchRoomData = async (requestNumber) => {
@@ -195,7 +198,7 @@ export function DesignerMypage() {
   }, [chatInfo, roomExist]);
 
   const connect = () => {
-    const socket = new SockJS("");
+    const socket = new SockJS("석수동");
     const stompClient = Stomp.over(socket);
 
     if (stompClient && stompClient.connected) {
@@ -286,7 +289,7 @@ export function DesignerMypage() {
     } catch (error) {}
   };
 
-  const fetchEstimateData = async (requestNumber) => {
+  const fetchEstimateData = async (requestNumber,Id) => {
     try {
       const response = await axiosInstance.get(
         `/estimate/designer/estimateForm/${requestNumber}`,
@@ -298,7 +301,7 @@ export function DesignerMypage() {
       );
       const data = response.data.data;
       const R = data.estimateStatus;
-      console.log(R);
+      estimateId[Id]= data.estimateNumber
       return R;
     } catch (error) {
       throw new Error("오류로 견적서 내용을 불러오지 못했습니다.");
@@ -322,6 +325,11 @@ export function DesignerMypage() {
     }
   }, [connected, messageData]);
 
+  if(!requestReform){
+    return(
+      <div>이미지 로드중</div>
+    )
+  }
   return (
     <div>
       <TopBar />
@@ -458,6 +466,9 @@ export function DesignerMypage() {
                       alt="Request Image"
                       className="w-full h-auto mb-2"
                       style={{ maxHeight: "200px", maxWidth: "200px" }}
+                      onLoad = {() => fetchEstimateData(
+                        reform.requestNumber,index
+                      )}
                     />
                     <Typography variant="body" color="blue-gray">
                       요청 정보: {reform.requestInfo}
@@ -540,6 +551,24 @@ export function DesignerMypage() {
                         >
                           견적서 제출
                         </button>
+                        <button
+                          onClick = {() => {
+                            {estimateId[index]?
+                            navigate(`/ConfigurationManagement/${estimateId[index]}`):
+                            alert('아직 의뢰 요청이 수락되지 않았습니다.')}
+                          }}
+                          style={{
+                            backgroundColor: "darkblue",
+                            color: "white",
+                            padding: "8px 16px",
+                            border: "none",
+                            marginLeft: "8px",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          진행상황 공유
+                        </button>
                       </div>
                     ) : null}
                     {reform.requestStatus !== "REQUEST_ACCEPTED" &&
@@ -559,6 +588,7 @@ export function DesignerMypage() {
                           <option value="거절">리폼 거절</option>
                         </select>
                       )}
+                      <hr></hr>
                   </div>
                 ))}
             </CardBody>
