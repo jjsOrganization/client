@@ -85,7 +85,23 @@ function CustomerOrderList() {
 
     fetchOrderList();
     fetchProducts();
+    test();
   }, []);
+
+  
+    const test = async () => {
+      try{
+        const fetchData = await axiosInstance.get(`/progress/img/1`,{
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        console.log(fetchData)
+      }catch(err){
+
+      }
+    }
 
   const handleShowMore = () => {
     setShowMore(true);
@@ -236,6 +252,7 @@ function CustomerOrderList() {
   useEffect(() => {
     if (connected) {
       const fetchDataInterval = setInterval(() => {
+
         fetchMessageData();
       }, 1000); // 1초마다 데이터를 불러옴
 
@@ -244,7 +261,7 @@ function CustomerOrderList() {
   }, [connected, messageData]);
 
   const connect = () => {
-    const socket = new SockJS("");
+    const socket = new SockJS("석수동");
     const stompClient = Stomp.over(socket);
 
     if (stompClient && stompClient.connected) {
@@ -300,7 +317,7 @@ function CustomerOrderList() {
     }
   };
 
-  const fetchEstimateData = async (requestNumber) => {
+  const fetchEstimateData = async (requestNumber, event) => {
     try {
       const response = await axiosInstance.get(
         `/estimate/purchaser/estimateForm/${requestNumber}`,
@@ -314,7 +331,10 @@ function CustomerOrderList() {
       setEstimateNumber(data.estimateNumber);
       setRequestNumberEstimate(data.requestNumber);
 
-      if (data !== null) {
+      if(!event){
+        return response;
+      }
+      else if (data !== null) {
         const popupWindow = window.open(`estimateNumber`, `estimateNumber`, "width=600,height=400");
         popupWindow.document.write(`
         <h1>제출된 견적서</h1>
@@ -370,7 +390,7 @@ function CustomerOrderList() {
     disconnectWebSocket();
     setChatOpen(false);
   };
-
+  
   return (
     <div>
       <TopBar />
@@ -427,6 +447,7 @@ function CustomerOrderList() {
                 <img
                   src={`${product.requestImg[0].imgUrl}`}
                   alt={product.name}
+                  onLoad = {() => {fetchEstimateData(product.id)}}
                 />
                 <p>요청부위 : {product.requestPart}</p>
                 <p>요청사항 : {product.requestInfo}</p>
@@ -436,8 +457,8 @@ function CustomerOrderList() {
                   견적서 확인 : {product.state}{" "}
                   <button
                     className="OrderedBTN"
-                    onClick={() => {
-                      fetchEstimateData(product.id);
+                    onClick={(event) => {
+                      fetchEstimateData(product.id,event);
                     }}
                   >
                     자세히
@@ -474,6 +495,13 @@ function CustomerOrderList() {
                     }}
                   >
                     시작
+                  </button>
+                </p>
+
+                <p>
+                  리폼 현황 : 
+                  <button onClick = {() => {navigate(`/ConfigurationManagement/${estimateNumber}`)}} className="OrderedBTN">
+                    자세히
                   </button>
                 </p>
                 <hr></hr>
