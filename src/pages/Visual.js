@@ -2,31 +2,10 @@ import "../css/Visual.css";
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
-import { Doughnut } from "react-chartjs-2";
-import { Chart, ArcElement } from "chart.js";
+import { Doughnut, Bar, Chart } from "react-chartjs-2";
 import styled from "styled-components";
-Chart.register(ArcElement);
 
-const RightContainer = styled.div`
-  width: 805px;
-  height: 690px;
-  position: absolute;
-  right: 0px;
-  background-color: skyblue;
-`;
-
-const TabContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-`;
-
-const TabButton = styled.button`
-  padding: 10px 20px;
-  background-color: ${({ active }) => (active ? "lightblue" : "white")};
-  border: 1px solid black;
-  cursor: pointer;
-`;
+import { Chart as ChartJS } from "chart.js/auto";
 
 function Visual() {
   const [showWaterSaved, setShowWaterSaved] = useState(false);
@@ -98,75 +77,90 @@ function Visual() {
   return (
     <div>
       <TopBar />
-      <TabContainer>
-        <TabButton
-          active={activeTab === "animation"}
-          onClick={() => setActiveTab("animation")}
-        >
-          Animation
-        </TabButton>
-        <TabButton
-          active={activeTab === "chart"}
-          onClick={() => setActiveTab("chart")}
-        >
-          Chart
-        </TabButton>
-      </TabContainer>
-      {activeTab === "animation" && (
-        <div className="pipe">
-          <div className="valve"></div>
-          <div className="pipe1"></div>
-          <div className="pipe2"></div>
-          <div className="water"></div>
-          <div className="waterRise"></div>
-          {showWaterSaved && (
-            <div className="waterSavedMessage">
-              <h4>
-                아낀 물의 총량:{" "}
-                {Object.values(waterData).reduce((acc, cur) => acc + cur, 0)}L
-              </h4>
-            </div>
-          )}
-        </div>
-      )}
-      {activeTab === "chart" && (
-        <div className="chart-container">
-          <RightContainer>
-            <Doughnut
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  tooltip: {
-                    enabled: true,
-                    callbacks: {
-                      label: function (context) {
-                        var label = context.label || "";
-                        if (label) {
-                          label += ": ";
-                        }
-                        if (context.parsed && context.parsed.length > 0) {
-                          label += context.parsed[0].toFixed(2) + "L";
-                        }
-                        return label;
-                      },
-                    },
+      <div className="pipe">
+        <div className="valve"></div>
+        <div className="pipe1"></div>
+        <div className="pipe2"></div>
+        <div className="water"></div>
+        <div className="waterRise"></div>
+        {showWaterSaved && (
+          <div className="waterSavedMessage">
+            <h4>
+              아낀 물의 총량:{" "}
+              {Object.values(waterData).reduce((acc, cur) => acc + cur, 0)}L
+            </h4>
+          </div>
+        )}
+      </div>
+
+      <div className="doughnut-container">
+        <Doughnut
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              tooltip: {
+                enabled: true,
+                callbacks: {
+                  label: function (context) {
+                    var label = context.label || "";
+                    if (label) {
+                      label += ": ";
+                    }
+                    if (context.parsed && context.parsed.length > 0) {
+                      label += context.parsed[0].toFixed(2) + "L";
+                    }
+                    return label;
                   },
                 },
-                legend: {
-                  display: true,
-                  position: "right",
+              },
+            },
+            legend: {
+              display: true,
+              position: "right",
+            },
+          }}
+          data={expData}
+          style={{
+            position: "relative",
+            right: "0px",
+          }}
+        />
+      </div>
+
+      <div className="bar-container">
+        <Bar
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              tooltip: {
+                enabled: true,
+                callbacks: {
+                  label: function (context) {
+                    var label = context.label || "";
+                    if (label) {
+                      label += ": ";
+                    }
+                    if (context.parsed && context.parsed.length > 0) {
+                      label += context.parsed[0].toFixed(2) + "L";
+                    }
+                    return label;
+                  },
                 },
-              }}
-              data={expData}
-              style={{
-                position: "relative",
-                right: "0px",
-              }}
-            />
-          </RightContainer>
-        </div>
-      )}
+              },
+            },
+            legend: {
+              display: true,
+              position: "right",
+            },
+          }}
+          data={expData}
+          style={{
+            position: "relative",
+          }}
+        />
+      </div>
     </div>
   );
 }

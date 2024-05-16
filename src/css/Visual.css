@@ -5,8 +5,8 @@
 }
 
 .pipe1 {
-  left: 300px;
-  top: 250px;
+  left: 150px;
+  top: 350px;
   width: 300px;
   height: 25px;
   background-color: #333;
@@ -15,8 +15,8 @@
 }
 
 .pipe2 {
-  left: 300px;
-  top: 200px;
+  left: 150px;
+  top: 300px;
   width: 10px;
   height: 50px;
   border-top-right-radius: 50px;
@@ -30,15 +30,15 @@
   height: 10px;
   background-color: #666;
   position: absolute;
-  top: 210px;
-  left: 255px;
+  top: 310px;
+  left: 108px;
   border-radius: 30%;
 }
 
 .water {
   position: absolute;
-  left: 500px;
-  top: 275px;
+  left: 350px;
+  top: 375px;
   width: 100px;
   height: 60.5%;
   background-color: #00f;
@@ -60,9 +60,23 @@
 
 .waterSavedMessage h4{
   position: absolute;
-  left: 50%;
-  top: 200px;
-  font-size: 60px;
+  left: 5%;
+  top: 150px;
+  font-size: 40px;
+}
+
+.doughnut-container{
+  position: absolute;
+  left: 35%;
+  width: 60%;
+  top: 55%;
+}
+
+.bar-container{
+  position: absolute;
+  left: 35%;
+  width: 60%;
+  top: 25%;
 }
 
 @keyframes waterFlow {
@@ -107,4 +121,28 @@
 .valve {
   animation: rotate 3s linear forwards;
   transform-origin: center center; /* 회전의 중심 설정 */
+}
+
+@media screen and (max-width: 1024px) {
+  .doughnut-container{
+    width: 30%;
+    left : 65%;
+  }
+
+  .bar-container{
+    width: 30%;
+    left: 65%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .doughnut-container{
+    width: 20%;
+    left : 65%;
+  }
+
+  .bar-container{
+    width: 20%;
+    left: 65%;
+  }
 }
