@@ -5,8 +5,13 @@ FROM node:14 as build
 WORKDIR /app
 
 # 앱 종속성 설치
-COPY package*.json ./
 RUN npm install
+RUN npm install @material-tailwind/react
+RUN npm install @mui/material
+#RUN npm install --save chart.js react-chartjs-2
+#npm i react-chartjs-2 chart.js
+COPY package*.json ./
+
 
 # 소스 코드를 복사
 COPY . .
@@ -14,34 +19,6 @@ COPY . .
 # 앱 빌드
 RUN npm run build
 
-# Nginx를 기반으로 하는 런타임 이미지 설정
-FROM nginx:alpine
 
-# Nginx 구성 파일을 제거하고 리액트 애플리케이션 빌드를 복사
-RUN rm -rf /usr/share/nginx/html/*
-COPY --from=build /app/build /usr/share/nginx/html
-
-# 기본 Nginx 설정을 변경
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
-
-# 포트 80을 노출
-EXPOSE 80
-
-# Nginx 실행
-CMD ["nginx", "-g", "daemon off;"]
-
-
-
-
-# # SSL 설정을 위한 SSL 인증서 및 키 복사
-# COPY nginx/nginx.crt /etc/nginx/nginx.crt
-# COPY nginx/nginx.key /etc/nginx/nginx.key
-
-# # HTTPS를 위한 Nginx 구성 파일 복사
-# COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
-
-# # 포트 443을 노출 (HTTPS)
-# EXPOSE 443
-
-# # Nginx 실행
-# CMD ["nginx", "-g", "daemon off;"]
+# 앱 실행
+EXPOSE 3000
