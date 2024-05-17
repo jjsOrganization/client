@@ -3,14 +3,12 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import { Doughnut, Bar, Chart } from "react-chartjs-2";
-import styled from "styled-components";
 
 import { Chart as ChartJS } from "chart.js/auto";
 
 function Visual() {
   const [showWaterSaved, setShowWaterSaved] = useState(false);
   const [waterData, setWaterData] = useState({});
-  const [activeTab, setActiveTab] = useState("animation");
 
   useEffect(() => {
     setTimeout(() => {
@@ -42,7 +40,7 @@ function Visual() {
     return <div>Loading...</div>;
   }
 
-  const expData = {
+  const doughnutData = {
     labels: [
       "accessories",
       "bottoms",
@@ -56,9 +54,7 @@ function Visual() {
     ],
     datasets: [
       {
-        data: Object.values(waterData),
-        borderWidth: 2,
-        hoverBorderWidth: 3,
+        label: "카테고리별 물 사용량",
         backgroundColor: [
           "rgba(238, 102, 121, 1)",
           "rgba(98, 181, 229, 1)",
@@ -70,6 +66,108 @@ function Visual() {
           "rgba(255, 0, 0, 1)",
           "rgba(0, 0, 255, 1)",
         ],
+        borderColor: "rgba(0,0,0,0)",
+        borderWidth: 1,
+        hoverBackgroundColor: "rgba(75,192,192,0.6)",
+        hoverBorderColor: "rgba(75,192,192,1)",
+        data: [
+          waterData.accessories,
+          waterData.bottoms,
+          waterData.hat,
+          waterData.one_piece,
+          waterData.outer,
+          waterData.skirt,
+          waterData.socks,
+          waterData.top,
+          waterData.underwear,
+        ],
+      },
+    ],
+  };
+
+  const barData = {
+    labels: ["아낀 물의 양"],
+    datasets: [
+      {
+        label: "accessories",
+        backgroundColor: "rgba(238, 102, 121, 1)",
+        borderColor: "rgba(0,0,0,0)",
+        borderWidth: 1,
+        hoverBackgroundColor: "rgba(75,192,192,0.6)",
+        hoverBorderColor: "rgba(75,192,192,1)",
+        data: [waterData.accessories],
+      },
+      {
+        label: "bottoms",
+        backgroundColor: "rgba(98, 181, 229, 1)",
+        borderColor: "rgba(0,0,0,0)",
+        borderWidth: 1,
+        hoverBackgroundColor: "rgba(75,192,192,0.6)",
+        hoverBorderColor: "rgba(75,192,192,1)",
+        data: [waterData.bottoms],
+      },
+      {
+        label: "hat",
+        backgroundColor: "rgba(255, 198, 0, 1)",
+        borderColor: "rgba(0,0,0,0)",
+        borderWidth: 1,
+        hoverBackgroundColor: "rgba(75,192,192,0.6)",
+        hoverBorderColor: "rgba(75,192,192,1)",
+        data: [waterData.hat],
+      },
+      {
+        label: "one_piece",
+        backgroundColor: "rgba(155, 100, 200, 1)",
+        borderColor: "rgba(0,0,0,0)",
+        borderWidth: 1,
+        hoverBackgroundColor: "rgba(75,192,192,0.6)",
+        hoverBorderColor: "rgba(75,192,192,1)",
+        data: [waterData.one_piece],
+      },
+      {
+        label: "outer",
+        backgroundColor: "rgba(0, 255, 255, 1)",
+        borderColor: "rgba(0,0,0,0)",
+        borderWidth: 1,
+        hoverBackgroundColor: "rgba(75,192,192,0.6)",
+        hoverBorderColor: "rgba(75,192,192,1)",
+        data: [waterData.outer],
+      },
+      {
+        label: "skirt",
+        backgroundColor: "rgba(255, 0, 255, 1)",
+        borderColor: "rgba(0,0,0,0)",
+        borderWidth: 1,
+        hoverBackgroundColor: "rgba(75,192,192,0.6)",
+        hoverBorderColor: "rgba(75,192,192,1)",
+        data: [waterData.skirt],
+      },
+      {
+        label: "socks",
+        backgroundColor: "rgba(0, 255, 0, 1)",
+        borderColor: "rgba(0,0,0,0)",
+        borderWidth: 1,
+        hoverBackgroundColor: "rgba(75,192,192,0.6)",
+        hoverBorderColor: "rgba(75,192,192,1)",
+        data: [waterData.socks],
+      },
+      {
+        label: "top",
+        backgroundColor: "rgba(255, 0, 0, 1)",
+        borderColor: "rgba(0,0,0,0)",
+        borderWidth: 1,
+        hoverBackgroundColor: "rgba(75,192,192,0.6)",
+        hoverBorderColor: "rgba(75,192,192,1)",
+        data: [waterData.top],
+      },
+      {
+        label: "underwear",
+        backgroundColor: "rgba(0, 0, 255, 1)",
+        borderColor: "rgba(0,0,0,0)",
+        borderWidth: 1,
+        hoverBackgroundColor: "rgba(75,192,192,0.6)",
+        hoverBorderColor: "rgba(75,192,192,1)",
+        data: [waterData.underwear],
       },
     ],
   };
@@ -93,72 +191,21 @@ function Visual() {
         )}
       </div>
 
-      <div className="doughnut-container">
-        <Doughnut
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              tooltip: {
-                enabled: true,
-                callbacks: {
-                  label: function (context) {
-                    var label = context.label || "";
-                    if (label) {
-                      label += ": ";
-                    }
-                    if (context.parsed && context.parsed.length > 0) {
-                      label += context.parsed[0].toFixed(2) + "L";
-                    }
-                    return label;
-                  },
-                },
-              },
-            },
-            legend: {
-              display: true,
-              position: "right",
-            },
-          }}
-          data={expData}
-          style={{
-            position: "relative",
-            right: "0px",
-          }}
-        />
-      </div>
-
       <div className="bar-container">
         <Bar
           options={{
-            responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-              tooltip: {
-                enabled: true,
-                callbacks: {
-                  label: function (context) {
-                    var label = context.label || "";
-                    if (label) {
-                      label += ": ";
-                    }
-                    if (context.parsed && context.parsed.length > 0) {
-                      label += context.parsed[0].toFixed(2) + "L";
-                    }
-                    return label;
-                  },
-                },
-              },
-            },
-            legend: {
-              display: true,
-              position: "right",
-            },
           }}
-          data={expData}
-          style={{
-            position: "relative",
+          data={barData}
+        />
+      </div>
+
+      <div className="doughnut-container">
+        <Doughnut
+          options={{
+            maintainAspectRatio: false,
           }}
+          data={doughnutData}
         />
       </div>
     </div>
