@@ -76,5 +76,6 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "tailwind.config.js",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "packageManager": "yarn@4.2.2"
 }
