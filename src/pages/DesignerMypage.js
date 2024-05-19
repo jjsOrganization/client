@@ -31,6 +31,7 @@ export function DesignerMypage() {
   const [chatOpen, setChatOpen] = useState(false);
   const [messageData, setMessageData] = useState([]);
   const [status, setStatus] = useState("");
+  const [reformList, setReformList] = useState();
   const estimateId = [];
 
   const headers = {
@@ -92,6 +93,7 @@ export function DesignerMypage() {
     fetchRequestReform();
     fetchDesignerMypage();
     fetchDesignerPortfolio();
+    reformCompletedGet();
   }, []);
 
   const handleChangeStatus = async (requestId, newStatus) => {
@@ -325,7 +327,17 @@ export function DesignerMypage() {
     }
   }, [connected, messageData]);
 
-  if(!requestReform){
+  const reformCompletedGet = async () => {
+    try{
+      const completedResponse = await axiosInstance.get(`/portfolio/reformOutput/designer/list`)
+      setReformList(completedResponse.data.data)
+      console.log(completedResponse.data)
+    }catch(error){
+
+    }
+  }
+
+  if(!reformList){
     return(
       <div>이미지 로드중</div>
     )
@@ -392,17 +404,45 @@ export function DesignerMypage() {
               </>
             )}
           </Card>
-          <Card className="mx-auto mt-5 mb-6 border border-blue-gray-100  w-full max-w-[80rem]">
-            <div className="px-4 pb-4 mt-3">
+          
+          <Card className="mx-auto mt-5 mb-6 border border-blue-gray-100 items-center w-full max-w-[80rem]">
+            
               <Typography variant="h6" color="blue-gray" className="mb-2">
                 Projects
               </Typography>
-              <Typography
-                variant="small"
-                className="font-normal text-blue-gray-500"
-              >
-                Architects design
-              </Typography>
+                {reformList.map((element, index) => {
+                  return(
+                        <div key={index} className="mb-4" style = {{marginRight : '30%'}}>
+                        <img
+                          src={element.completeImgUrl}
+                          alt="Request Image"
+                          className="w-full h-auto mb-2"
+                          style={{ maxHeight: "200px", maxWidth: "200px" }}
+                        />
+                        <Typography color="blue-gray">
+                          리폼명 : {element.title}
+                          <button
+                          onClick={() => {
+                            navigate(``)
+                          }}
+                          style={{
+                            backgroundColor: "lightblue",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            marginLeft : '9%'
+                          }}
+                        >
+                          자세히
+                        </button>
+                        </Typography>
+                        
+                        <hr></hr>
+                        </div>
+                  )
+                })}
+                
               <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
                 {designerPortfolioResult.map((product) => (
                   <div
@@ -450,8 +490,9 @@ export function DesignerMypage() {
                   </div>
                 ))}
               </div>
-            </div>
+            
           </Card>
+          
           <Card className="mx-auto mt-5 mb-6 border border-blue-gray-100 items-center w-full max-w-[80rem]">
             <CardBody>
               <Typography variant="h6" color="blue-gray" className="mb-2">
@@ -470,13 +511,13 @@ export function DesignerMypage() {
                         reform.requestNumber,index
                       )}
                     />
-                    <Typography variant="body" color="blue-gray">
+                    <Typography color="blue-gray">
                       요청 정보: {reform.requestInfo}
                     </Typography>
-                    <Typography variant="body" color="blue-gray">
+                    <Typography color="blue-gray">
                       요청 부분: {reform.requestPart}
                     </Typography>
-                    <Typography variant="body" color="blue-gray">
+                    <Typography color="blue-gray">
                       요청 가격: {reform.requestPrice}
                     </Typography>
                     {reform.requestStatus !== "REQUEST_WAITING" ? (

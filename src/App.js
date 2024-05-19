@@ -26,6 +26,7 @@ import Main from "./pages/main.js";
 import DesignerWriteEstimate from "./component/DesignerWriteEstimate.js";
 import PurchaserReformInfo from "./pages/PurchaserReformInfo.js";
 import ConfigurationManagement from './pages/designerConfigurationManagement.js'
+import ReformCompleted from "./pages/reformComplete.js";
 
 
 const App = () => {
@@ -93,6 +94,8 @@ const App = () => {
           <Route path="/PurchaserReformInfo/:estimateNumber" element={<PurchaserReformInfo />}></Route>
 
           <Route path="/PurchaserMyPage" element={<PurchaserMyPage />}></Route>
+
+          <Route path = '/reformCompleted/:progressNumber' element = {<ReformCompleted/>}></Route>
 
           <Route
             path="/Mypage/PurchaserInfoEdit"

@@ -95,7 +95,7 @@ function MyPages() {
     }
     setDeliveryState(newDeliveryState);
   }, [soldProduct]);
-
+  console.log(registerData)
   if (!sellerData) {
     return <div>데이터 로드중</div>;
   }
