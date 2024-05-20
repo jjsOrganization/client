@@ -25,9 +25,9 @@ import MyPages from "./pages/mypage.js";
 import Main from "./pages/main.js";
 import DesignerWriteEstimate from "./component/DesignerWriteEstimate.js";
 import PurchaserReformInfo from "./pages/PurchaserReformInfo.js";
-import ConfigurationManagement from './pages/designerConfigurationManagement.js'
+import ConfigurationManagement from "./pages/designerConfigurationManagement.js";
 import ReformCompleted from "./pages/reformComplete.js";
-
+import DesignerSelect from "./pages/DesignerSelect.js";
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState(1);
@@ -91,11 +91,17 @@ const App = () => {
 
           <Route path="/PurchaserInfo" element={<PurchaserInfo />}></Route>
 
-          <Route path="/PurchaserReformInfo/:estimateNumber" element={<PurchaserReformInfo />}></Route>
+          <Route
+            path="/PurchaserReformInfo/:estimateNumber"
+            element={<PurchaserReformInfo />}
+          ></Route>
 
           <Route path="/PurchaserMyPage" element={<PurchaserMyPage />}></Route>
 
-          <Route path = '/reformCompleted/:progressNumber' element = {<ReformCompleted/>}></Route>
+          <Route
+            path="/reformCompleted/:progressNumber"
+            element={<ReformCompleted />}
+          ></Route>
 
           <Route
             path="/Mypage/PurchaserInfoEdit"
@@ -125,8 +131,14 @@ const App = () => {
           ></Route>
 
           <Route
-            path = 'ConfigurationManagement/:estimateId'
-            element = {<ConfigurationManagement/>}></Route>
+            path="ConfigurationManagement/:estimateId"
+            element={<ConfigurationManagement />}
+          ></Route>
+
+          <Route
+            path="designer/:designerName"
+            element={<DesignerSelect />}
+          ></Route>
         </Routes>
       </div>
     </div>

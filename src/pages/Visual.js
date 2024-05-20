@@ -54,7 +54,7 @@ function Visual() {
     ],
     datasets: [
       {
-        label: "카테고리별 물 사용량",
+        label: "아낀 물의 양",
         backgroundColor: [
           "rgba(238, 102, 121, 1)",
           "rgba(98, 181, 229, 1)",

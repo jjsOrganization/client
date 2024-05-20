@@ -2,7 +2,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
-import Pagination from "../component/Pagination.js"
+import Pagination from "../component/Pagination.js";
 
 const PortpolioList = () => {
   const [portfolios, setPortfolios] = useState([]);
@@ -16,15 +16,17 @@ const PortpolioList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get("/portfolio/all", {
+        const response = await axiosInstance.get("/portfolio/reformOutput/list", {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
+        console.log(response.data.data);
         setPortfolios(response.data.data);
         setFilteredPortfolios(response.data.data);
       } catch (error) {
+        console.error("Error fetching data", error);
       }
     };
     fetchData();
@@ -40,14 +42,14 @@ const PortpolioList = () => {
   };
 
   const handleSearchChange = (event) => {
-    const searchTerm = event.target.value.toLowerCase();                // 오류
+    const searchTerm = event.target.value.toLowerCase();
     setSearchTerm(searchTerm);
 
     if (searchTerm.trim() === "") {
-        filteredPortfolios(portfolios);
+      setFilteredPortfolios(portfolios);
     } else {
       const filteredPortfolios = portfolios.filter((portfolio) =>
-        portfolio.explanation.toLowerCase().includes(searchTerm)        // 오류
+        portfolio.explanation.toLowerCase().includes(searchTerm)
       );
       setFilteredPortfolios(filteredPortfolios);
     }
@@ -60,16 +62,16 @@ const PortpolioList = () => {
   };
 
   const handleSortByPopular = () => {
-    //인기도 순으로 상품을 정렬
+    // 인기도 순으로 정렬 로직 추가 필요
   };
 
   return (
     <div>
       <TopBar />
-      <div className="sortButtons">
+      {/* <div className="sortButtons">
         <button onClick={handleSortByLatest}>최신순</button>
         <button onClick={handleSortByPopular}>인기순</button>
-      </div>
+      </div> */}
 
       <div className="findProduct">
         <input
@@ -81,16 +83,15 @@ const PortpolioList = () => {
       </div>
       <div className="productList">
         {currentProducts.map((portfolio) => (
-          <div key={portfolio.id} className="productItem">
-            <Link to={`/detail/${portfolio.id}`} style={{ textDecoration: "none"}}>
-              {portfolio.designerImagePath && (
+          <div key={portfolio.title} className="productItem">
+            <Link to={`/designer/portpolio/${portfolio.progressNumber}`} style={{ textDecoration: "none" }}>
+              {portfolio.completeImgUrl && (
                 <img
-                  src={`${portfolio.designerImagePath}`}
-                  alt={portfolio.desginerName}
+                  src={portfolio.completeImgUrl}
+                  alt={portfolio.designerName}
                 />
               )}
-              <p style={{ color: "black"}}>디자이너 : {portfolio.designerName}</p>
-              <p style={{ color: "black"}}>설명 : {portfolio.explanation}</p>
+              <p style={{ color: "black" }}>제목 : {portfolio.title}</p>
             </Link>
           </div>
         ))}

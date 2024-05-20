@@ -4,16 +4,14 @@ import TopBar from "../component/TopBar.js";
 import { PhotoIcon } from '@heroicons/react/24/solid'
 import { useNavigate } from "react-router-dom";
 
-// 해당 파일은 디자이너 마이페이지에서 포트폴리오 등록하기 버튼을 통해 이동되어야 하며, 
-// 오로지 포트폴리오가 없는 상태에서 등록만 되는 것이므로
-// 한 번 등록을 했다면, 마이페이지에서는 해당 버튼이 포트폴리오 수정하기 버튼으로 수정 되어야 한다.
 const RegisterPortfolio = (props) => {
   const [thumbnailImage, setThumbnailImage] = useState();
   const [thumbnailImageFile, setThumbnailImageFile] = useState();
   const [designerName, setDesignerName] = useState();
   const [designerIntro, setDesignerIntro] = useState();
+  const [priceImg, setPriceImg] = useState();
+  const [priceThumbnailImageFile, setPriceThumbnailImageFile] = useState();
   let navigate = useNavigate();
-  
 
   const saveName = (event) => {
     setDesignerName(event.target.value);
@@ -34,12 +32,24 @@ const RegisterPortfolio = (props) => {
     };
   };
 
+  const encodePriceImageFile = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      setPriceImg(reader.result);
+      setPriceThumbnailImageFile(file);
+    };
+  };
+
   const registerHandler = async () => {
     try {
       const formData = new FormData();
       formData.append("designerImage", thumbnailImageFile);
       formData.append("designerName", designerName);
       formData.append("explanation", designerIntro);
+      formData.append("priceImage", priceThumbnailImageFile);
       const response = await axiosInstance.post(
         "/portfolio/designer",
         formData,
@@ -75,10 +85,10 @@ const RegisterPortfolio = (props) => {
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               
               <div className="col-span-full">
-                <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="designer-image-upload" className="block text-sm font-medium leading-6 text-gray-900">
                   디자이너 사진
                 </label>
-                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10" >
+                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
                     {thumbnailImage && (
                       <img src={thumbnailImage} alt="Thumbnail" className="mx-auto h-40 w-auto" />
@@ -88,11 +98,37 @@ const RegisterPortfolio = (props) => {
                     )}
                     <div className="mt-4 flex text-sm leading-6 text-gray-600 text-center">
                       <label
-                        htmlFor="file-upload"
+                        htmlFor="designer-image-upload"
                         className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                       >
                         <span>Upload a file</span>
-                        <input id="file-upload" name="file-upload" type="file" className="sr-only" multiple onChange={(event) => encodeImageFile(event)} style={{display: "none"}} />
+                        <input id="designer-image-upload" name="file-upload" type="file" className="sr-only" onChange={encodeImageFile} />
+                      </label>
+                      <p className="pl-1">or drag and drop</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-span-full">
+                <label htmlFor="price-image-upload" className="block text-sm font-medium leading-6 text-gray-900">
+                  가격 사진
+                </label>
+                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                  <div className="text-center">
+                    {priceImg && (
+                      <img src={priceImg} alt="Price" className="mx-auto h-40 w-auto" />
+                    )}
+                    {!priceImg && (
+                      <PhotoIcon className="mx-auto h-15 w-15 text-gray-300" aria-hidden="true" />
+                    )}
+                    <div className="mt-4 flex text-sm leading-6 text-gray-600 text-center">
+                      <label
+                        htmlFor="price-image-upload"
+                        className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                      >
+                        <span>Upload a file</span>
+                        <input id="price-image-upload" name="file-upload" type="file" className="sr-only" onChange={encodePriceImageFile} />
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
@@ -146,18 +182,14 @@ const RegisterPortfolio = (props) => {
           <div 
             type="button" 
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            onClick={() => {
-              cancelHandler();
-            }}
+            onClick={cancelHandler}
           >
             취소
           </div>
           <div
             type="button"
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            onClick={() => {
-              registerHandler();
-            }}
+            onClick={registerHandler}
           >
             등록
           </div>

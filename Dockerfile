@@ -1,24 +1,30 @@
-# Node.js를 기반으로 하는 빌드용 이미지 설정
-FROM node:14 as build
+# Node.js 공식 이미지를 사용
+FROM node:latest
 
-# 작업 디렉토리를 /app으로 설정
+# 작업 디렉토리 설정
 WORKDIR /app
 
+# Yarn 설치
+RUN yarn install
+
+# Yarn 버전을 Berry로 업그레이드
+RUN yarn set version berry
+
+# package.json과 yarn.lock을 먼저 복사
+COPY package.json yarn.lock ./
+
 # 앱 종속성 설치
-RUN npm install
-RUN npm install @material-tailwind/react
-RUN npm install @mui/material
-#RUN npm install --save chart.js react-chartjs-2
-#npm i react-chartjs-2 chart.js
-COPY package*.json ./
+RUN yarn install
 
+# 필요한 경우 추가 패키지 설치
+RUN yarn add @material-tailwind/react @mui/material
 
-# 소스 코드를 복사
+# 나머지 파일 복사
 COPY . .
 
 # 앱 빌드
-RUN npm run build
-
+RUN yarn build
 
 # 앱 실행
 EXPOSE 3000
+CMD ["yarn", "start"]
