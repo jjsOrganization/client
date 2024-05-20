@@ -1,9 +1,13 @@
-import axiosInstance from "./jwt.js";
+import axiosInstance from "../component/jwt.js";
 import { useEffect, useState } from "react";
 import React from "react";
+import { useParams } from "react-router-dom";
+import TopBar from "../component/TopBar.js";
 
 function DesignerSelect() {
   const [designersList, setDesignersList] = useState([]);
+  const [filteredDesigners, setFilteredDesigners] = useState([]);
+  const { designerName } = useParams();
 
   useEffect(() => {
     const fetchDesigners = async () => {
@@ -24,20 +28,77 @@ function DesignerSelect() {
     fetchDesigners();
   }, []);
 
-  if (designersList === null) {
+  useEffect(() => {
+    if (designerName && designersList.length > 0) {
+      const filtered = designersList.filter(
+        (designer) =>
+          designer.designerName.toLowerCase() === designerName.toLowerCase()
+      );
+      setFilteredDesigners(filtered);
+    } else {
+      setFilteredDesigners(designersList);
+    }
+  }, [designerName, designersList]);
+
+  if (designersList.length === 0) {
     return <div>Loading...</div>;
   }
 
-  console.log(designersList);
-
   return (
     <div>
-      <h2>디자이너 목록</h2>
-      <ul>
-        {designersList.map((designer, index) => (
-          <li key={index}>{designer.explanation}</li>
+      <TopBar />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <h2>디자이너 자기소개</h2>
+        <ul style={{ listStyleType: "none", padding: 0 }}>
+          {filteredDesigners.map((designer, index) => (
+            <li
+              key={index}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "20px",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                src={designer.designerImagePath}
+                alt={`${designer.designerName} 이미지`}
+                style={{ width: "250px", height: "250px", marginRight: "20px" }}
+              />
+              <div>
+                <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                  {designer.designerName}
+                </p>
+                <p>{designer.explanation}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+        {filteredDesigners.map((designer, index) => (
+          <li
+            key={index}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "20px",
+              justifyContent: "center",
+            }}
+          >
+            <img
+              src={designer.priceImagePath}
+              alt={`${designer.designerName} 이미지`}
+              style={{ width: "500px", height: "500px" }}
+            />
+          </li>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
