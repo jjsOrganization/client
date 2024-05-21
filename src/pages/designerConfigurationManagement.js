@@ -26,6 +26,12 @@ function ConfigurationManagement(){
     const closeModal = () => setIsOpen(false);
 
         useEffect(() => {
+            if (progressNumber) {
+            reformCheck();
+            }
+        }, [progressNumber]);
+
+        useEffect(() => {
             const fetchData = async () => {
                 try {
                     const response = await axiosInstance.get(`/progress/img/${estimateId}`, {
@@ -34,7 +40,6 @@ function ConfigurationManagement(){
                             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                         },
                     });
-                    console.log('Fetched data:', response.data);
                     setProgressNumber(response.data.data.progressId);
                     setBeforeImage(response.data.data.productImgUrl);
                     setFirstImage(response.data.data.firstImgUrl);
@@ -45,7 +50,6 @@ function ConfigurationManagement(){
                 }
             };
             fetchData();
-            
         }, [estimateId, imagePostStatus]);
 
         const imageUploadHandler = async (url, formdata) => {
@@ -91,7 +95,7 @@ function ConfigurationManagement(){
                     title : title,
                     explanation : explanation 
                 })
-                console.log(response)
+                reformCheck()
             }finally{
                 closeModal()
             }
@@ -104,19 +108,14 @@ function ConfigurationManagement(){
         //해당 함수를 통해 얻어오는 값에 따라서 리폼 등록 버튼 or 작업물 보러가기 버튼이 보임
         const reformCheck = async() => {
             try{
-                const response = await axiosInstance.get(`/portfolio/reformOutput/upload/${progressNumber}`)
+                const response = await axiosInstance.get(`/portfolio/reformOutput/detail/${progressNumber}`,)
                 setCheck(response.data.data)
-                console.log(check)
-            }catch(error){
-
+                console.log(response.data.data)
+            }
+            catch(error){
+                console.log(error)
             }
         }
-
-        useEffect(() => {
-            if (progressNumber) {
-              reformCheck();
-            }
-          }, [progressNumber]);
 
         const titleUpdateHandler = (event) => {
             setTitle(event.target.value)
@@ -125,10 +124,11 @@ function ConfigurationManagement(){
         const explanationUpdateHandler = (event) => {
             setExplanation(event.target.value)
         }
-
-
-        if(!check){
-            return(<div>데이터 로드중...</div>)
+        
+        if(!beforeImage){
+            return(<div>
+                데이터 로드중...
+            </div>)
         }
 
     return (
@@ -232,7 +232,7 @@ function ConfigurationManagement(){
                 </div>       
 
                 <div className = 'reformCompleted-btn' style = {{margin : '5% 15% 3% 0',textAlign : 'right'}}>
-                    {!check ? 
+                    {check && check.length === 0 ? 
                     <button
                     className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
                     style={{ marginRight: "5%" }}

@@ -42,12 +42,6 @@ export function DesignerMypage() {
     try {
       const responseDesignerInfo = await axiosInstance.get(
         "/portfolio/designer",
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
       );
       const infoData = responseDesignerInfo.data;
       setDesignerProfile(infoData);
@@ -354,8 +348,7 @@ export function DesignerMypage() {
             {isRegister ? (
               <>
                 <CardHeader
-                  shadow={false}
-                  floated={false}
+                  
                   className="m-20 w-2/5 shrink-0 rounded-r-none"
                 >
                   <img
@@ -387,8 +380,7 @@ export function DesignerMypage() {
             ) : (
               <>
                 <CardBody
-                  shadow={false}
-                  floated={false}
+                  
                   className=" m-20 shrink-0 rounded-r-none "
                 >
                   <div
@@ -448,10 +440,9 @@ export function DesignerMypage() {
                   <div
                     key={product.productName}
                     color="transparent"
-                    shadow={false}
+                    
                   >
                     <CardHeader
-                      floated={false}
                       color="gray"
                       className="mx-0 mt-0 mb-4 h-64 xl:h-40"
                     >

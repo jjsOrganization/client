@@ -28,11 +28,6 @@ function ReformCompleted() {
     try {
       const response = await axiosInstance.get(
         `/portfolio/reformOutput/detail/${progressNumber}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
       );
       setReformData(response.data.data);
       console.log(response.data.data);
@@ -45,7 +40,7 @@ function ReformCompleted() {
     reformcompleted();
   }, []);
 
-  console.log(progressNumber);
+  console.log(reformData);
 
   if (!reformData) {
     return <div>데이터 로드중...</div>;
