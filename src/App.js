@@ -28,6 +28,7 @@ import PurchaserReformInfo from "./pages/PurchaserReformInfo.js";
 import ConfigurationManagement from "./pages/designerConfigurationManagement.js";
 import ReformCompleted from "./pages/reformComplete.js";
 import DesignerSelect from "./pages/DesignerSelect.js";
+import PortpolioSearch from "./pages/PortpolioSearch.js";
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState(1);
@@ -76,68 +77,55 @@ const App = () => {
               </div>
             }
           ></Route>
-
           <Route path="/detail/:productid" element={<Detail />} />
           <Route />
-
           <Route path="/productupdate" element={<ProductUpdate />}></Route>
-
           <Route path="/stockupdater/:productid" element={<StockUpdater />} />
           <Route />
-
           <Route path="/mypage2" element={<MyPages />}></Route>
-
           <Route path="/reform" element={<Reform />}></Route>
-
           <Route path="/PurchaserInfo" element={<PurchaserInfo />}></Route>
-
           <Route
             path="/PurchaserReformInfo/:estimateNumber"
             element={<PurchaserReformInfo />}
           ></Route>
-
           <Route path="/PurchaserMyPage" element={<PurchaserMyPage />}></Route>
-
           <Route
             path="/reformCompleted/:progressNumber"
             element={<ReformCompleted />}
           ></Route>
-
           <Route
             path="/Mypage/PurchaserInfoEdit"
             element={<PurchaserInfoEdit />}
           ></Route>
-
           <Route
             path="/Mypage/PurchaserInfoEdit/PurchaserPNumberEdit"
             element={<PurchaserPNumberEdit />}
           ></Route>
-
           <Route
             path="/Mypage/PurchaserInfoEdit/PurchaserPasswordEdit"
             element={<PurchaserPasswordEdit />}
           ></Route>
-
           <Route
             path="/Mypage/PurchaserInfoEdit/PurchaserAddressEdit"
             element={<PurchaserAddressEdit />}
           ></Route>
-
           <Route path="/PortpolioList" element={<PortpolioList />}></Route>
-
           <Route
             path="/Mypage/Designer/Estimate/:requestNumber"
             element={<DesignerWriteEstimate />}
           ></Route>
-
           <Route
             path="ConfigurationManagement/:estimateId"
             element={<ConfigurationManagement />}
           ></Route>
-
           <Route
             path="designer/:designerName"
             element={<DesignerSelect />}
+          ></Route>
+          <Route
+            path="designer/portpolio/:progressNumber"
+            element={<PortpolioSearch />}
           ></Route>
         </Routes>
       </div>
