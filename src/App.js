@@ -85,7 +85,7 @@ const App = () => {
           <Route path="/stockupdater/:productid" element={<StockUpdater />} />
           <Route />
 
-          <Route path="/mypage2" element={<MyPages />}></Route>
+          <Route path="/mypage" element={<MyPages />}></Route>
 
           <Route path="/reform" element={<Reform />}></Route>
 

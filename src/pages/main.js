@@ -114,7 +114,7 @@ function CarouselC(props)
         {props.carouselImage.map((image, index) => (
         <div key={index}>
             <h3 style={props.carouselStyle}>
-            <img src={image} style={{ width: '100%', height: '100%' }} onClick = {() => { props.navigate(`detail/${props.product[index].id}`)}} />
+            <img src={image} style={{ width: '100%', height: '100%' }} />
             </h3>
         </div>
         ))}

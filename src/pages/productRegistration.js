@@ -83,6 +83,7 @@ function ProductUpdate(props) {
   const registerHandler = async () => {
     try {
       const formData = new FormData();
+      setContentValue('test');
       formData.append("productName", titleValue);
       formData.append("price", priceValue);
       formData.append("itemDetail", contentValue);
@@ -95,14 +96,8 @@ function ProductUpdate(props) {
 
       const response = await axiosInstance.post("/product/seller/register",
         formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
       );
-      window.location.replace(`/productupdate`);
+      navigate(`/mypage`);
       alert("상품이 등록되었습니다.");
     } catch (error) {
       alert("상품 등록에 실패했습니다.");

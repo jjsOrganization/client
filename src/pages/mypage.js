@@ -31,7 +31,7 @@ function MyPages() {
         }
       );
       alert("상품 삭제 완료");
-      window.location.replace(`/mypage2`);
+      window.location.replace(`/mypage`);
     } catch (error) {}
   };
 
@@ -114,7 +114,7 @@ function MyPages() {
         >
           <p style={{ display: "inline" }}>상품목록</p>
           <Button
-            style={{ marginLeft: "auto", marginBottom: "1%" }}
+            style={{ marginLeft: "auto", marginBottom: "2%" }}
             onClick={() => {
               productupdateNavigate("/productupdate");
             }}
@@ -257,7 +257,7 @@ function MypageProductList(props) {
                 </div>
                 <div
                   className="BtnStyle"
-                  style={{ display: "flex", justifyContent: "flex-end" }}
+                  style={{ display: "flex", }}
                 >
                   <button
                     className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
@@ -268,7 +268,7 @@ function MypageProductList(props) {
                       );
                     }}
                   >
-                    상품 수정{" "}
+                    상품 수정
                   </button>
                   <button
                     className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
@@ -277,7 +277,7 @@ function MypageProductList(props) {
                       props.productDeleteHandler(i);
                     }}
                   >
-                    상품 삭제{" "}
+                    상품 삭제
                   </button>
                 </div>
               </div>
