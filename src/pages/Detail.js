@@ -6,6 +6,7 @@ import Dropdown from "../component/dropdown";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import LikeComponent from "../component/likeComponent.js";
+import Modal from "react-modal";
 
 let BasicBtn = styled.button`
   padding: 1%;
@@ -24,6 +25,13 @@ function Detail(props) {
   const [salePrice, setSalePrice] = useState();
   const [productLike, setProductLike] = useState();
   const [likeState, setLikeState] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   const Endpoint = "https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/";
 
   const SizeList = ["S", "M", "L", "XL"];
@@ -150,7 +158,8 @@ function Detail(props) {
             "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
           },
         }
-      );
+      )
+      openModal();
       // 크롬 알림표시 사용 예정
     } catch (error) {
       console.error("장바구니에 상품 추가 실패:", error);
@@ -316,7 +325,36 @@ function Detail(props) {
           />
           ))}
         </div>
-        
+        <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        style={{
+          overlay: { backgroundColor: "rgba(0, 0, 0, 0.4)", zIndex: 1000 },
+          content: {
+            width: "50%",
+            height: "20%",
+            margin: "auto",
+            border: "3px solid",
+            borderRadius: "5px",
+            padding: "20px",
+            zIndex: 1001,
+            borderColor: "#374d9a",
+          },
+        }}>
+          <div>
+            <button 
+              className="bg-white hover:bg-gray-100 w-35 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
+              onClick = {closeModal}
+              style = {{margin : '5% 5% 5% 15%',}} >
+              쇼핑 계속하기
+            </button>
+            <button 
+              className="bg-white hover:bg-gray-100 w-35 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
+              onClick = {() => {navigate('/PurchaserMyPage')}}>
+              장바구니 이동
+            </button>
+          </div>
+        </Modal>
       </div>
     </div>
   );

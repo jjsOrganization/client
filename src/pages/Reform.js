@@ -3,7 +3,7 @@ import Select from "react-select";
 import styled from "styled-components";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 
 let RegisterBtn = styled.button`
   color: white;
@@ -21,6 +21,7 @@ function Reform() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const productId = searchParams.get("productId");
+  let navigate = useNavigate();
 
   const saveRequestPart = (event) => {
     setRequestPart(event.target.value);
@@ -63,6 +64,7 @@ function Reform() {
         }
       );
       alert("리폼요청이 성공적으로 등록되었습니다.");
+      navigate(`/`);
     } catch (error) {
       alert("리폼요청 등록에 실패했습니다.");
     }
