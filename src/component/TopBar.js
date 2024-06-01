@@ -4,16 +4,6 @@ import axiosInstance from "../component/jwt.js";
 import "../css/TopBar.css";
 import logo from "../images/logo.png"
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
-import {
-  ArrowPathIcon,
-  Bars3Icon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 
 export default function TopBar() {
   let navigate = useNavigate();
@@ -67,7 +57,7 @@ export default function TopBar() {
           <a href="/visual" className="text-sm font-semibold leading-6 text-gray-900">
             물 시각화
           </a>
-          <a href="PortpolioList" className="text-sm font-semibold leading-6 text-gray-900">
+          <a href="PortfolioList" className="text-sm font-semibold leading-6 text-gray-900">
             포트폴리오(작업물)
           </a>
         </Popover.Group>

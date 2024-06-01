@@ -4,9 +4,6 @@ import axiosInstance from "../component/jwt.js";
 import TopBar from '../component/TopBar.js';
 import { useNavigate } from "react-router-dom";
 import { PhotoIcon } from '@heroicons/react/24/solid'
-import { CiCirclePlus } from "react-icons/ci";
-import axios from 'axios';
-import { progress } from '@material-tailwind/react';
 
 function ConfigurationManagement(){
     let {estimateId} = useParams();
@@ -34,12 +31,7 @@ function ConfigurationManagement(){
         useEffect(() => {
             const fetchData = async () => {
                 try {
-                    const response = await axiosInstance.get(`/progress/img/${estimateId}`, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                        },
-                    });
+                    const response = await axiosInstance.get(`/progress/img/${estimateId}`,);
                     setProgressNumber(response.data.data.progressId);
                     setBeforeImage(response.data.data.productImgUrl);
                     setFirstImage(response.data.data.firstImgUrl);
@@ -54,11 +46,7 @@ function ConfigurationManagement(){
 
         const imageUploadHandler = async (url, formdata) => {
             try {
-                await axiosInstance.patch(url, formdata, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                    },
-                });
+                await axiosInstance.patch(url, formdata, );
                 setImagePostStatus(prevStatus => prevStatus + 1);
             } catch (err) {
                 console.error('Error uploading image:', err);

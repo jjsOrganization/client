@@ -7,7 +7,10 @@ import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import LikeComponent from "../component/likeComponent.js";
 import Modal from "react-modal";
-
+//여기까지
+//복구하면됨
+//여기
+//어 맞아 여기
 let BasicBtn = styled.button`
   padding: 1%;
   background: black;
@@ -26,14 +29,7 @@ function Detail(props) {
   const [productLike, setProductLike] = useState();
   const [likeState, setLikeState] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
   const Endpoint = "https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/";
-
   const SizeList = ["S", "M", "L", "XL"];
   const ColorList = ["검정", "아이보리", "그레이", "챠콜"];
   const size = "Size";
@@ -41,6 +37,14 @@ function Detail(props) {
   const test = total * salePrice;
   const [choiceSize, setChoiceSize] = useState(null);
   const [choiceColor, setChoiceColor] = useState(null);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const addValue = () => {
     setMyArray((prevArray) => [
@@ -59,25 +63,50 @@ function Detail(props) {
   }, [choiceSize, choiceColor]);
 
   //상품 상세 데이터 get
-  useEffect(() => {
-    const fetchDetailData = async () => {
+  const fetchDetailData = async () => {
       try {
         const response = await axiosInstance.get(
           `/product/all/detail/${productid}`,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
         );
         setProductDetailInfo(response.data);
         setSalePrice(productDetailInfo.price * sale)
       } catch (error) {
       }
     };
-    fetchDetailData();
-  }, []);
+
+  const productLikeGet = async () => {
+    try {
+      const productLikeCount = await axiosInstance.get(
+        `/product/all/detail/${productid}/like-count`
+      );
+      setProductLike(productLikeCount.data.data);
+    } catch (error) {
+    }
+  };
+  
+  const roleCheck = async () => {
+    if(localStorage.getItem('role') == 'ROLE_PURCHASER'){
+      const LikeCheckGet = async () => {
+        try {
+          const likeStateInfo = await axiosInstance.get(
+            `/product/all/detail/${productid}/like-status`);
+            setLikeState(likeStateInfo.data.data);
+        } 
+        catch (error) {
+          console.log(error)
+        }};
+        LikeCheckGet();}
+      else{
+        setLikeState(false);}
+  }
+  
+  const getAllProductInfo = () => {
+    return Promise.all([fetchDetailData(), roleCheck(), productLikeGet()]);
+};
+
+  useEffect(() => {
+    getAllProductInfo();
+}, []);
 
   useEffect(() => {
     if(productDetailInfo){
@@ -102,38 +131,6 @@ function Detail(props) {
     } catch (error) {
     }
   };
-
-  useEffect(() => {
-    productLikeGet();
-  }, []);
-
-  const productLikeGet = async () => {
-    try {
-      const productLikeCount = await axiosInstance.get(
-        `/product/all/detail/${productid}/like-count`
-      );
-      setProductLike(productLikeCount.data.data);
-    } catch (error) {
-    }
-  };
-
-  useEffect(() => {
-    if(localStorage.getItem('role') == 'ROLE_PURCHASER'){
-      const LikeCheckGet = async () => {
-        try {
-          const likeStateInfo = await axiosInstance.get(
-            `/product/all/detail/${productid}/like-status`
-          );
-          setLikeState(likeStateInfo.data.data);
-        } catch (error) {
-        }
-      };
-      LikeCheckGet();
-    }else{
-      setLikeState(false);
-    }
-    
-  }, []);
   
   if (!productDetailInfo) {
     return <div>데이터를 로드하는 중입니다...</div>;
@@ -150,15 +147,7 @@ function Detail(props) {
           productImg: productDetailInfo.productImg,
           productName: productDetailInfo.productName,
           productSellStatus: productDetailInfo.productSellStatus,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            "X-CSRF-TOKEN": localStorage.getItem("csrfToken"),
-          },
-        }
-      )
+        },)
       openModal();
       // 크롬 알림표시 사용 예정
     } catch (error) {
@@ -181,18 +170,14 @@ function Detail(props) {
         phoneNumber: "",
         deliveryRequest: "",
       };
-
-      await axiosInstance.post(`/product/purchaser/order`, orderDTO, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
+      await axiosInstance.post(`/product/purchaser/order`, orderDTO,);
       navigate("/PurchaserInfo");
     } catch (error) {
     }
   };
-  console.log(salePrice)
+  
   const reFormLink = `/reform?productId=${productid}`;
+  
   return (
     <div>
       <TopBar />

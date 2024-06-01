@@ -315,10 +315,6 @@ function StockUpdater() {
             >
               수정
             </div>
-            <button
-            onClick = {() => {console.log(categoryId); console.log(priceValue); console.log(contentValue); console.log(amountValue); console.log(selectedCategory); console.log(titleValue)}}
-            type = 'button'
-            >뭐고</button>
           </div>
         </div>
       </form>
