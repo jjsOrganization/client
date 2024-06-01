@@ -1,0 +1,52 @@
+
+.portfolioItemItem {
+    flex: 0 0 calc(32%);
+    margin: 5%;
+    box-sizing: border-box;
+  }
+  
+  .portfolioItem img {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+@media screen and (max-width: 1024px) {
+    .findProduct input[type="text"] {
+      width: 900px;
+      height: 40px;
+      font-size: 20px;
+    }
+  
+    .portfolioItem {
+      flex-basis: calc(49% - 20px);
+      margin: 10px;
+    }
+  
+    .pagination {
+      font-size: 24px;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .findProduct input[type="text"] {
+      width: 400px;
+      height: 40px;
+      font-size: 20px;
+    }
+  
+    .portfolioItem {
+      flex-basis: calc(100% - 20px);
+      margin: 10px;
+    }
+  
+    .pagination {
+      font-size: 20px;
+    }
+  
+    .sortButtons {
+      margin: 0;
+    }
+  }

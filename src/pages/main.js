@@ -16,17 +16,8 @@ function Main(){
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axiosInstance.get('/product/all', {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                    }
-                });
-                const resopnseLikeDesc = await axiosInstance.get(`/product/all/like/desc`,{
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                    }})
+                const response = await axiosInstance.get('/product/all',);
+                const resopnseLikeDesc = await axiosInstance.get(`/product/all/like/desc`,)
                     setProductInfo(response.data);
                     setProductDesc(resopnseLikeDesc.data.data);
                 }

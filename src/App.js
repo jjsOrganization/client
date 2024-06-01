@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import PortpolioList from "./pages/PortpolioList.js";
+import PortfolioList from "./pages/PortfolioList.js";
 import PurchaserAddressEdit from "./component/PurchaserAddressEdit.js";
 import PurchaserPasswordEdit from "./component/PurchaserPasswordEdit.js";
 import PurchaserPNumberEdit from "./component/PurchaserPNumberEdit.js";
@@ -123,7 +123,7 @@ const App = () => {
             element={<PurchaserAddressEdit />}
           ></Route>
 
-          <Route path="/PortpolioList" element={<PortpolioList />}></Route>
+          <Route path="/PortfolioList" element={<PortfolioList />}></Route>
 
           <Route
             path="/Mypage/Designer/Estimate/:requestNumber"

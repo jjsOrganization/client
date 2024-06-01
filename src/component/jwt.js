@@ -13,7 +13,6 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const accessToken = Cookies.get("accessToken"); // Cookies를 이용해 accessToken을 가져옵니다.
-
     try {
       if (accessToken) {
         config.headers["Authorization"] = `Bearer ${accessToken}`;
@@ -31,12 +30,10 @@ instance.interceptors.request.use(
 );
 
 export const postRefreshToken = async () => {
-  console.log(localStorage.getItem('refreshToken'))
   const response = await instance.post('/auth/reissue',
     {accessToken: localStorage.getItem('accessToken'),refreshToken: localStorage.getItem('refreshToken'),}
     ,{headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }}
   );
-  console.log(response);
   if(response.data.state === 400){
     return 
   }
@@ -44,6 +41,7 @@ export const postRefreshToken = async () => {
   localStorage.setItem('refreshToken', response.data.data.refreshToken);
   document.cookie ='accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   document.cookie = `accessToken=${response.data.data.accessToken}; Path=/;`;
+  console.log(localStorage.getItem('accessToken'))
   return response
 }
 

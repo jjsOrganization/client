@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import Pagination from "../component/Pagination.js";
+import '../css/DesignerPortfolio.module.css'
 
-const PortpolioList = () => {
+const PortfolioList = () => {
   const [portfolios, setPortfolios] = useState([]);
   const [filteredPortfolios, setFilteredPortfolios] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -79,23 +80,45 @@ const PortpolioList = () => {
           placeholder="포트폴리오 (작업물) 검색"
           value={searchTerm}
           onChange={handleSearchChange}
+          style = {{marginBottom : '3%'}}
         />
       </div>
-      <div className="productList">
+      <div className="bg-white">
+        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
         {currentProducts.map((portfolio) => (
-          <div key={portfolio.title} className="productItem">
+            <a
+            key = {portfolio.id}
+            className="group"
+            style={{ textDecoration: "none" }}
+            >
+            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
             <Link to={`/designer/portpolio/${portfolio.progressNumber}`} style={{ textDecoration: "none" }}>
               {portfolio.completeImgUrl && (
+                <div
+                  style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <img
                   src={portfolio.completeImgUrl}
                   alt={portfolio.designerName}
+                  style={{ width: "350px", height: "350px" }}
                 />
+                </div>
               )}
-              <p style={{ color: "black" }}>제목 : {portfolio.title}</p>
+              <p style={{ color: "black" }}>
+                제목 : {portfolio.title}
+              </p>
             </Link>
           </div>
+        </a>
         ))}
       </div>
+    </div>
+  </div>
       <div>
         <Pagination
           totalPages={totalPages}
@@ -107,4 +130,4 @@ const PortpolioList = () => {
   );
 };
 
-export default PortpolioList;
+export default PortfolioList;

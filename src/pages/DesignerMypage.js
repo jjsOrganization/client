@@ -348,7 +348,6 @@ export function DesignerMypage() {
             {isRegister ? (
               <>
                 <CardHeader
-                  
                   className="m-20 w-2/5 shrink-0 rounded-r-none"
                 >
                   <img
@@ -380,7 +379,6 @@ export function DesignerMypage() {
             ) : (
               <>
                 <CardBody
-                  
                   className=" m-20 shrink-0 rounded-r-none "
                 >
                   <div
@@ -395,93 +393,6 @@ export function DesignerMypage() {
                 </CardBody>
               </>
             )}
-          </Card>
-          
-          <Card className="mx-auto mt-5 mb-6 border border-blue-gray-100 items-center w-full max-w-[80rem]">
-            
-              <Typography variant="h6" color="blue-gray" className="mb-2">
-                Projects
-              </Typography>
-                {reformList.map((element, index) => {
-                  return(
-                        <div key={index} className="mb-4" style = {{marginRight : '30%'}}>
-                        <img
-                          src={element.completeImgUrl}
-                          alt="Request Image"
-                          className="w-full h-auto mb-2"
-                          style={{ maxHeight: "200px", maxWidth: "200px" }}
-                        />
-                        <Typography color="blue-gray">
-                          리폼명 : {element.title}
-                          <button
-                          onClick={() => {
-                            navigate(``)
-                          }}
-                          style={{
-                            backgroundColor: "lightblue",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                            marginLeft : '9%'
-                          }}
-                        >
-                          자세히
-                        </button>
-                        </Typography>
-                        
-                        <hr></hr>
-                        </div>
-                  )
-                })}
-                
-              <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
-                {designerPortfolioResult.map((product) => (
-                  <div
-                    key={product.productName}
-                    color="transparent"
-                    
-                  >
-                    <CardHeader
-                      color="gray"
-                      className="mx-0 mt-0 mb-4 h-64 xl:h-40"
-                    >
-                      <img
-                        src={`https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/${product.imgUrl}`}
-                        alt={product.productName}
-                        className="h-full w-full object-cover"
-                      />
-                    </CardHeader>
-                    <CardBody className="py-0 px-1">
-                      <Typography
-                        variant="h5"
-                        color="blue-gray"
-                        className="mt-1 mb-2"
-                      >
-                        {product.productName}
-                      </Typography>
-                      <Typography
-                        variant="small"
-                        className="font-normal text-blue-gray-500"
-                      >
-                        {product.itemDetail}
-                      </Typography>
-                    </CardBody>
-                    <CardFooter className="mt-6 flex items-center justify-between py-0 px-1">
-                      <div
-                        variant="outlined"
-                        size="sm"
-                        onClick={() => {
-                          navigate("/DesignerMyPage");
-                        }}
-                      >
-                        view proj
-                      </div>
-                    </CardFooter>
-                  </div>
-                ))}
-              </div>
-            
           </Card>
           
           <Card className="mx-auto mt-5 mb-6 border border-blue-gray-100 items-center w-full max-w-[80rem]">

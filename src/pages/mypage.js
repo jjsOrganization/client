@@ -23,12 +23,6 @@ function MyPages() {
     try {
       const deleteProduct = await axiosInstance.patch(
         `/product/seller/register/${registerData[i].id}`,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
       );
       alert("상품 삭제 완료");
       window.location.replace(`/mypage`);
@@ -40,21 +34,9 @@ function MyPages() {
       try {
         const registerResponse = await axiosInstance.get(
           "/product/seller/register",
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
         );
         const soldProductResponse = await axiosInstance.get(
           `/order/seller-list`,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
         );
         setRegisterData(registerResponse.data);
         setSoldProduct(soldProductResponse.data.data);
@@ -66,12 +48,7 @@ function MyPages() {
   useEffect(() => {
     const fetchSellerData = async (i) => {
       try {
-        const sellerResponse = await axiosInstance.get("/seller/info", {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
+        const sellerResponse = await axiosInstance.get("/seller/info",);
         setSellerData(sellerResponse.data.data);
       } catch (error) {}
     };
@@ -95,7 +72,7 @@ function MyPages() {
     }
     setDeliveryState(newDeliveryState);
   }, [soldProduct]);
-  console.log(registerData)
+  
   if (!sellerData) {
     return <div>데이터 로드중</div>;
   }
@@ -300,7 +277,7 @@ function DeliveryDropdown(props) {
       );
       console.log("베송상태 변경 완료");
     } catch (error) {
-      console.log("배송상태 변경 실패");
+      console.log(error);
     }
   };
 
