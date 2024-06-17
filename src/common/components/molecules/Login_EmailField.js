@@ -1,6 +1,6 @@
 import React from 'react';
-import Label from '../atoms/Label.js';
-import Input from '../atoms/Input.js';
+import Label from '../atoms/Login_Label.js';
+import Input from '../atoms/Login_Input.js';
 
 const EmailField = ({ value, onChange }) => (
   <div>

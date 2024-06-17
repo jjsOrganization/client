@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import EmailField from '../molecules/EmailField.js';
 import PasswordField from '../molecules/PasswordField.js';
-import Button from '../atoms/Button';
+import Button from '../atoms/Button_Login.js';
 import axiosInstance from '../component/jwt';
 import { useNavigate } from 'react-router-dom';
 
