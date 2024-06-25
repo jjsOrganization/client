@@ -28,6 +28,7 @@ import PurchaserReformInfo from "./pages/PurchaserReformInfo.js";
 import ConfigurationManagement from "./pages/designerConfigurationManagement.js";
 import ReformCompleted from "./pages/reformComplete.js";
 import DesignerSelect from "./pages/DesignerSelect.js";
+import Test from "./common/services/Purchaser_Mypage.js"
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState(1);
@@ -138,6 +139,11 @@ const App = () => {
           <Route
             path="designer/:designerName"
             element={<DesignerSelect />}
+          ></Route>
+
+          <Route
+            path="test"
+            element={<Test />}
           ></Route>
         </Routes>
       </div>

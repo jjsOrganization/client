@@ -85,23 +85,7 @@ function CustomerOrderList() {
 
     fetchOrderList();
     fetchProducts();
-    test();
   }, []);
-
-  
-    const test = async () => {
-      try{
-        const fetchData = await axiosInstance.get(`/progress/img/1`,{
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        console.log(fetchData)
-      }catch(err){
-
-      }
-    }
 
   const handleShowMore = () => {
     setShowMore(true);
