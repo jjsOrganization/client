@@ -1,11 +1,14 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import "../css/sellerMypage.css";
 import Modal from "react-modal";
 import { Button } from "antd";
+import { TailWindButton } from "../component/atoms/Button.js";
+import { borderSkyBlue } from "../styles/buttonStyle.js";
+import { MypageProductList } from "../component/organism/sellerProductList.js";
+import { patchAxios, getAxios } from "../component/Axios.js";
 
 function MyPages() {
   const Endpoint = "https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/";
@@ -14,30 +17,24 @@ function MyPages() {
   const [registerData, setRegisterData] = useState([]);
   const [sellerData, setSellerData] = useState([]);
   const [soldProduct, setSoldProduct] = useState();
-  const deliveryList = ["배송 대기", "배송 시작", "배송중", "배송 완료"];
-  const [deliveryState, setDeliveryState] = useState([]);
-  const [selectDelivery, setSelectDelivery] = useState([]);
-  const deliveryArray = [];
-
+  const productListStyle = {
+    display: "flex",
+    width: "800px",
+    height: "160px",
+    fontWeight: "700",
+  }
+  
   const productDeleteHandler = async (i) => {
-    try {
-      const deleteProduct = await axiosInstance.patch(
-        `/product/seller/register/${registerData[i].id}`,
-      );
-      alert("상품 삭제 완료");
-      window.location.replace(`/mypage`);
-    } catch (error) {}
-  };
+    patchAxios( `/product/seller/register/${registerData[i].id}`)
+    alert("상품 삭제 완료");
+    window.location.replace(`/mypage`);
+  }
 
   useEffect(() => {
     const fetchRegisterData = async () => {
       try {
-        const registerResponse = await axiosInstance.get(
-          "/product/seller/register",
-        );
-        const soldProductResponse = await axiosInstance.get(
-          `/order/seller-list`,
-        );
+        const registerResponse = await getAxios("/product/seller/register");
+        const soldProductResponse = await getAxios(`/order/seller-list`)
         setRegisterData(registerResponse.data);
         setSoldProduct(soldProductResponse.data.data);
       } catch (error) {}
@@ -48,30 +45,12 @@ function MyPages() {
   useEffect(() => {
     const fetchSellerData = async (i) => {
       try {
-        const sellerResponse = await axiosInstance.get("/seller/info",);
+        const sellerResponse = await getAxios("/seller/info");
         setSellerData(sellerResponse.data.data);
       } catch (error) {}
     };
     fetchSellerData();
   }, []);
-
-  useEffect(() => {
-    const newDeliveryState = [];
-    if (soldProduct) {
-      soldProduct.forEach((product, i) => {
-        if (soldProduct[i].deliveryStatus === "WAITING") {
-          newDeliveryState.push("배송 대기");
-        } else if (soldProduct[i].deliveryStatus === "DELIVER_START") {
-          newDeliveryState.push("배송 시작");
-        } else if (soldProduct[i].deliveryStatus === "DELIVERING") {
-          newDeliveryState.push("배송중");
-        } else if (soldProduct[i].deliveryStatus === "DELIVER_COMPLETE") {
-          newDeliveryState.push("배송 완료");
-        }
-      });
-    }
-    setDeliveryState(newDeliveryState);
-  }, [soldProduct]);
   
   if (!sellerData) {
     return <div>데이터 로드중</div>;
@@ -103,11 +82,18 @@ function MyPages() {
         <div>
           {registerData.length >= 1 ? (
             <MypageProductList
+              productList={registerData}
               Endpoint={Endpoint}
-              productDeleteHandler={productDeleteHandler}
-              registerData={registerData}
               navigate={StockNavigate}
-            />
+              productDeleteHandler={productDeleteHandler}
+              primaryLabel="가격"
+              secondaryLabel="재고수"
+              productName = {'productName'}
+              imgUrl = 'imgUrl'
+              primaryData="price"
+              secondData="productStock"
+              custom={ProductListCustom}
+          />
           ) : (
             <h2
               style={{
@@ -123,7 +109,7 @@ function MyPages() {
             </h2>
           )}
         </div>
-        <p style={{ marginTop: "3%", marginBottom: "-12px", display: "flex" }}>
+        <p className = 'mt-5 -mb-3 flex'>
           판매 상품
         </p>
         {!soldProduct ? (
@@ -133,59 +119,16 @@ function MyPages() {
           </>
         ) : (
           <>
-            {soldProduct.map(function (c, i) {
-              return (
-                <React.Fragment key={i}>
-                  <hr style={{ marginBottom: "10px" }}></hr>
-                  <div
-                    className="soldProductList"
-                    style={{
-                      display: "flex",
-                      fontWeight: "700",
-                      height: "160px",
-                      zIndex: "100",
-                      position: "relative",
-                    }}
-                  >
-                    <div className="soldProductImage">
-                      <img
-                        src={Endpoint + soldProduct[i].orderDetails[0].imgUrl}
-                        width="130px"
-                        height="150px"
-                      ></img>
-                    </div>
-                    <div
-                      className="soldProductInfoContainer"
-                      style={{ marginLeft: "10%" }}
-                    >
-                      <div className="soldProductTitle">
-                        <h3>
-                          상품명 : {soldProduct[i].orderDetails[0].productName}
-                        </h3>
-                      </div>
-                      <div className="soldProductPurchaserEmail">
-                        고객 이메일 : {soldProduct[0].purchaserEmail}
-                      </div>
-                      <div className="soldProductTotalPrice">
-                        결제 금액 : {soldProduct[i].orderDetails[0].price}
-                      </div>
-                      <div className="soldProduct">
-                        배송현황 :{" "}
-                        <DeliveryDropdown
-                          text={deliveryState[i]}
-                          articleTypeList={deliveryList}
-                          setArticleType={setSelectDelivery}
-                          articleType={selectDelivery}
-                          i={i}
-                          deliveryArray={deliveryArray}
-                          soldProduct={soldProduct}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </React.Fragment>
-              );
-            })}
+            {<MypageProductList
+              productList = {soldProduct}
+              Endpoint={Endpoint}
+              primaryLabel = {'고객 이메일'}
+              secondaryLabel={'결제 금액'}
+              primaryData={'purchaserEmail'}
+              secondData={'totalPrice'}
+              productName = {`orderDetails[0].productName`}
+              imgUrl = {`orderDetails[0].imgUrl`}
+              />}
           </>
         )}
       </div>
@@ -193,88 +136,33 @@ function MyPages() {
   );
 }
 
-function MypageProductList(props) {
-  return (
-    <div>
-      {props.registerData.map(function (image, i) {
-        return (
-          <React.Fragment key={i}>
-            <hr style={{ marginBottom: "10px" }}></hr>
-            <div
-              className="stockItemContainer"
-              style={{
-                display: "flex",
-                width: "800px",
-                height: "160px",
-                fontWeight: "700",
-              }}
-            >
-              <div className="image">
-                <img
-                  src={props.Endpoint + props.registerData[i].imgUrl}
-                  width="130px"
-                  height="150px"
-                />
-              </div>
-              <div
-                className="productInfoContainer"
-                style={{ marginLeft: "10%", width: "400px" }}
-              >
-                <div className="title">
-                  <h3>상품명 : {props.registerData[i].productName}</h3>
-                </div>
-                <div className="mypageProdictPirce">
-                  가격 : {props.registerData[i].price}
-                </div>
-                <div
-                  className="mypageStock"
-                  style={{ display: "flex", width: "100px" }}
-                >
-                  재고수 : {props.registerData[i].productStock}
-                </div>
-                <div
-                  className="BtnStyle"
-                  style={{ display: "flex", }}
-                >
-                  <button
-                    className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
-                    style={{ marginRight: "5%" }}
-                    onClick={() => {
-                      props.navigate(
-                        `/stockupdater/${props.registerData[i].id}`
-                      );
-                    }}
-                  >
-                    상품 수정
-                  </button>
-                  <button
-                    className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
-                    style={{ marginRight: "5%" }}
-                    onClick={() => {
-                      props.productDeleteHandler(i);
-                    }}
-                  >
-                    상품 삭제
-                  </button>
-                </div>
-              </div>
-            </div>
-          </React.Fragment>
-        );
-      })}
-      <hr></hr>
-    </div>
-  );
-}
-
 Modal.setAppElement("#root");
 
-function DeliveryDropdown(props) {
+export function DeliveryDropdown(props) {
+
+  const deliveryList = ["배송 대기", "배송 시작", "배송중", "배송 완료"];
+  const [deliveryState, setDeliveryState] = useState([]);
+  const [selectDelivery, setSelectDelivery] = useState([]);
+
+  useEffect(() => {
+    const newDeliveryState = [];
+      if (props.soldProduct) {
+        if (props.soldProduct[props.i].deliveryStatus === "WAITING") {
+          newDeliveryState.push("배송 대기");
+        } else if (props.soldProduct[props.i].deliveryStatus === "DELIVER_START") {
+          newDeliveryState.push("배송 시작");
+        } else if (props.soldProduct[props.i].deliveryStatus === "DELIVERING") {
+          newDeliveryState.push("배송중");
+        } else if (props.soldProduct[props.i].deliveryStatus === "DELIVER_COMPLETE") {
+          newDeliveryState.push("배송 완료");
+        }
+    }
+    setDeliveryState(newDeliveryState)
+  }, [props.soldProduct]);
+
   const deliveryStatePatch = async (i, state) => {
     try {
-      await axiosInstance.patch(
-        `/order/seller-list/${props.soldProduct[i].orderId}/delivery-status?status=${state}`
-      );
+      await patchAxios(`/order/seller-list/${props.soldProduct[props.i].orderId}/delivery-status?status=${state}`);
       console.log("베송상태 변경 완료");
     } catch (error) {
       console.log(error);
@@ -304,9 +192,9 @@ function DeliveryDropdown(props) {
   };
 
   const articleTypeHandler = (type) => {
-    props.setArticleType((prevState) => {
+    setSelectDelivery((prevState) => {
       const newArray = [...prevState];
-      newArray[props.i] = type;
+      newArray[0] = type;
       return newArray;
     });
   };
@@ -318,7 +206,7 @@ function DeliveryDropdown(props) {
         className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
         onClick={openModal}
       >
-        {!props.articleType[props.i] ? props.text : props.articleType[props.i]}
+        {deliveryState}
       </button>
       <Modal
         isOpen={isModalOpen}
@@ -338,24 +226,53 @@ function DeliveryDropdown(props) {
         }}
       >
         <div onClick={closeModal} className="sellerMypageModal">
-          {props.articleTypeList.map((type, idx) => (
-            <button
-              className="bg-white hover:bg-gray-100 w-35 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
-              style={{ marginRight: "3%" }}
-              key={type}
-              onClick={() => {
-                articleTypeHandler(type);
-                const value = getTypeValue(type);
-                deliveryStatePatch(idx, value);
-              }}
-            >
+          {deliveryList.map((type, idx) => (
+            <TailWindButton
+            className = {borderSkyBlue}
+            style={{ marginRight: "3%" }}
+            key={type}
+            onClick={() => {
+              setDeliveryState(type)
+              articleTypeHandler(type);
+              const value = getTypeValue(type);
+              deliveryStatePatch(idx, value);
+            }}            >
               {type}
-            </button>
+            </TailWindButton>
           ))}
         </div>
       </Modal>
     </>
   );
 }
+
+function ProductListCustom(props){
+  return(
+    <div>
+      <TailWindButton
+        className = {`${borderSkyBlue} mr-3 mt-3`}
+        onClick={() => {
+          props.navigate(
+            `/stockupdater/${props.productList[props.i].id}`
+          );
+        }}
+      >
+        상품 수정
+      </TailWindButton>
+      <TailWindButton
+        className = {`${borderSkyBlue} mr-3 mt-3`}
+        onClick={() => {
+          props.productDeleteHandler(props.i);
+        }}
+      >
+        상품 삭제
+      </TailWindButton>
+    </div>
+  )
+}
+
+
+
+
 
 export default MyPages;

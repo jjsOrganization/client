@@ -1,11 +1,15 @@
 import React from "react";
 import axiosInstance from "../component/jwt.js";
+import { postAxios } from "../component/Axios.js";
 import TopBar from "../component/TopBar.js";
 import { PhotoIcon } from '@heroicons/react/24/solid'
 import { useNavigate } from "react-router-dom";
-import { Fragment, useState, useRef, useEffect } from 'react'
+import { Fragment , useState, useRef, useEffect } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import { ImgUpload } from "../component/molecules/imgUpload.js";
+import { TailWindDropdown } from "../component/organism/DropDown.js";
+import { Input_Label } from "../component/molecules/Input_Label.js";
 
 function ProductUpdate(props) {
   const [titleValue, setTitleValue] = useState();
@@ -16,8 +20,6 @@ function ProductUpdate(props) {
   const [thumbnailImageFile, setThumbnailImageFile] = useState();
   const [imgFiles, setImgFiles] = useState([]);
   const [img, setImg] = useState([]);
-  const [files, setFiles] = useState(); 
-  const categoryDropDown = ['상의','아우터','바지','스커트','원피스','모자']
   const [categoryId, setCategoryId] = useState();
   const [selectedCategory, setSelectedCategory] = useState("카테고리");
   let navigate = useNavigate();
@@ -50,6 +52,7 @@ function ProductUpdate(props) {
   };
 
   const thumbnailImageUpload = (event) => {
+    console.log('작동중2')
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -60,6 +63,7 @@ function ProductUpdate(props) {
   };
 
   const imageUpload = (event) => {
+    console.log('작동중')
     const files = event.target.files;
     const newImgFiles = [...imgFiles];
     const newImg = [...img];
@@ -93,10 +97,7 @@ function ProductUpdate(props) {
       for(let i = 0 ; i < imgFiles.length; i++){
         formData.append("itemImgFile", imgFiles[i]);
       }
-
-      const response = await axiosInstance.post("/product/seller/register",
-        formData,
-      );
+      postAxios("/product/seller/register",formData)
       navigate(`/mypage`);
       alert("상품이 등록되었습니다.");
     } catch (error) {
@@ -118,183 +119,52 @@ function ProductUpdate(props) {
             <p className="mt-1 text-sm leading-6 text-gray-600">
               판매할 상품을 등록해주세요.
             </p>
-
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-              
-              <div className="col-span-full">
-                <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
-                  썸네일 사진
-                </label>
-                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10" >
-                  <div className="text-center">
-                    {thumbnailImage && (
-                      <img src={thumbnailImage} alt="Thumbnail" className="mx-auto h-40 w-auto" />
-                    )}
-                    {!thumbnailImage && (
-                      <PhotoIcon className="mx-auto h-15 w-15 text-gray-300" aria-hidden="true" />
-                    )}
-                    <div className="mt-4 flex text-sm leading-6 text-gray-600 text-center">
-                      <label
-                        htmlFor="thumbnailFile-upload"
-                        className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                      >
-                        <span>Upload a file</span>
-                        <input id="thumbnailFile-upload" name="thumbnailFile-upload" type="file" className="sr-only" onChange={(event) => thumbnailImageUpload(event)} style={{display: "none"}} />
-                      </label>
-                      <p className="pl-1">or drag and drop</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ImgUpload
+                title = {'썸네일 이미지'}
+                image = {thumbnailImage}
+                imageUpload = {thumbnailImageUpload}
+              />
 
-              <div className="col-span-full">
-                <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
-                  상품 사진
-                </label>
-                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10" >
-                  <div className="text-center">
-                    {
-                    img[0] ? 
-                    img.map(function(imgUrl,index){
-                    return <img style = {{margin : '30px'}} src={imgUrl} alt="사진을 등록해주세요" className="mx-auto" height = '200px' width = 'auto'/>}):
-                    <PhotoIcon className="mx-auto h-15 w-15 text-gray-300" aria-hidden="true" />
-                    }
-                    <div className="mt-4 flex text-sm leading-6 text-gray-600 text-center">
-                      <label
-                        htmlFor="file-upload"
-                        className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                      >
-                        <span>Upload a file</span>
-                        <input id="file-upload" name="file-upload" type="file" className="sr-only" multiple onChange={(event) => imageUpload(event)} style={{display: "none"}} />
-                      </label>
-                      <p className="pl-1">or drag and drop</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ImgUpload
+                title = '상품사진'
+                image = {img}
+                imageUpload={imageUpload}
+                multiple = {true}
+              />
 
-              <div className="sm:col-span-4">
-                <label htmlFor="productname" className="block text-sm font-medium leading-6 text-gray-900">
-                  상품명
-                </label>
-                <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                    <input
-                      type="text"
-                      name="productname"
-                      id="productname"
-                      autoComplete="productname"
-                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                      placeholder=""
-                      value={titleValue}
-                      onChange={saveTitle}
-                    />
-                  </div>
-                </div>
-              </div>
+              <Input_Label
+                title = '상품명'
+                labelName = 'productname'
+                value={titleValue}
+                save={saveTitle}
+              />
 
-              <div className="sm:col-span-4">
-                <label htmlFor="productprice" className="block text-sm font-medium leading-6 text-gray-900">
-                  상품 가격
-                </label>
-                <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                    <input
-                      type="text"
-                      name="productprice"
-                      id="productprice"
-                      autoComplete="productprice"
-                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                      placeholder=""
-                      value={priceValue}
-                      onChange={savePrice}
-                    />
-                  </div>
-                </div>
-              </div>
+              <Input_Label
+                title = '상품 가격'
+                labelName = 'productprice'
+                value={priceValue}
+                save={savePrice}
+              />
 
-              <div className="sm:col-span-4">
-                <label htmlFor="productstock" className="block text-sm font-medium leading-6 text-gray-900">
-                  재고수
-                </label>
-                <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                    <input
-                      type="text"
-                      name="productstock"
-                      id="productstock"
-                      autoComplete="productstock"
-                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                      placeholder=""
-                      value={amountValue}
-                      onChange={saveAmount}
-                    />
-                  </div>
-                </div>
-              </div>
+              <Input_Label
+                title = '재고수'
+                labelName = 'productstock'
+                value={amountValue}
+                save={saveAmount}
+              />
               
             </div>
           </div>
         </div>
 
         <div className="mt-6 flex justify-between items-center">
-          <div>
-            <Listbox value={selectedCategory} onChange={handleCategoryChange}>
-              {({ open }) => (
-                <>
-                  <div className="relative mt-2">
-                    <Listbox.Button className="relative cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6" style={{ width: '120px' }}>
-                      <span className="block truncate">{selectedCategory}</span>
-                      <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                        <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                      </span>
-                    </Listbox.Button>
-                    <Transition
-                      show={open}
-                      as={Fragment}
-                      leave="transition ease-in duration-100"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                      afterEnter={() => handleDropdownToggle(open)}
-                    >
-                      <Listbox.Options className="list-none absolute z-10 mt-1 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm pl-2 " style={{ width: '120px' }} ref={dropdownRef}>
-                        {categoryDropDown.map((category, index) => (
-                          <Listbox.Option
-                            key={index}
-                            className={({ active }) =>
-                              classNames(
-                                active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                                'relative cursor-default select-none py-2 pl-2 pr-9'
-                              )
-                            }
-                            value={category}
-                          >
-                            {({ selected, active }) => (
-                              <>
-                                <span className={classNames(selected ? 'font-semibold' : 'font-normal', 'block truncate')}>
-                                  {category}
-                                </span>
-                                {selected ? (
-                                  <span
-                                    className={classNames(
-                                      active ? 'text-white' : 'text-indigo-600',
-                                      'absolute inset-y-0 right-0 flex items-center pr-4'
-                                    )}
-                                  >
-                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                  </span>
-                                ) : null}
-                              </>
-                            )}
-                          </Listbox.Option>
-                        ))}
-                      </Listbox.Options>
-                    </Transition>
-                  </div>
-                </>
-              )}
-            </Listbox> 
-          </div>
+          <TailWindDropdown
+          categoryId = {categoryId}
+          selectedCategory = {selectedCategory}
+          setSelectedCategory = {setSelectedCategory}
+          setCategoryId = {setCategoryId}
+          />
 
           <div className="flex gap-x-6">
             <div 

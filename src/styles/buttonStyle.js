@@ -1,0 +1,1 @@
+export const borderSkyBlue = "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
