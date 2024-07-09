@@ -14,3 +14,13 @@ export const TailWindButton = ({ className,children, ...props }) => {
          </button>
     )
 }
+
+const Button = ({ type, onClick, children, className, label }) => {
+    return (
+      <button type={type} onClick={onClick} className={className}>
+        {children}
+        {label}
+      </button>
+    );
+  };
+  
