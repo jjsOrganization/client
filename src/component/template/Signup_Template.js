@@ -2,35 +2,17 @@ import React, { useState } from "react";
 import FormField from "../molecules/Signup/FormField";
 import Tabs from "../molecules/Signup/Tabs";
 import Button from "../atoms/Button";
-import "../../../css/Signup.css";
+import "../../css/Signup.css";
 
-const SignupTemplate = () => {
-  const [userType, setUserType] = useState("purchaser");
+const SignupTemplate = ({ formData, handleChange, userType, setUserType, handleSubmit }) => {
 
   return (
     <div>
       <div className="signUp">
         <h1>회원가입</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="SignUp1">
-            <h5>회원구분</h5>
-            <ul className="tabs">
-              {["purchaser", "seller", "designer"].map((type) => (
-                <li
-                  className={`tab ${userType === type ? "active" : ""}`}
-                  key={type}
-                  onClick={() => setUserType(type)}
-                >
-                  <span className="SignUp4">
-                    {type === "purchaser"
-                      ? "일반회원"
-                      : type === "seller"
-                      ? "판매자"
-                      : "디자이너"}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <Tabs userType={userType} setUserType={setUserType} />
           </div>
           <h5>기본정보</h5>
           <div>
@@ -43,6 +25,8 @@ const SignupTemplate = () => {
                     name="email"
                     placeholder="이메일"
                     className="SignUp3"
+                    value={formData.email}
+                    onChange={handleChange}
                   />
 
                   <FormField
@@ -51,6 +35,8 @@ const SignupTemplate = () => {
                     name="password"
                     placeholder="비밀번호"
                     className="SignUp3"
+                    value={formData.password}
+                    onChange={handleChange}
                   />
 
                   <FormField
@@ -59,6 +45,8 @@ const SignupTemplate = () => {
                     name="rePassword"
                     placeholder="비밀번호 확인"
                     className="SignUp3"
+                    value={formData.rePassword}
+                    onChange={handleChange}
                   />
 
                   <FormField
@@ -67,14 +55,18 @@ const SignupTemplate = () => {
                     name="name"
                     placeholder="이름"
                     className="SignUp3"
+                    value={formData.name}
+                    onChange={handleChange}
                   />
 
                   <FormField
                     label="휴대전화"
                     type="text"
-                    name="phonenumber"
-                    placeholder="휴대전화 번호"
+                    name="phoneNumber"
+                    placeholder="휴대전화 번호 (-없이 입력하세요.)"
                     className="SignUp3"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
                   />
 
                   <FormField
@@ -83,6 +75,8 @@ const SignupTemplate = () => {
                     name="address"
                     placeholder="주소"
                     className="SignUp3"
+                    value={formData.address}
+                    onChange={handleChange}
                   />
                 </div>
                 {userType === "seller" && (
@@ -94,6 +88,8 @@ const SignupTemplate = () => {
                         name="businessNumber"
                         placeholder="사업자번호"
                         className="SignUp3"
+                        value={formData.businessNumber}
+                        onChange={handleChange}
                       />
 
                       <FormField
@@ -102,6 +98,8 @@ const SignupTemplate = () => {
                         name="storeAddress"
                         placeholder="매장주소"
                         className="SignUp3"
+                        value={formData.storeAddress}
+                        onChange={handleChange}
                       />
 
                       <FormField
@@ -110,6 +108,8 @@ const SignupTemplate = () => {
                         name="storeName"
                         placeholder="매장이름"
                         className="SignUp3"
+                        value={formData.storeName}
+                        onChange={handleChange}
                       />
                     </div>
                   </div>

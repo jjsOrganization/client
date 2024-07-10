@@ -1,11 +1,12 @@
 import axiosInstance from "../component/jwt.js";
 
 export const postAxios = async(url, data) => {
-    try{
-        const fetchData = await axiosInstance.post(`${url}`,data)
-    }
-    catch(err){
-        console.log(err)
+    try {
+        const fetchData = await axiosInstance.post(`${url}`, data);
+        return fetchData; 
+    } catch (err) {
+        console.log(err);
+        throw err; 
     }
 }
 

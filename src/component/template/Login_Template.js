@@ -1,9 +1,8 @@
 import React from "react";
 import EmailField from "../molecules/Login/EmailField.js";
 import PasswordField from "../molecules/Login/PasswordField.js";
-import Button from "../atoms/Button.js";
 
-const LoginTemplate = () => {
+const LoginTemplate = ({ email, setEmail, password, setPassword, handleLogin }) => {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="container">
@@ -16,17 +15,17 @@ const LoginTemplate = () => {
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
               <form
-                // onSubmit={handleSubmit}
+                onSubmit={handleLogin}
                 className="space-y-6"
                 action="#"
                 method="POST"
               >
                 <div>
-                  <EmailField />
+                  <EmailField value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
 
                 <div>
-                  <PasswordField />
+                  <PasswordField value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
 
                 <div>
