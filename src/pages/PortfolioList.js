@@ -50,8 +50,9 @@ const PortfolioList = () => {
       setFilteredPortfolios(portfolios);
     } else {
       const filteredPortfolios = portfolios.filter((portfolio) =>
-        portfolio.explanation.toLowerCase().includes(searchTerm)
+        portfolio.title.toLowerCase().includes(searchTerm)
       );
+      console.log(filteredPortfolios);
       setFilteredPortfolios(filteredPortfolios);
     }
   };
