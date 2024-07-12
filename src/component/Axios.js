@@ -39,6 +39,16 @@ export const getAxios = async (url) => {
     }
 }
 
+export const deleteAxios = async (url) => {
+    try{
+        const fetchData = await axiosInstance.get(`${url}`,)
+        return fetchData
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 
 
 
