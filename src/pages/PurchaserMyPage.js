@@ -60,6 +60,7 @@ function CustomerOrderList() {
         setPurchaserReformProducts(reformArray);
 
         const purchaseData = responsePurchase.data.data;
+        console.log(purchaseData);
         setPurchaserOrderProducts(purchaseData);
       } catch (error) {}
     };
