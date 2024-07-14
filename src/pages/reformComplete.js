@@ -2,22 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
-
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardFooter,
-  Typography,
-  Tooltip,
-} from "@material-tailwind/react";
+import {Card,CardHeader,Typography,ooltip,} from "@material-tailwind/react";
 
 function ReformCompleted() {
   
   const Endpoint = "https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/";
   const [reformData, setReformData] = useState();
   const [detailReformData, setDetailReformData] = useState();
-
   let { progressNumber } = useParams();
 
   const style = {
@@ -95,7 +86,7 @@ function ReformCompleted() {
           </CardHeader>
 
           <Typography variant="h6" color="blue-gray" className="mt-2 ml-8">
-            디자이너 예상
+            예상 결과물
           </Typography>
           <CardHeader>
             <div style = {{containerStyle}}>

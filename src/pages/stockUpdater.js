@@ -23,6 +23,7 @@ function StockUpdater() {
   const [selectedCategory, setSelectedCategory] = useState('카테고리');
   const [imgFiles, setImgFiles] = useState([]);
   const [img, setImg] = useState([]);
+  const dropdownMenu = ["상의","아우터","바지","스커트","원피스","모자",];
 
   const saveAmount = (event) => {
     setAmountValue(event.target.value);
@@ -39,6 +40,17 @@ function StockUpdater() {
   const cancelHandler = () => {
     navigate("/mypage");
   }
+
+  const handleCategoryChange = ((selectedCategory) => {
+    setSelectedCategory(selectedCategory);
+    if(selectedCategory === '상의'){setCategoryId(1);}
+    else if(selectedCategory === '아우터'){setCategoryId(2)}
+    else if(selectedCategory === '바지'){setCategoryId(3)}
+    else if(selectedCategory === '스커트'){setCategoryId(4)}
+    else if(selectedCategory === '원피스'){setCategoryId(5)}
+    else if(selectedCategory === '모자'){setCategoryId(6)}
+    else setCategoryId(undefined);
+  })
 
   const imageUpload = (event) => {
     const files = event.target.files;
@@ -103,7 +115,7 @@ function StockUpdater() {
                 title = '상품사진'
                 image = {img}
                 imageUpload={imageUpload}
-                multiple = {true}
+                isMultiple = {true}
               />
 
               <Input_Label
@@ -133,12 +145,13 @@ function StockUpdater() {
 
         <div className="mt-6 flex justify-between items-center">
           <TailWindDropdown
+          handleCategoryChange = {handleCategoryChange}
           categoryId = {categoryId}
           selectedCategory = {selectedCategory}
           setSelectedCategory = {setSelectedCategory}
           setCategoryId = {setCategoryId}
+          dropdownMenu = {dropdownMenu}
           />
-
           <div className="flex gap-x-6">
             <div 
               type="button" 
