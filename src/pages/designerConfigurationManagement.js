@@ -201,7 +201,6 @@ function ConfigurationManagement(){
                     }}>
                     작업물 보기
                     </button>}
-                    
                 </div>
                 <Modal isOpen = {isOpen} closeModal = {closeModal} reformCompletedHandler = {reformCompletedHandler} titleUpdateHandler = {titleUpdateHandler} explanationUpdateHandler = {explanationUpdateHandler}/>
             </div>
