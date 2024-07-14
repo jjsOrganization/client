@@ -42,6 +42,7 @@
     "web-vitals": "^2.1.4",
     "websocket": "^1.0.34",
     "webstomp-client": "^1.2.6",
+    "yarn": "^1.22.22",
     "zustand": "^4.5.4"
   },
   "scripts": {
