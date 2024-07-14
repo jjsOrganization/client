@@ -57,7 +57,7 @@ export default function TopBar() {
           <a href="/visual" className="text-sm font-semibold leading-6 text-gray-900">
             물 시각화
           </a>
-          <a href="PortfolioList" className="text-sm font-semibold leading-6 text-gray-900">
+          <a href="/PortfolioList" className="text-sm font-semibold leading-6 text-gray-900">
             포트폴리오(작업물)
           </a>
         </Popover.Group>

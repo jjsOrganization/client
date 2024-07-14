@@ -4,6 +4,8 @@ import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import Pagination from "../component/Pagination.js";
 import '../css/DesignerPortfolio.module.css'
+import useProgressStore from '../store.js';
+
 
 const PortfolioList = () => {
   const [portfolios, setPortfolios] = useState([]);
@@ -13,19 +15,17 @@ const PortfolioList = () => {
   const navigate = useNavigate();
   const { page } = useParams();
   const currentPage = page ? parseInt(page, 10) : 1;
+  let [progressNumber, setProgressNumber] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get("/portfolio/reformOutput/list", {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
         });
         console.log(response.data.data);
         setPortfolios(response.data.data);
         setFilteredPortfolios(response.data.data);
+        setProgressNumber(response.data.data)
       } catch (error) {
         console.error("Error fetching data", error);
       }
@@ -73,7 +73,6 @@ const PortfolioList = () => {
         <button onClick={handleSortByLatest}>최신순</button>
         <button onClick={handleSortByPopular}>인기순</button>
       </div> */}
-
       <div className="findProduct">
         <input
           type="text"
@@ -86,14 +85,14 @@ const PortfolioList = () => {
       <div className="bg-white">
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-        {currentProducts.map((portfolio) => (
+        {currentProducts.map((portfolio , index) => (
             <a
             key = {portfolio.id}
             className="group"
             style={{ textDecoration: "none" }}
             >
             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-            <Link to={`/designer/portpolio/${portfolio.progressNumber}`} style={{ textDecoration: "none" }}>
+            <Link to={`/reformCompleted/${progressNumber[index].progressNumber}`} style={{ textDecoration: "none" }}>
               {portfolio.completeImgUrl && (
                 <div
                   style={{

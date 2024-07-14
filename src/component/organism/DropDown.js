@@ -1,22 +1,9 @@
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { Fragment, useRef, useEffect} from 'react'
-import { useState } from 'react'
 
-export const TailWindDropdown = ({setSelectedCategory, categoryId, selectedCategory,setCategoryId, ...props}) => {
-    const categoryDropDown = ["상의","아우터","바지","스커트","원피스","모자",];
+export const TailWindDropdown = ({handleCategoryChange,handleChangeStatus,requestNumber, categoryId, selectedCategory,setCategoryId,dropdownMenu, ...props}) => {
     const dropdownRef = useRef(null);
-
-    const handleCategoryChange = ((selectedCategory) => {
-        setSelectedCategory(selectedCategory);
-        if(selectedCategory === '상의'){setCategoryId(1);}
-        else if(selectedCategory === '아우터'){setCategoryId(2)}
-        else if(selectedCategory === '바지'){setCategoryId(3)}
-        else if(selectedCategory === '스커트'){setCategoryId(4)}
-        else if(selectedCategory === '원피스'){setCategoryId(5)}
-        else if(selectedCategory === '모자'){setCategoryId(6)}
-        else setCategoryId(undefined);
-      })
     
       const handleDropdownToggle = (open) => {
         if (open && dropdownRef.current) {
@@ -25,13 +12,28 @@ export const TailWindDropdown = ({setSelectedCategory, categoryId, selectedCateg
         }
       };
 
+      const onChangeHandler = async (e) => {
+        let value = ''
+        handleCategoryChange(e)
+        if(e == '리폼 요청'){
+          value = 'REQUEST_WAITING'
+        }
+        else if( e == '리폼 승인'){
+          value = '수락'
+        }
+        else{
+          value = '거절'
+        }
+        await handleChangeStatus(requestNumber, value)
+      }
+
       function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
       }
 
     return(
         <div>
-            <Listbox value={selectedCategory} onChange={handleCategoryChange}>
+            <Listbox value={selectedCategory} onChange={ onChangeHandler} >
               {({ open }) => (
                 <>
                   <div className="relative mt-2">
@@ -50,7 +52,7 @@ export const TailWindDropdown = ({setSelectedCategory, categoryId, selectedCateg
                       afterEnter={() => handleDropdownToggle(open)}
                     >
                       <Listbox.Options className="list-none absolute z-10 mt-1 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm pl-2 " style={{ width: '120px' }} ref={dropdownRef}>
-                        {categoryDropDown.map((category, index) => (
+                        {dropdownMenu.map((category, index) => (
                           <Listbox.Option
                             key={index}
                             className={({ active }) =>

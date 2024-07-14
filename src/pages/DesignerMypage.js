@@ -4,15 +4,9 @@ import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardFooter,
-  Typography,
-  Tooltip,
-} from "@material-tailwind/react";
+import { TailWindButton } from "../component/atoms/Button.js";
+import { TailWindDropdown } from "../component/organism/DropDown.js";
+import {Card,CardBody,CardHeader,Typography,Tooltip,} from "@material-tailwind/react";
 import { PencilIcon } from "@heroicons/react/24/solid";
 
 export function DesignerMypage() {
@@ -30,9 +24,24 @@ export function DesignerMypage() {
   const [connected, setConnected] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [messageData, setMessageData] = useState([]);
-  const [status, setStatus] = useState("");
   const [reformList, setReformList] = useState();
   const estimateId = [];
+  const [dropdownMenu, setDropDownMenu] = useState(['리폼 요청', '리폼 승인', '리폼 거절']);
+  const [choiceMenu, setChoiceMenu] = useState('리폼 요청');
+  const lightBlueBtn = "bg-lightblue text-white py-2 px-3 border-none rounded cursor-pointer";
+  const darkBlueBtn = "bg-darkblue text-white py-1.5 px-3 rounded cursor-pointer ml-2";
+
+  const dropDownChange = (choice) => {
+    if(choice == '리폼 요청'){
+      setChoiceMenu('리폼 요청')
+    }
+    else if(choice == '리폼 승인'){
+      setChoiceMenu('리폼 승인')
+    }
+    else if(choice == '리폼 거절'){
+      setChoiceMenu('리폼 거절')
+    }
+  }
 
   const headers = {
     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -78,8 +87,7 @@ export function DesignerMypage() {
           },
         }
       );
-      const data = response.data.data;
-      setRequestReform(data);
+      setRequestReform(response.data.data);
     } catch (error) {}
   };
 
@@ -378,9 +386,7 @@ export function DesignerMypage() {
               </>
             ) : (
               <>
-                <CardBody
-                  className=" m-20 shrink-0 rounded-r-none "
-                >
+                <CardBody className=" m-20 shrink-0 rounded-r-none ">
                   <div
                     type="button"
                     className="flex justify-center items-center rounded-md bg-gray-900/75 w-60 h-14 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -424,23 +430,13 @@ export function DesignerMypage() {
                     </Typography>
                     {reform.requestStatus !== "REQUEST_WAITING" ? (
                       <div>
-                        <button
-                          onClick={() => {
-                            fetchRoomData(reform.requestNumber);
-                          }}
-                          style={{
-                            backgroundColor: "lightblue",
-                            color: "white",
-                            padding: "8px 16px",
-                            border: "none",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                            marginRight: "10px",
-                          }}
+                        <TailWindButton 
+                          className = {lightBlueBtn}
+                          onClick={() => {fetchRoomData(reform.requestNumber);}}
                         >
                           채팅방 생성 또는 시작
-                        </button>
-                        <button
+                        </TailWindButton>
+                        <TailWindButton className = {darkBlueBtn}
                           onClick={async () => {
                             try {
                               const R = await fetchEstimateData(
@@ -455,18 +451,10 @@ export function DesignerMypage() {
                               window.alert(error.message);
                             }
                           }}
-                          style={{
-                            backgroundColor: "darkblue",
-                            color: "white",
-                            padding: "8px 16px",
-                            border: "none",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                          }}
                         >
                           견적서 작성
-                        </button>
-                        <button
+                        </TailWindButton>
+                        <TailWindButton className = {darkBlueBtn}
                           onClick={async () => {
                             try {
                               const R = await fetchEstimateData(
@@ -482,54 +470,30 @@ export function DesignerMypage() {
                               window.alert(error.message);
                             }
                           }}
-                          style={{
-                            backgroundColor: "darkblue",
-                            color: "white",
-                            padding: "8px 16px",
-                            border: "none",
-                            marginLeft: "8px",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                          }}
                         >
                           견적서 제출
-                        </button>
-                        <button
+                          </TailWindButton>
+                          <TailWindButton className = {darkBlueBtn}
                           onClick = {() => {
                             {estimateId[index]?
                             navigate(`/ConfigurationManagement/${estimateId[index]}`):
                             alert('아직 의뢰 요청이 수락되지 않았습니다.')}
                           }}
-                          style={{
-                            backgroundColor: "darkblue",
-                            color: "white",
-                            padding: "8px 16px",
-                            border: "none",
-                            marginLeft: "8px",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                          }}
                         >
                           진행상황 공유
-                        </button>
+                          </TailWindButton>
                       </div>
                     ) : null}
                     {reform.requestStatus !== "REQUEST_ACCEPTED" &&
                       reform.requestStatus !== "REQUEST_REJECTED" && (
-                        <select
-                          value={reform.requestStatus}
-                          onChange={(e) =>
-                            handleChangeStatus(
-                              reform.requestNumber,
-                              e.target.value
-                            )
-                          }
-                          className="mt-2 px-3 py-2 border rounded-md bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                        >
-                          <option value="REQUEST_WAITING">리폼 요청</option>
-                          <option value="수락">리폼 승인</option>
-                          <option value="거절">리폼 거절</option>
-                        </select>
+                        <TailWindDropdown
+                        requestNumber = {reform.requestNumber}
+                        handleChangeStatus = {handleChangeStatus}
+                        handleCategoryChange = {dropDownChange}
+                        selectedCategory={choiceMenu}
+                        setselectedCategory = {setChoiceMenu}
+                        dropdownMenu = {dropdownMenu}
+                        />
                       )}
                       <hr></hr>
                   </div>
@@ -537,7 +501,6 @@ export function DesignerMypage() {
             </CardBody>
           </Card>
         </>
-        /
       </div>
       <div>
         {chatOpen ? (

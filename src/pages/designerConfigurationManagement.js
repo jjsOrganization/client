@@ -3,7 +3,11 @@ import { useParams } from 'react-router-dom';
 import axiosInstance from "../component/jwt.js";
 import TopBar from '../component/TopBar.js';
 import { useNavigate } from "react-router-dom";
-import { PhotoIcon } from '@heroicons/react/24/solid'
+import UserDivision from '../component/molecules/UserDivision.js';
+import ImageForm from '../component/molecules/ImgForm.js';
+import { useQuery } from 'react-query'  
+import { getAxios } from '../component/Axios.js';
+import useProgressStore from '../store.js';
 
 function ConfigurationManagement(){
     let {estimateId} = useParams();
@@ -15,7 +19,8 @@ function ConfigurationManagement(){
     const [title, setTitle] = useState();
     const [explanation, setExplanation] = useState();
     const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
-    const [progressNumber, setProgressNumber] = useState();
+    const progressNumber = useProgressStore((state) => state.progressNumber);
+    const setProgressNumber = useProgressStore((state) => state.setProgressNumber);
     const [check, setCheck] = useState();
     let navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
@@ -25,8 +30,14 @@ function ConfigurationManagement(){
         useEffect(() => {
             if (progressNumber) {
             reformCheck();
-            }
-        }, [progressNumber]);
+            }},[progressNumber]
+        );
+
+        let test = useQuery([`imageGet`],async ()=>{
+            const getImg = await getAxios(`/progress/img/${estimateId}`)
+            console.log(getImg.data)
+            return getImg
+            })
 
         useEffect(() => {
             const fetchData = async () => {
@@ -98,7 +109,6 @@ function ConfigurationManagement(){
             try{
                 const response = await axiosInstance.get(`/portfolio/reformOutput/detail/${progressNumber}`,)
                 setCheck(response.data.data)
-                console.log(response.data.data)
             }
             catch(error){
                 console.log(error)
@@ -123,100 +133,55 @@ function ConfigurationManagement(){
         <>
             <TopBar />
             <div className='ConfigurationManagementContainer' style = {{margin : '0 10% 0 20%'}}>
-                <div className = 'beforeImage' style = {{marginLeft : '15%'}}>
+                <div className = 'beforeImage' style = {{margin : '0% 20% 0 15%'}}>
                     <h4>리폼 전 이미지</h4>
-                    <img src = {Endpoint + beforeImage} height = '300px' width = '77%'></img>
+                    <div style={{ border: '2px solid #ccc', borderRadius: '10px', padding: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', textAlign: 'center' }}>
+                        <img src = {Endpoint + beforeImage} height = '300px' width = '100%'></img>
+                    </div>
                 </div>
                 
                 <div className = 'beforeImage' style = {{margin : '10% 20% 0 15%'}}>
-                    {localStorage.getItem('role') == 'ROLE_DESIGNER' ? 
-                    <div style = {{display : 'flex', marginBottom : '1%'}}>
-                        <h4>첫번째 리폼</h4>
-                        <label
-                        style = {{marginLeft : 'auto'}}
-                        htmlFor="beforeReformImage-upload"
-                        className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                        >
-                        <span>Upload a file</span>
-                        <input type="file" id="beforeReformImage-upload" multiple className="sr-only" onChange={(event) => firstImageHandler(event)} style={{display: "none", marginLeft : 'auto'}} />
-                        </label>
-                    </div>:
-                    <div style = {{display : 'flex', marginBottom : '1%'}}>
-                        <h4>첫번째 리폼</h4>
-                    </div>}
-                        {firstImage ?
-                        <div><img src={firstImage} style={{ width: '100%', height: '300px', textAlign: 'center' }} /></div>:
-                        <div>
-                            <PhotoIcon className="mx-auto h-15 w-15 text-gray-300" aria-hidden="true" />
-                        </div>
-                        }
+                    <UserDivision
+                    title = {'첫번째 리폼'}
+                    imageHandler={firstImageHandler}
+                    imageUploadId={`firstImage`}
+                    />
+
+                    <ImageForm
+                    estimateId = {estimateId}
+                    image = {firstImage}
+                    />
                 </div>
                
                 <div className = 'secondImage' style = {{margin : '10% 20% 0 15%'}}>
-                    {localStorage.getItem('role') == 'ROLE_DESIGNER' ? 
-                    <div style = {{display : 'flex', marginBottom : '1%'}}>
-                        <h4>두번째 리폼</h4>
-                        <label
-                        style = {{marginLeft : 'auto'}}
-                        htmlFor="secondReformImage-upload"
-                        className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                        >
-                        <span>Upload a file</span>
-                        <input type="file" id="secondReformImage-upload" 
-                        multiple 
-                        className="sr-only" 
-                        onClick={(event) => {
-                        if(!firstImage){
-                        alert('첫번째 사진을 먼저 업로드 해주세요'); 
-                        event.preventDefault(); }}} 
-                        onChange={(event) => secondImageHandler(event)} 
-                        style={{display: "none", marginLeft : 'auto'}} />
-                        </label>
-                    </div>:
-                    <div style = {{display : 'flex', marginBottom : '1%'}}>
-                        <h4>두번째 리폼</h4>
-                    </div>}
-                        {secondImage ?
-                        <div><img src={secondImage} style={{ width: '100%', height: '300px', textAlign: 'center' }} /></div>:
-                        <div>
-                            <PhotoIcon className="mx-auto h-15 w-15 text-gray-300" aria-hidden="true" />
-                        </div>
-                        }
+                    <UserDivision
+                    title = {'두번째 리폼'}
+                    imageHandler={secondImageHandler}
+                    imageUploadId={`secondImage`}
+                    firstImage={firstImage}
+                    />
+
+                    <ImageForm
+                    estimateId = {estimateId}
+                    image={secondImage}
+                    />
                 </div>
                     
                 <div className = 'reformCompletedContainer' style = {{margin : '10% 20% 0 15%'}}>
-                    {localStorage.getItem('role') == 'ROLE_DESIGNER' ? 
-                        <div style = {{display : 'flex', marginBottom : '1%'}}>
-                            <h4>리폼 완료</h4>
-                            <label
-                            style = {{marginLeft : 'auto'}}
-                            htmlFor="reformCompletedImage"
-                            className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                            >
-                            <span>Upload a file</span>
-                            <input type="file" id="reformCompletedImage" multiple 
-                                onClick={(event) => {
-                                if(!secondImage || !firstImage){
-                                alert('중간 사진을 먼저 업로드 해주세요'); 
-                                event.preventDefault();}}} 
-                                onChange={(event) => {
-                                    lastImageHandler(event);
-                                }}
-                                className="sr-only" 
-                                style={{display: "none", marginLeft : 'auto'}} />
-                            </label>
-                        </div>:
-                        <div style = {{display : 'flex', marginBottom : '1%'}}>
-                            <h4>리폼 완료</h4>
-                        </div>}
-                    {lastImage !== null ?
-                        <div>
-                            <img src={lastImage} style={{ width: '100%', height: '300px', textAlign: 'center' }}  />
-                        </div>:
-                        <div>
-                            <PhotoIcon className="mx-auto h-15 w-15 text-gray-300" aria-hidden="true" />
-                        </div>
-                    }
+                    <UserDivision
+                    title = {`리폼 완료`}
+                    imageHandler={lastImageHandler}
+                    imageUploadId={`lastImage`}
+                    firstImage={firstImage}
+                    secondImage={secondImage}
+                    />
+
+                    <ImageForm
+                    estimateId = {estimateId}
+                    image={lastImage}
+                    firstImage = {firstImage}
+                    secondImage = {secondImage}
+                    />
                 </div>       
 
                 <div className = 'reformCompleted-btn' style = {{margin : '5% 15% 3% 0',textAlign : 'right'}}>

@@ -22,18 +22,8 @@ function ProductUpdate(props) {
   const [img, setImg] = useState([]);
   const [categoryId, setCategoryId] = useState();
   const [selectedCategory, setSelectedCategory] = useState("카테고리");
+  const dropdownMenu = ["상의","아우터","바지","스커트","원피스","모자",];
   let navigate = useNavigate();
-
-  const handleCategoryChange = ((selectedCategory) => {
-    setSelectedCategory(selectedCategory);
-    if(selectedCategory === '상의'){setCategoryId(1);}
-    else if(selectedCategory === '아우터'){setCategoryId(2)}
-    else if(selectedCategory === '바지'){setCategoryId(3)}
-    else if(selectedCategory === '스커트'){setCategoryId(4)}
-    else if(selectedCategory === '원피스'){setCategoryId(5)}
-    else if(selectedCategory === '모자'){setCategoryId(6)}
-    else setCategoryId(undefined); // 초기 상태 또는 카테고리가 선택되지 않은 경우
-  })
 
   const savecontent = (event) => {
     setContentValue(event.target.value);
@@ -51,8 +41,18 @@ function ProductUpdate(props) {
     setTitleValue(event.target.value);
   };
 
+  const handleCategoryChange = ((selectedCategory) => {
+    setSelectedCategory(selectedCategory);
+    if(selectedCategory === '상의'){setCategoryId(1);}
+    else if(selectedCategory === '아우터'){setCategoryId(2)}
+    else if(selectedCategory === '바지'){setCategoryId(3)}
+    else if(selectedCategory === '스커트'){setCategoryId(4)}
+    else if(selectedCategory === '원피스'){setCategoryId(5)}
+    else if(selectedCategory === '모자'){setCategoryId(6)}
+    else setCategoryId(undefined);
+  })
+
   const thumbnailImageUpload = (event) => {
-    console.log('작동중2')
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -63,7 +63,6 @@ function ProductUpdate(props) {
   };
 
   const imageUpload = (event) => {
-    console.log('작동중')
     const files = event.target.files;
     const newImgFiles = [...imgFiles];
     const newImg = [...img];
@@ -75,16 +74,7 @@ function ProductUpdate(props) {
     setImg(newImg);
   }
 
-  const dropdownRef = useRef(null); // 드롭다운 리스트를 참조할 ref 생성
-
-  const handleDropdownToggle = (open) => {
-    if (open && dropdownRef.current) {
-      // 드롭다운이 열릴 때 스크롤 조정
-      dropdownRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }
-  };
-
-  const registerHandler = async () => {
+  const productRegisterHandler = async () => {
     try {
       const formData = new FormData();
       setContentValue('test');
@@ -94,12 +84,13 @@ function ProductUpdate(props) {
       formData.append("productStock", amountValue);
       formData.append("categoryId.id", categoryId)
       formData.append("categoryId.categoryName", selectedCategory)
+      formData.append('itemImgFile', thumbnailImageFile)
       for(let i = 0 ; i < imgFiles.length; i++){
         formData.append("itemImgFile", imgFiles[i]);
       }
-      postAxios("/product/seller/register",formData)
-      navigate(`/mypage`);
+      await postAxios("/product/seller/register",formData)
       alert("상품이 등록되었습니다.");
+      window.location.replace('/mypage')
     } catch (error) {
       alert("상품 등록에 실패했습니다.");
     }
@@ -130,7 +121,7 @@ function ProductUpdate(props) {
                 title = '상품사진'
                 image = {img}
                 imageUpload={imageUpload}
-                multiple = {true}
+                isMultiple = {true}
               />
 
               <Input_Label
@@ -160,10 +151,12 @@ function ProductUpdate(props) {
 
         <div className="mt-6 flex justify-between items-center">
           <TailWindDropdown
+          handleCategoryChange = {handleCategoryChange}
           categoryId = {categoryId}
           selectedCategory = {selectedCategory}
           setSelectedCategory = {setSelectedCategory}
           setCategoryId = {setCategoryId}
+          dropdownMenu = {dropdownMenu}
           />
 
           <div className="flex gap-x-6">
@@ -180,7 +173,7 @@ function ProductUpdate(props) {
               type="button"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               onClick={() => {
-                registerHandler();
+                productRegisterHandler();
               }}
             >
               등록
