@@ -300,14 +300,14 @@ function Detail(props) {
           </div>
         </div>
         <div className="productField">
-        {productDetailInfo.productImg.slice(1).map((image, index) => (
+          {productDetailInfo.productImg.slice(1).map((image, index) => (
             <img
             key={index}
             src={Endpoint + image.imgUrl}
             width="75%"
             height="100%"
             style = {{margin : '0 0 3% 12%'}}
-          />
+            />
           ))}
         </div>
         <Modal

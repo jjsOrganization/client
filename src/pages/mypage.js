@@ -59,27 +59,19 @@ function MyPages() {
   return (
     <div>
       <TopBar />
-      <div
-        className="mypageContainer"
-        style={{ marginLeft: "15%", marginRight: "15%" }}
-      >
+      <div className="mypageContainer" style={{ marginLeft: "15%", marginRight: "15%" }}>
         <h3>마이페이지</h3>
-        <div
-          className="mypageProductList"
-          style={{ display: "flex", marginBottom: "-28px" }}
-        >
+        <div className="mypageProductList" style={{ display: "flex", marginBottom: "-28px" }}>
           <p style={{ display: "inline" }}>상품목록</p>
-          <Button
-            style={{ marginLeft: "auto", marginBottom: "2%" }}
-            onClick={() => {
-              productupdateNavigate("/productupdate");
-            }}
+          <Button 
+            style={{ marginLeft: "auto",marginBottom: "2%" }}
+            onClick={() => {productupdateNavigate("/productupdate");}}
             type="primary"
-          >
+            >
             상품등록
           </Button>
         </div>
-        <div>
+        <div className = 'mypageProductListContainer'>
           {registerData.length >= 1 ? (
             <MypageProductList
               productList={registerData}
@@ -96,13 +88,13 @@ function MyPages() {
           />
           ) : (
             <h2
-              style={{
-                display: "flex",
-                height: "300px",
-                marginTop: "2%",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "darkgrey",
+              style = {{
+              display: "flex",
+              height: "300px",
+              marginTop: "2%",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "darkgrey",
               }}
             >
               상품을 등록해주세요
@@ -113,12 +105,12 @@ function MyPages() {
           판매 상품
         </p>
         {!soldProduct ? (
-          <>
+          <div className = 'soldProductListContainer'>
             <hr style={{ marginBottom: "10px" }}></hr>
             "판매된 상품이 존재하지 않습니다"
-          </>
+          </div>
         ) : (
-          <>
+          <div className = 'soldProductListContainer'>
             {<MypageProductList
               productList = {soldProduct}
               Endpoint={Endpoint}
@@ -128,8 +120,8 @@ function MyPages() {
               secondData={'totalPrice'}
               productName = {`orderDetails[0].productName`}
               imgUrl = {`orderDetails[0].imgUrl`}
-              />}
-          </>
+            />}
+          </div>
         )}
       </div>
     </div>
@@ -228,7 +220,7 @@ export function DeliveryDropdown(props) {
         <div onClick={closeModal} className="sellerMypageModal">
           {deliveryList.map((type, idx) => (
             <TailWindButton
-            className = {borderSkyBlue}
+            className = {`${borderSkyBlue} mr-3 mt-3`}
             style={{ marginRight: "3%" }}
             key={type}
             onClick={() => {
