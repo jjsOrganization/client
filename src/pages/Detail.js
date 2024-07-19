@@ -7,22 +7,14 @@ import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import LikeComponent from "../component/likeComponent.js";
 import Modal from "react-modal";
-//여기까지
-//복구하면됨
-//여기
-//어 맞아 여기
-let BasicBtn = styled.button`
-  padding: 1%;
-  background: black;
-  color: white;
-  width: 30%;
-`;
+import {TailWindButton} from "../component/atoms/Button.js"
+import { useBtnStore } from "../store.js";
 
 function Detail(props) {
   let navigate = useNavigate();
   const [myArray, setMyArray] = useState([]);
   let [sale, setSale] = useState(0.25);
-  let [total, setTotal] = useState(0);
+  let [amount, setAmount] = useState(0);
   let { productid } = useParams();
   const [productDetailInfo, setProductDetailInfo] = useState();
   const [salePrice, setSalePrice] = useState();
@@ -34,9 +26,18 @@ function Detail(props) {
   const ColorList = ["검정", "아이보리", "그레이", "챠콜"];
   const size = "Size";
   const color = "Color";
-  const test = total * salePrice;
+  const test = amount * salePrice;
   const [choiceSize, setChoiceSize] = useState(null);
   const [choiceColor, setChoiceColor] = useState(null);
+  const {borderSkyBlue} = useBtnStore(state => state)
+  
+
+  let BasicBtn = styled.button`
+  padding: 1%;
+  background: black;
+  color: white;
+  width: 30%;
+  `;
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -58,7 +59,7 @@ function Detail(props) {
   useEffect(() => {
     if (choiceSize && choiceColor) {
       addValue();
-      setTotal(total + 1);
+      setAmount(amount + 1);
     }
   }, [choiceSize, choiceColor]);
 
@@ -184,18 +185,16 @@ function Detail(props) {
       <div
         className="Detail"
         style={{
-          marginRight: "20%",
-          marginLeft: "20%",
-        }}
+        marginRight: "20%",
+        marginLeft: "20%",}}
       >
         <div
           className="image"
           style={{
-            display: "flex",
-            marginBottom: "3%",
-            width: "100%",
-            height: "100%",
-          }}
+          display: "flex",
+          marginBottom: "3%",
+          width: "100%",
+          height: "100%",}}
         >
           <img
             src={Endpoint + productDetailInfo.productImg[0].imgUrl}
@@ -209,8 +208,7 @@ function Detail(props) {
               position: "relative",
               flexDirection: "column",
               flexGrow: 1,
-              marginLeft: "2%",
-            }}
+              marginLeft: "2%",}}
           >
             <h4 className="title">{productDetailInfo.productName}</h4>
             <p
@@ -236,27 +234,25 @@ function Detail(props) {
               />{" "}
               {productLike}{" "}
             </div>
-            <div
-              className="btn"
+            <div className="btn"
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                position: "absolute",
-                bottom: "0",
-                w0th: "100%",
-                width: "100%",
-              }}
-            >
-              <BasicBtn onClick={handleOrder}>주문하기</BasicBtn>
+              display: "flex",
+              justifyContent: "space-between",
+              bottom: "0",
+              w0th: "100%",
+              width: "100%",
+              }}>
+              <BasicBtn onClick={handleOrder}>
+                주문하기
+              </BasicBtn>
               <BasicBtn>
-                <Link
-                  to={reFormLink}
-                  style={{ textDecoration: "none", color: "white" }}
-                >
+                <Link to={reFormLink} style={{ textDecoration: "none", color: "white" }}>
                   의뢰하기
                 </Link>
               </BasicBtn>
-              <BasicBtn onClick={addToCart}>장바구니</BasicBtn>
+              <BasicBtn onClick={addToCart}>
+                장바구니
+              </BasicBtn>
             </div>
           </div>
         </div>
@@ -283,7 +279,7 @@ function Detail(props) {
             <p style={{ marginBottom: "2%" }}>
               결제 예정 금액 : {test.toLocaleString()}{" "}
             </p>
-            <p>수량 : {total}</p>
+            <p>수량 : {amount}</p>
             <div className="selectOpt">
               {myArray.map(function (choice, index) {
                 return (
@@ -314,31 +310,35 @@ function Detail(props) {
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         style={{
+          display : 'block',
           overlay: { backgroundColor: "rgba(0, 0, 0, 0.4)", zIndex: 1000 },
           content: {
-            width: "50%",
+            width: "35%",
             height: "20%",
             margin: "auto",
             border: "3px solid",
             borderRadius: "5px",
-            padding: "20px",
             zIndex: 1001,
             borderColor: "#374d9a",
           },
         }}>
-          <div>
-            <button 
-              className="bg-white hover:bg-gray-100 w-35 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
-              onClick = {closeModal}
-              style = {{margin : '5% 5% 5% 15%',}} >
+            <TailWindButton
+              className = {`${borderSkyBlue} mt-10`}
+              onClick = {closeModal} >
               쇼핑 계속하기
-            </button>
-            <button 
-              className="bg-white hover:bg-gray-100 w-35 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
+            </TailWindButton>
+
+            <TailWindButton
+              className={`${borderSkyBlue} ml-10`}
               onClick = {() => {navigate('/PurchaserMyPage')}}>
               장바구니 이동
-            </button>
-          </div>
+            </TailWindButton>
+
+            <TailWindButton
+              className={`${borderSkyBlue} ml-10`}
+              onClick = {() => {navigate('/PurchaserMyPage')}}>
+              장바구니 이동
+            </TailWindButton>
         </Modal>
       </div>
     </div>

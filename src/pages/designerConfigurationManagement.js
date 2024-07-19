@@ -37,7 +37,7 @@ function ConfigurationManagement(){
             const getImg = await getAxios(`/progress/img/${estimateId}`)
             console.log(getImg.data)
             return getImg
-            })
+        })
 
         useEffect(() => {
             const fetchData = async () => {
