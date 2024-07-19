@@ -28,7 +28,7 @@ import PurchaserReformInfo from "./pages/PurchaserReformInfo.js";
 import ConfigurationManagement from "./pages/designerConfigurationManagement.js";
 import ReformCompleted from "./pages/reformComplete.js";
 import DesignerSelect from "./pages/DesignerSelect.js";
-import Test from "./service/Purchaser_Mypage.js";
+import Test from "./service/PurchaserInfo.js";
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState(1);
