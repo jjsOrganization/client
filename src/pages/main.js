@@ -4,15 +4,17 @@ import { Carousel } from 'antd';
 import axiosInstance from "../component/jwt.js";
 import { useNavigate,Link } from 'react-router-dom';
 import TopBar from "../component/TopBar.js";
-import { postRefreshToken } from '../component/jwt.js';
+import { useEndPointStore } from '../store.js';
+import { TailWindButton } from '../component/atoms/Button.js';
+
 
 
 function Main(){
     let navigate = useNavigate();
     const [sort, setSort] = useState(true);
     const [productDesc,setProductDesc] = useState();
-    const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
-   
+    const {Endpoint} = useEndPointStore(state => state)
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -42,8 +44,6 @@ function Main(){
 
     const [productInfo,setProductInfo] = useState([{}])
 
-    console.log(productInfo)
-
     return(
     <div>
         <div>
@@ -54,21 +54,23 @@ function Main(){
                 <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
             </div>
             <div className="mainProduct">
-                {productInfo ? 
-                <>
-                <h4 style = {{color : 'grey',fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>상품</h4>
-                {sort ? <div><button style = {{background : 'white', border: 'none'}} onClick = { () => { setSort(false)}}>인기순</button> <button style = {{background : 'white', border: 'none'}} >✔ 최신순</button> </div> : <div><button style = {{background : 'white', border: 'none'}}>✔ 인기순</button> <button style = {{background : 'white', border: 'none'}} onClick = { () => { setSort(true)}}>최신순</button> </div>}
-                {sort ? <MainProduct navigate = {navigate} Endpoint = {Endpoint} product = {productInfo}></MainProduct> : <MainProduct navigate = {navigate} Endpoint = {Endpoint} product = {productDesc}></MainProduct>}
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '3%' }}></div>
-                </>: 
-                '등록된 상품이 존재하지 않습니다'}
-                <div className = 'mainMoreButton' style = {{textAlign : 'center',marginTop : '-2%'}}>
-                <Link to="/products"> 
-                <button className="bg-transparent hover:bg-blue-500 text-black-700 font-semibold hover:text-white py-2 px-4 border1 border-black-500 hover:border-transparent rounded"
-                onClick = {() => {}} >
-                    더보기 
-                </button></Link></div>
-                </div>
+                {sort ?
+                    <div>
+                    <TailWindButton className = 'bg-white border-0'>✔최신순</TailWindButton><TailWindButton className = 'bg-white border-0' onClick = {() => {setSort(!sort)}}>인기순</TailWindButton>
+                    <MainProduct 
+                    product = {productInfo}
+                    navigate = {navigate}
+                    Endpoint = {Endpoint}/>
+                    </div> :
+                    <div>
+                    <TailWindButton className = 'bg-white border-0' onClick = {() => {setSort(!sort)}}>최신순</TailWindButton><TailWindButton className = 'bg-white border-0'>✔인기순</TailWindButton> 
+                    <MainProduct 
+                    product = {productDesc}
+                    navigate = {navigate}
+                    Endpoint = {Endpoint}/>
+                    </div>
+                } 
+            </div>
             <div className = 'designerCarousel'>
                 <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
                 <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
