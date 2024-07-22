@@ -1,48 +1,51 @@
-import React, { useState } from "react";
-import axiosInstance from "../component/jwt.js";
-import "../css/PurchaserInfo.css";
+import { useMutation } from "@tanstack/react-query";
+import axiosInstance from "../component/jwt";
 import { useNavigate } from "react-router-dom";
+import store from "../store";
 import PurchaserInfo_Template from "../component/template/PurchaserInfo_Template.js";
+import {
+  putAxios,
+} from "../component/Axios";
 
 function PurchaserInfo() {
   let navigate = useNavigate();
-  const [orderInfo, setOrderInfo] = useState({
-    postCode: "",
-    address: "",
-    detailAddress: "",
-    phoneNumber: "",
-    deliveryRequest: "",
+  const { orderInfo, setOrderInfo } = store.useOrderInfoStore();
+
+  const mutation = useMutation({
+    mutationFn: (orderInfo) =>
+      putAxios("/cart/purchaser/order", orderInfo, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
+    onSuccess: () => {
+      alert("구매가 완료되었습니다.");
+      navigate("/");
+    },
+    onError: (error) => {
+      console.error("Order submission failed", error);
+    },
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setOrderInfo({
-      ...orderInfo,
-      [name]: value,
-    });
+    setOrderInfo({ [name]: value });
   };
 
-  const handleOrder = async () => {
-    try {
-      await axiosInstance.put(`/cart/purchaser/order`, orderInfo, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      alert("구매가 완료되었습니다.");
-      navigate("/");
-    } catch (error) {}
+  const handleOrder = () => {
+    mutation.mutate(orderInfo);
   };
-  return(
+
+  return (
     <div>
-        <PurchaserInfo_Template 
-        handleChange = {handleChange}
-        handleOrder = {handleOrder}
-        orderInfo = {orderInfo}
+      <PurchaserInfo_Template
+        handleChange={handleChange}
+        handleOrder={handleOrder}
+        orderInfo={orderInfo}
         label={"주문하기"}
-        />
+      />
     </div>
   );
-};
+}
 
 export default PurchaserInfo;
