@@ -25,7 +25,7 @@ const PurchaserReformInfo = () => {
     });
   };
 
-  const handleReform = useMutation({
+  const { mutate: mutateHandleReform } = useMutation({
     mutationFn: (reformInfo) =>
       patchAxios(
         `/estimate/purchaser/acceptReformOrder/${estimateNumber}`,
@@ -45,7 +45,7 @@ const PurchaserReformInfo = () => {
     },
   });
 
-  const handleRefromFinal = useMutation({
+  const { mutate: mutateHandleReformFinal } = useMutation({
     mutationFn: () =>
       patchAxios(
         `/estimate/purchaser/acceptReformOrder/${estimateNumber}/complete`,
@@ -89,8 +89,8 @@ const PurchaserReformInfo = () => {
       <PurchaserReformInfo_Template
         reformInfo={reformInfo}
         handleChange={handleChange}
-        handleReform={handleReform}
-        handleReformFinal={handleRefromFinal}
+        handleReform={() => mutateHandleReform(reformInfo)}
+        handleReformFinal={mutateHandleReformFinal}
         productPrice={productPrice}
         reformPrice={reformPrice}
         totlaPrice={totalPrice}

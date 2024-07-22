@@ -48,12 +48,20 @@ const useReformInfoStore = create((set) => ({
     })),
 }));
 
+const useLoginStore = create((set) => ({
+  memberId: null,
+  accessToken: null,
+  refreshToken: null,
+  setAuth: (authData) => set({ ...authData }),
+}));
+
 const store = {
   useProgressStore,
   useOrderInfoStore,
   useReformInfoStore,
   useBtnStore,
-  useEndPointStore
+  useEndPointStore,
+  useLoginStore
 };
 
 export default store;
