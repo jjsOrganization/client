@@ -6,11 +6,11 @@ const useProgressStore = create((set) => ({
   setProgressNumber: (progress) => set({ progressNumber: progress }),
 }));
 
-const useBtnStore = create((set) => ({
+export const useBtnStore = create((set) => ({
   borderSkyBlue : "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border-1 border-blue-500 rounded-full"
 }))
 
-const useEndPointStore = create((set) => ({  
+export const useEndPointStore = create((set) => ({  
   Endpoint : 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
 }))
 
