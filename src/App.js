@@ -28,127 +28,60 @@ import PurchaserReformInfo from "./pages/PurchaserReformInfo.js";
 import ConfigurationManagement from "./pages/designerConfigurationManagement.js";
 import ReformCompleted from "./pages/reformComplete.js";
 import DesignerSelect from "./pages/DesignerSelect.js";
-import Test from "./service/PurchaserInfo.js";
+import Test from "./service/PurchaserReformInfo.js";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState(1);
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [estimateNumber, setEstimateNumber] = useState(null);
   const [isReform, setIsReform] = useState(false);
+  const queryClient = new QueryClient();
 
   return (
-    <div>
-      <Routes>
-        <Route path="login" element={<Login />} />
-
-        <Route path="visual" element={<Visual />} />
-
-        <Route path="products/:page?" element={<ProductList />} />
-
-        <Route
-          path="/mypage/delivery/:index"
-          element={<PurchaserMypageDelivery />}
-        />
-      </Routes>
-
-      <div className="App">
+    <QueryClientProvider client={queryClient}>
+      <div>
         <Routes>
-          <Route path="/Signup" element={<Signup />} />
-          <Route path="/Designers/:page?" element={<DesignerSearch />} />
-          <Route path="/DesignerMypage" element={<DesignerMypage />} />
-          <Route
-            path="/DesignerMypage/ModifyPortfolio/:portfolidId"
-            element={<ModifyPortfolio />}
-          />
-          <Route
-            path="/DesignerMypage/ModifyPortfolio/RegisterPortfolio"
-            element={<RegisterPortfolio />}
-          />
+          <Route path="login" element={<Login />} />
+          <Route path="visual" element={<Visual />} />
+          <Route path="products/:page?" element={<ProductList />} />
+          <Route path="/mypage/delivery/:index" element={<PurchaserMypageDelivery />} />
         </Routes>
 
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <div className="main-bg">
-                <Main />
-              </div>
-            }
-          ></Route>
+        <div className="App">
+          <Routes>
+            <Route path="/Signup" element={<Signup />} />
+            <Route path="/Designers/:page?" element={<DesignerSearch />} />
+            <Route path="/DesignerMypage" element={<DesignerMypage />} />
+            <Route path="/DesignerMypage/ModifyPortfolio/:portfolidId" element={<ModifyPortfolio />} />
+            <Route path="/DesignerMypage/ModifyPortfolio/RegisterPortfolio" element={<RegisterPortfolio />} />
+          </Routes>
 
-          <Route path="/detail/:productid" element={<Detail />} />
-          <Route />
-
-          <Route path="/productupdate" element={<ProductUpdate />}></Route>
-
-          <Route path="/stockupdater/:productid" element={<StockUpdater />} />
-          <Route />
-
-          <Route path="/mypage" element={<MyPages />}></Route>
-
-          <Route path="/reform" element={<Reform />}></Route>
-
-          <Route path="/PurchaserInfo" element={<PurchaserInfo />}></Route>
-
-          <Route
-            path="/PurchaserReformInfo/:estimateNumber"
-            element={<PurchaserReformInfo />}
-          ></Route>
-
-          <Route path="/PurchaserMyPage" element={<PurchaserMyPage />}></Route>
-
-          <Route
-            path="/reformCompleted/:progressNumber"
-            element={<ReformCompleted />}
-          ></Route>
-
-          <Route
-            path="/Mypage/PurchaserInfoEdit"
-            element={<PurchaserInfoEdit />}
-          ></Route>
-
-          <Route
-            path="/Mypage/PurchaserInfoEdit/PurchaserPNumberEdit"
-            element={<PurchaserPNumberEdit />}
-          ></Route>
-
-          <Route
-            path="/Mypage/PurchaserInfoEdit/PurchaserPasswordEdit"
-            element={<PurchaserPasswordEdit />}
-          ></Route>
-
-          <Route
-            path="/Mypage/PurchaserInfoEdit/PurchaserAddressEdit"
-            element={<PurchaserAddressEdit />}
-          ></Route>
-
-          <Route path="/PortfolioList" element={<PortfolioList />}></Route>
-
-          <Route
-            path="/Mypage/Designer/Estimate/:requestNumber"
-            element={<DesignerWriteEstimate />}
-          ></Route>
-
-          <Route
-            path="ConfigurationManagement/:estimateId"
-            element={<ConfigurationManagement />}
-          ></Route>
-
-          <Route
-            path="designer/:designerName"
-            element={<DesignerSelect />}
-          ></Route>
-
-          <Route
-            path="/test"
-            element={<Test />}
-          ></Route>
-
-        </Routes>
+          <Routes>
+            <Route path="/" element={<div className="main-bg"><Main /></div>} />
+            <Route path="/detail/:productid" element={<Detail />} />
+            <Route path="/productupdate" element={<ProductUpdate />} />
+            <Route path="/stockupdater/:productid" element={<StockUpdater />} />
+            <Route path="/mypage" element={<MyPages />} />
+            <Route path="/reform" element={<Reform />} />
+            <Route path="/PurchaserInfo" element={<PurchaserInfo />} />
+            <Route path="/PurchaserReformInfo/:estimateNumber" element={<PurchaserReformInfo />} />
+            <Route path="/PurchaserMyPage" element={<PurchaserMyPage />} />
+            <Route path="/reformCompleted/:progressNumber" element={<ReformCompleted />} />
+            <Route path="/Mypage/PurchaserInfoEdit" element={<PurchaserInfoEdit />} />
+            <Route path="/Mypage/PurchaserInfoEdit/PurchaserPNumberEdit" element={<PurchaserPNumberEdit />} />
+            <Route path="/Mypage/PurchaserInfoEdit/PurchaserPasswordEdit" element={<PurchaserPasswordEdit />} />
+            <Route path="/Mypage/PurchaserInfoEdit/PurchaserAddressEdit" element={<PurchaserAddressEdit />} />
+            <Route path="/PortfolioList" element={<PortfolioList />} />
+            <Route path="/Mypage/Designer/Estimate/:requestNumber" element={<DesignerWriteEstimate />} />
+            <Route path="ConfigurationManagement/:estimateId" element={<ConfigurationManagement />} />
+            <Route path="designer/:designerName" element={<DesignerSelect />} />
+            <Route path="/test/:estimateNumber" element={<Test />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </QueryClientProvider>
   );
 };
 
