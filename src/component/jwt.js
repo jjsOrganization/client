@@ -41,7 +41,6 @@ export const postRefreshToken = async () => {
   localStorage.setItem('refreshToken', response.data.data.refreshToken);
   document.cookie ='accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   document.cookie = `accessToken=${response.data.data.accessToken}; Path=/;`;
-  console.log(localStorage.getItem('accessToken'))
   return response
 }
 
