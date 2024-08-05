@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import axiosInstance from "../component/jwt.js";
 import { useNavigate } from "react-router-dom";
 import logo from "../images/logo.png";
+import { useTokenStore } from "../store.js";
 
 function Login() {
   let navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
+  const setAccessToken = useTokenStore((state) => state.setAccessToken);
+  const setRefreshToken = useTokenStore((state) => state.setRefreshToken);
 
   const handleLogin = async () => {
     try {
@@ -16,9 +19,9 @@ function Login() {
       });
       if (response.data && response.data.data.accessToken) {
         localStorage.setItem("memberId", userEmail);
-        localStorage.setItem("accessToken", response.data.data.accessToken);
-        localStorage.setItem("refreshToken", response.data.data.refreshToken);
-        document.cookie = `accessToken=${response.data.data.accessToken}; path=/;`;
+        setAccessToken(response.data.data.accessToken)
+        setRefreshToken(response.data.data.refreshToken)
+        document.cookie = `accessToken=${response.data.data.accessToken}; path=/; domain=localhost`;
         navigate("/");
       } else {
       }
