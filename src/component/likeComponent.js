@@ -1,8 +1,29 @@
 import {HeartOutlined, HeartFilled} from '@ant-design/icons';
 import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
+import axiosInstance from "../component/jwt.js";
 
 function LikeComponent(props){
+    let { productid } = useParams();
+
+    const likeStateGet = async () => {
+        try {
+          const likeStateInfo = await axiosInstance.get(
+          `/product/all/detail/${productid}/like-status`);
+          props.setLikeState(likeStateInfo.data.data);
+        } 
+        catch (error) {
+          console.log(error)
+        }};
     
+    useEffect(() => {
+        if(localStorage.getItem('role') !== 'ROLE_PURCHASER'){
+            props.setLikeState(false)
+        }
+        else{
+            likeStateGet()
+        }
+    })
 
     return(
         <div>

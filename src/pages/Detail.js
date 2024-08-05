@@ -85,29 +85,22 @@ function Detail(props) {
     }
   };
   
-  const roleCheck = async () => {
-    if(localStorage.getItem('role') == 'ROLE_PURCHASER'){
-      const LikeCheckGet = async () => {
-        try {
-          const likeStateInfo = await axiosInstance.get(
-            `/product/all/detail/${productid}/like-status`);
-            setLikeState(likeStateInfo.data.data);
-        } 
-        catch (error) {
-          console.log(error)
-        }};
-        LikeCheckGet();}
-      else{
-        setLikeState(false);}
+  const memberRoleCheck = (els) => {
+    if(localStorage.getItem('role') !== 'ROLE_PURCHASER'){
+      alert('일반 회원으로 로그인 해주세요')
+    }
+    else{
+      els()
+    }
   }
   
   const getAllProductInfo = () => {
-    return Promise.all([fetchDetailData(), roleCheck(), productLikeGet()]);
-};
+    return Promise.all([fetchDetailData(),productLikeGet()]);
+  };
 
   useEffect(() => {
     getAllProductInfo();
-}, []);
+  }, []);
 
   useEffect(() => {
     if(productDetailInfo){
@@ -242,15 +235,13 @@ function Detail(props) {
               w0th: "100%",
               width: "100%",
               }}>
-              <BasicBtn onClick={handleOrder}>
+              <BasicBtn onClick={() => {memberRoleCheck(handleOrder)}}>
                 주문하기
               </BasicBtn>
-              <BasicBtn>
-                <Link to={reFormLink} style={{ textDecoration: "none", color: "white" }}>
-                  의뢰하기
-                </Link>
+              <BasicBtn onClick={() => memberRoleCheck(() => navigate(reFormLink))}>
+                의뢰하기
               </BasicBtn>
-              <BasicBtn onClick={addToCart}>
+              <BasicBtn onClick={() => {memberRoleCheck(addToCart)}}>
                 장바구니
               </BasicBtn>
             </div>
@@ -323,15 +314,9 @@ function Detail(props) {
           },
         }}>
             <TailWindButton
-              className = {`${borderSkyBlue} mt-10`}
+              className = {`${borderSkyBlue} ml-20 mt-10`}
               onClick = {closeModal} >
               쇼핑 계속하기
-            </TailWindButton>
-
-            <TailWindButton
-              className={`${borderSkyBlue} ml-10`}
-              onClick = {() => {navigate('/PurchaserMyPage')}}>
-              장바구니 이동
             </TailWindButton>
 
             <TailWindButton

@@ -1,18 +1,39 @@
 import Cookies from "js-cookie";
 import axios from "axios";
+import { useTokenStore } from "../store";
+import useToken from "antd/es/theme/useToken";
 
 /**
  * @description Axios 인스턴스를 생성
  * 목적 : axios 요청 시 header에 token을 보내기 위함
  */
 
+const getAccessToken = () => {
+  const state = useTokenStore.getState();
+  return state.accessToken
+}
+
+const getRefreshToken = () => {
+  const state = useTokenStore.getState();
+  return state.refreshToken
+}
+
+const setAccessToken = (token) => {
+  const state = useTokenStore.getState();
+  state.setAccessToken(token);
+}
+const setRefreshToken = (token) => {
+  const state = useTokenStore.getState();
+  state.setRefreshToken(token);
+}
+
 const instance = axios.create({
-  baseURL: "",
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000',
 });
 
 instance.interceptors.request.use(
   (config) => {
-    const accessToken = Cookies.get("accessToken"); // Cookies를 이용해 accessToken을 가져옵니다.
+    const accessToken = getAccessToken();
     try {
       if (accessToken) {
         config.headers["Authorization"] = `Bearer ${accessToken}`;
@@ -30,17 +51,22 @@ instance.interceptors.request.use(
 );
 
 export const postRefreshToken = async () => {
+  const accessToken = getAccessToken();
+  const refreshToken = getRefreshToken();
+
   const response = await instance.post('/auth/reissue',
-    {accessToken: localStorage.getItem('accessToken'),refreshToken: localStorage.getItem('refreshToken'),}
-    ,{headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }}
+    {accessToken: accessToken ,refreshToken: refreshToken,}
+    ,{headers: { Authorization: `Bearer ${accessToken}` }}
   );
+  console.log(response)
   if(response.data.state === 400){
     return 
   }
-  localStorage.setItem('accessToken', response.data.data.accessToken);
-  localStorage.setItem('refreshToken', response.data.data.refreshToken);
-  document.cookie ='accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-  document.cookie = `accessToken=${response.data.data.accessToken}; Path=/;`;
+
+  setAccessToken(response.data.data.accessToken);
+  setRefreshToken(response.data.data.refreshToken);
+  document.cookie = 'accessToken=; Max-Age=0; path=/; domain=localhost';
+  document.cookie = `accessToken=${response.data.data.accessToken}; path=/; domain=localhost`;
   return response
 }
 
@@ -50,10 +76,7 @@ instance.interceptors.response.use(
     if(error.response.status === 403){
       console.log(error,'에러')
       const response = await postRefreshToken();
-      //instance.defaults.headers에 토큰을 저장함으로써 이후에 보내게 될 모든 요청에 엑세스 토큰이 자동으로 포함됨
       instance.defaults.headers.common.Authorization = `Bearer ${response.data.data.accessToken}`;          
-      //config.headers에 토큰을 저장함으로써 실패한 요청에도 엑세스 토큰을 저장
-      //이전에 실패한 요청을 다시 보낼 때 기존의 설정에 새로 발급받은 엑세스 토큰을 포함하여 보내야 함
       error.config.headers.Authorization = `Bearer ${response.data.data.accessToken}`;
       return (await axios.get(error.config.url, error.config)).data,window.location.reload();
 }})

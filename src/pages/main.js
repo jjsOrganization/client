@@ -8,7 +8,6 @@ import { useEndPointStore } from '../store.js';
 import { TailWindButton } from '../component/atoms/Button.js';
 
 
-
 function Main(){
     let navigate = useNavigate();
     const [sort, setSort] = useState(true);
