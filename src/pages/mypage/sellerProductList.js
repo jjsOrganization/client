@@ -1,7 +1,7 @@
 import React from "react";
 import { get } from 'lodash';
 import { borderSkyBlue } from "../../styles/buttonStyle";
-import { DeliveryDropdown } from "../../pages/mypage";
+import DeliveryDropdown from "./DeliveryDropdown";
 
 
 export const MypageProductList= ({

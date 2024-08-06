@@ -21,7 +21,7 @@ import Signup from "./pages/Signup.js";
 import Detail from "./pages/Detail.js";
 import ProductUpdate from "./pages/productRegistration.js";
 import StockUpdater from "./pages/stockUpdater.js";
-import MyPages from "./pages/mypage.js";
+import MyPages from "./pages/mypage/mypage.js";
 import Main from "./pages/main.js";
 import DesignerWriteEstimate from "./component/DesignerWriteEstimate.js";
 import PurchaserReformInfo from "./pages/PurchaserReformInfo.js";

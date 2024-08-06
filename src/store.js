@@ -1,6 +1,5 @@
 import create from "zustand";
 import { persist } from 'zustand/middleware';
-import devtools from "zustand/middleware";
 
 const useProgressStore = create((set) => ({
   progressNumber: null, 

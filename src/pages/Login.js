@@ -18,10 +18,13 @@ function Login() {
         password: password,
       });
       if (response.data && response.data.data.accessToken) {
+        const accessToken = response.data.data.accessToken;
+        const refreshToken = response.data.data.refreshToken;
         localStorage.setItem("memberId", userEmail);
-        setAccessToken(response.data.data.accessToken)
-        setRefreshToken(response.data.data.refreshToken)
-        document.cookie = `accessToken=${response.data.data.accessToken}; path=/; domain=localhost`;
+        setAccessToken(accessToken)
+        setRefreshToken(refreshToken)
+        document.cookie = `accessToken=${accessToken}; path=/;`;
+        console.log(`로그인시 저장한 쿠키 ${document.cookie}`)
         navigate("/");
       } else {
       }

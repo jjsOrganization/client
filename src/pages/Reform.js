@@ -1,39 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import styled from "styled-components";
-import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import { useLocation,useNavigate } from "react-router-dom";
+import { ImgUpload } from "../component/molecules/imgUpload.js";
+import { Input_Label } from "../component/molecules/Input_Label.js";
+import axiosInstance from "../component/jwt.js";
 
-let RegisterBtn = styled.button`
-  color: white;
-  background: black;
-`;
 
 function Reform() {
   const [requestPart, setRequestPart] = useState("");
   const [requestInfo, setRequestInfo] = useState("");
   const [requestPrice, setRequestPrice] = useState("");
   const [designers, setDesigners] = useState([]);
-  const [thumbnailImage, setThumbnailImage] = useState();
-  const [thumbnailImageFile, setThumbnailImageFile] = useState();
+  const [reformImage, setReformImage] = useState();
+  const [reformImageFile, setReformImageFile] = useState();
   const [selectedDesigner, setSelectedDesigner] = useState(null);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const productId = searchParams.get("productId");
   let navigate = useNavigate();
-
-  const saveRequestPart = (event) => {
-    setRequestPart(event.target.value);
-  };
-
-  const saveRequestInfo = (event) => {
-    setRequestInfo(event.target.value);
-  };
-
-  const saveRequestPrice = (event) => {
-    setRequestPrice(event.target.value);
-  };
 
   const encodeImageFile = (event) => {
     const file = event.target.files[0];
@@ -41,17 +27,33 @@ function Reform() {
     reader.readAsDataURL(file);
 
     reader.onload = () => {
-      setThumbnailImage(reader.result);
-      setThumbnailImageFile(file);
+      setReformImage(reader.result);
+      setReformImageFile(file);
     };
   };
+
+  const handleReformSectionChange = (e) => {
+    setRequestPart(e.target.value)
+  }
+
+  const handleRequestChange = (e) => {
+    setRequestInfo(e.target.value)
+  }
+
+  const handleHopedPriceChange = (e) => {
+    setRequestPrice(e.target.value)
+  }
+
+  const cancelHandler = () => {
+    navigate("/detail:productid");
+  }
 
   const registerHandler = async () => {
     try {
       const formData = new FormData();
       formData.append("requestPart", requestPart);
       formData.append("requestInfo", requestInfo);
-      formData.append("requestImg", thumbnailImageFile);
+      formData.append("requestImg", reformImageFile);
       formData.append("requestPrice", requestPrice);
       formData.append("designerEmail", selectedDesigner.value);
       const response = await axiosInstance.post(
@@ -73,13 +75,8 @@ function Reform() {
   useEffect(() => {
     const fetchDesigners = async () => {
       try {
-        const response = await axiosInstance.get("/portfolio/all", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        const data = response.data.data;
-        setDesigners(data);
+        const response = await axiosInstance.get("/portfolio/all",);
+        setDesigners(response.data.data);
       } catch (error) {
         alert("디자이너 조회 실패함.");
       }
@@ -99,111 +96,79 @@ function Reform() {
   return (
     <div>
       <TopBar />
-      <div style={{ marginLeft: "20%", marginRight: "20%" }}>
-        <div style={{ marginTop: "5%", marginLeft: "7%" }} ClassName="title">
-          <h3>리폼요청</h3>
+      <form className="formWrapper mx-auto max-w-4xl px-4 my-5 ">
+        <div className="space-y-12">
+          <div className="border-b border-gray-900/10 pb-12">
+            <h2 className="text-base font-semibold leading-7 text-gray-900">상품 등록</h2>
+            <p className="mt-1 text-sm leading-6 text-gray-600">
+              판매할 상품을 등록해주세요.
+            </p>
+            <div className="mt-10 ">
+
+              <ImgUpload
+                title = '리폼 의뢰 이미지'
+                image = {reformImage}
+                imageUpload={encodeImageFile}
+                isMultiple = {true}
+              />
+
+              <div className = 'mt-10 mb-2'>
+                <p className="block text-sm font-medium leading-6 text-gray-900" style = {{marginBottom : '0%'}}>디자이너</p>
+                  <Select
+                    options={designerOptions}
+                    placeholder="디자이너 검색"
+                    onChange={handleDesignerSelect}
+                  />
+              </div>
+              
+              <Input_Label
+                title = '리폼부위'
+                labelName = 'reformSection'
+                value={requestPart}
+                save={handleReformSectionChange}
+              />
+
+              <Input_Label
+                title = '리폼요청 사항'
+                labelName = 'productprice'
+                value={requestInfo}
+                save={handleRequestChange}
+              />
+
+              <Input_Label
+                title = '희망가격'
+                labelName = 'productstock'
+                value={requestPrice}
+                save={handleHopedPriceChange}
+              />
+            </div>
+          </div>
         </div>
-        <div
-          className="image"
-          style={{
-            height: "300px",
-            border: "1px solid black",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <img
-            src={thumbnailImage}
-            height="90%"
-            style={{ marginTop: "1.8%" }}
-          ></img>
-        </div>
 
-        <div className="productRegisterContainer">
-          <div
-            className="productRegisterImageUpdate"
-            style={{
-              justifyItems: "end",
-              display: "grid",
-              marginBottom: "30px",
-            }}
-          >
-            <label
-              htmlFor="fileInput"
-              className="inputLabel"
-              style={{
-                padding: "10px",
-                margin: "5px 0 20px 0",
-                fontWeight: "bold",
-                color: "red",
-                cursor: "pointer",
-                display: "inline-block",
-                border: "1px solid red",
-              }}
-            >
-              사진 업로드
-            </label>
+        <div className="mt-6 flex justify-between items-center">
 
-            <input
-              id="fileInput"
-              type="file"
-              multiple
-              onChange={(event) => encodeImageFile(event)}
-              style={{ display: "none" }}
-            />
-          </div>
-
-          <div className="designer">
-            <p style={{ fontWeight: "700", margin: "0" }}>디자이너</p>
-            {/* 검색 창 */}
-            <Select
-              options={designerOptions}
-              placeholder="디자이너 검색"
-              onChange={handleDesignerSelect}
-            />
-          </div>
-
-          <div className="requestPart">
-            <p style={{ fontWeight: "700", margin: "0" }}>리폼부위</p>
-            <input
-              value={requestPart}
-              type="text"
-              onChange={saveRequestPart}
-              style={{ width: "100%", marginBottom: "30px" }}
-            />
-          </div>
-
-          <div className="requestInfo">
-            <p style={{ fontWeight: "700", margin: "0" }}>리폼요청 사항</p>
-            <input
-              value={requestInfo}
-              type="text"
-              onChange={saveRequestInfo}
-              style={{ width: "100%", marginBottom: "30px" }}
-            />
-          </div>
-
-          <div className="requestPrice">
-            <p style={{ fontWeight: "700", margin: "0" }}>리폼 가격</p>
-            <input
-              value={requestPrice}
-              type="text"
-              onChange={saveRequestPrice}
-              style={{ width: "100%", marginBottom: "30px" }}
-            />
-          </div>
-
-          <div className="register" style={{ textAlign: "right" }}>
-            <RegisterBtn
+          <div className="flex gap-x-6">
+            <div
+              type="button"
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               onClick={() => {
                 registerHandler();
               }}
             >
-              리폼요청
-            </RegisterBtn>
+              등록
+            </div>
+            <div 
+              type="button" 
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={() => {
+                cancelHandler();
+              }}
+            >
+              취소
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
