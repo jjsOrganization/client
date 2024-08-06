@@ -1,7 +1,6 @@
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useTokenStore } from "../store";
-import useToken from "antd/es/theme/useToken";
 
 /**
  * @description Axios 인스턴스를 생성
@@ -53,20 +52,17 @@ instance.interceptors.request.use(
 export const postRefreshToken = async () => {
   const accessToken = getAccessToken();
   const refreshToken = getRefreshToken();
-
-  const response = await instance.post('/auth/reissue',
-    {accessToken: accessToken ,refreshToken: refreshToken,}
-    ,{headers: { Authorization: `Bearer ${accessToken}` }}
+  const response = await instance.post('/auth/reissue',{ accessToken , refreshToken}
+    
   );
   console.log(response)
   if(response.data.state === 400){
     return 
   }
-
   setAccessToken(response.data.data.accessToken);
   setRefreshToken(response.data.data.refreshToken);
-  document.cookie = 'accessToken=; Max-Age=0; path=/; domain=localhost';
-  document.cookie = `accessToken=${response.data.data.accessToken}; path=/; domain=localhost`;
+  document.cookie = 'accessToken=; Max-Age=0; path=/;';
+  document.cookie = `accessToken=${response.data.data.accessToken}; path=/;`;
   return response
 }
 
