@@ -1,9 +1,10 @@
 import {HeartOutlined, HeartFilled} from '@ant-design/icons';
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import axiosInstance from "../component/jwt.js";
+import axiosInstance from "./jwt.js";
+import React from 'react';
 
-function LikeComponent(props){
+export const LikeComponent = React.memo((props) => {
     let { productid } = useParams();
 
     const likeStateGet = async () => {
@@ -23,7 +24,7 @@ function LikeComponent(props){
         else{
             likeStateGet()
         }
-    })
+    },[])
 
     return(
         <div>
@@ -33,6 +34,7 @@ function LikeComponent(props){
         </div>
     )
 }
-export default LikeComponent;
+)
+
 
 

@@ -17,7 +17,7 @@ function Login() {
         memberId: userEmail,
         password: password,
       });
-      if (response.data && response.data.data.accessToken) {
+      if (response.data.data.accessToken) {
         const accessToken = response.data.data.accessToken;
         const refreshToken = response.data.data.refreshToken;
         localStorage.setItem("memberId", userEmail);
