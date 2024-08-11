@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Dropdown from "../component/dropdown";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
-import LikeComponent from "../component/likeComponent.js";
+import {LikeComponent} from "../component/LikeComponent.js";
 import Modal from "react-modal";
 import {TailWindButton} from "../component/atoms/Button.js"
 import { useBtnStore } from "../store.js";
@@ -31,7 +31,6 @@ function Detail(props) {
   const [choiceColor, setChoiceColor] = useState(null);
   const {borderSkyBlue} = useBtnStore(state => state)
   
-
   let BasicBtn = styled.button`
   padding: 1%;
   background: black;
@@ -74,12 +73,11 @@ function Detail(props) {
       } catch (error) {
       }
     };
-
+  
+  //좋아요 개수 get
   const productLikeGet = async () => {
     try {
-      const productLikeCount = await axiosInstance.get(
-        `/product/all/detail/${productid}/like-count`
-      );
+      const productLikeCount = await axiosInstance.get(`/product/all/detail/${productid}/like-count`);
       setProductLike(productLikeCount.data.data);
     } catch (error) {
     }
@@ -110,21 +108,22 @@ function Detail(props) {
 
   const handleLike = async () => {
     try {
-      if (localStorage.getItem('role') != 'ROLE_PURCHASER') {
-        return alert('일반 회원만 가능한 기능입니다.')
-      }else if(likeState) {
-        await axiosInstance.delete(`/product/all/detail/${productid}/like`);
-      } else {
-        await axiosInstance.post(`/product/all/detail/${productid}/like`);
-      }
-      const likeStateInfo = await axiosInstance.get(
-        `/product/all/detail/${productid}/like-status`
-      );
-      setLikeState(likeStateInfo.data.data);
-      productLikeGet();
+        if (localStorage.getItem('role') !== 'ROLE_PURCHASER') {
+            return alert('일반 회원만 가능한 기능입니다.');
+        }
+        setLikeState(!likeState);
+        setProductLike(likeState ? productLike - 1 : productLike + 1);
+        if (likeState) {
+            await axiosInstance.delete(`/product/all/detail/${productid}/like`);
+        } else {
+            await axiosInstance.post(`/product/all/detail/${productid}/like`);
+        }
     } catch (error) {
+        setLikeState(!likeState);
+        setProductLike(likeState ? productLike + 1 : productLike - 1);
+        console.error(error);
     }
-  };
+};
   
   if (!productDetailInfo) {
     return <div>데이터를 로드하는 중입니다...</div>;

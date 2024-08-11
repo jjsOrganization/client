@@ -12,7 +12,8 @@ import { useTokenStore } from '../store.js';
 function Main(){
     let navigate = useNavigate();
     const [sort, setSort] = useState(true);
-    const [productDesc,setProductDesc] = useState();
+    const [productInfo,setProductInfo] = useState([])
+    const [productDesc,setProductDesc] = useState([]);
     const {Endpoint} = useEndPointStore(state => state)
     const accessToken = useTokenStore((state) => state.accessToken)
     
@@ -43,7 +44,8 @@ function Main(){
     "https://i.postimg.cc/JnX36DBR/2.png",
     "https://i.postimg.cc/66dLCZX0/4.png",])
 
-    const [productInfo,setProductInfo] = useState([{}])
+    console.log(typeof(productInfo))
+    console.log(typeof(productDesc))
 
     return(
     <div>
@@ -54,7 +56,7 @@ function Main(){
             <div>
                 <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
             </div>
-            <div className="mainProduct">
+            <div className="min-h-[300px] h-pull mainProduct">
                 {sort ?
                     <div>
                     <TailWindButton className = 'bg-white border-0'>✔최신순</TailWindButton><TailWindButton className = 'bg-white border-0' onClick = {() => {setSort(!sort)}}>인기순</TailWindButton>

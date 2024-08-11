@@ -52,9 +52,7 @@ instance.interceptors.request.use(
 export const postRefreshToken = async () => {
   const accessToken = getAccessToken();
   const refreshToken = getRefreshToken();
-  const response = await instance.post('/auth/reissue',{ accessToken , refreshToken}
-    
-  );
+  const response = await instance.post('/auth/reissue',{ accessToken , refreshToken});
   console.log(response)
   if(response.data.state === 400){
     return 
