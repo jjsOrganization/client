@@ -49,7 +49,6 @@ function Main(){
     <div>
         <div>
             <TopBar />
-            <button onClick = {postRefreshToken}>asdasd</button>
         </div>
         <div className = 'mainContainer' style ={{marginLeft: '20%', marginRight: '20%'}}>
             <div>
