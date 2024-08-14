@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import axios from "axios";
 import { useTokenStore } from "../store";
 
@@ -72,7 +71,9 @@ instance.interceptors.response.use(
       const response = await postRefreshToken();
       instance.defaults.headers.common.Authorization = `Bearer ${response.data.data.accessToken}`;          
       error.config.headers.Authorization = `Bearer ${response.data.data.accessToken}`;
-      return (await axios.get(error.config.url, error.config)).data,window.location.reload();
+      const data = (await axios.get(error.config.url, error.config)).data;
+      window.location.reload();
+      return data;
 }})
 
 export default instance;

@@ -29,14 +29,16 @@ jobs:
 
       - name: Docker build
         run: |
-          docker build --tag my-react-app:latest --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache --file Dockerfile .
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-react-app .
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-react-app
       
       # AWS에 접근하기 위한 권한을 설정합니다.
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_S3_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_S3_SECRET_ACCESS_KEY_ID }}
+          aws-access-key-id: ${{ secrets.CLOUD_AWS_CREDENTIALS_ACCESSKEY }}
+          aws-secret-access-key: ${{ secrets.CLOUD_AWS_CREDENTIALS_SECRETKEY }}
           aws-region: ap-northeast-2
       
       # Docker 컨테이너에서 정적 파일을 추출하여 S3에 업로드합니다.

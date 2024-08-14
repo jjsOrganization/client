@@ -7,6 +7,7 @@ import TopBar from "../component/TopBar.js";
 import { useEndPointStore } from '../store.js';
 import { TailWindButton } from '../component/atoms/Button.js';
 import { useTokenStore } from '../store.js';
+import { postRefreshToken } from '../component/jwt.js';
 
 
 function Main(){
@@ -44,13 +45,11 @@ function Main(){
     "https://i.postimg.cc/JnX36DBR/2.png",
     "https://i.postimg.cc/66dLCZX0/4.png",])
 
-    console.log(typeof(productInfo))
-    console.log(typeof(productDesc))
-
     return(
     <div>
         <div>
             <TopBar />
+            <button onClick = {postRefreshToken}>asdasd</button>
         </div>
         <div className = 'mainContainer' style ={{marginLeft: '20%', marginRight: '20%'}}>
             <div>
