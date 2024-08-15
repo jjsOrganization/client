@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Dropdown from "../component/dropdown";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
-import {LikeComponent} from "../component/LikeComponent.js";
+import {LikeComponent} from "../component/likeComponent.js"
 import Modal from "react-modal";
 import {TailWindButton} from "../component/atoms/Button.js"
 import { useBtnStore } from "../store.js";
