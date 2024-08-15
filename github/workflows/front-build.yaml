@@ -43,21 +43,17 @@ jobs:
           aws-access-key-id: ${{ secrets.CLOUD_AWS_CREDENTIALS_ACCESSKEY }}
           aws-secret-access-key: ${{ secrets.CLOUD_AWS_CREDENTIALS_SECRETKEY }}
           aws-region: ap-northeast-2
-      
-      # Docker 컨테이너에서 정적 파일을 추출하여 S3에 업로드합니다.
-      - name: Upload to S3
-        env:
-          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
-        run: |
-          docker create --name extract my-react-app:latest
-          docker cp extract:/usr/src/app/build ./build
-          docker rm extract
-          aws s3 sync ./build s3://$BUCKET_NAME
 
-      # CloudFront 캐시를 무효화합니다.
-      - name: CloudFront Invalidation
-        env:
-          CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID }}
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id $CLOUD_FRONT_ID --paths /*
+      - name: Deploy to EC2 instance
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.CLOUD_AWS_HOST }}
+          username: ${{ secrets.CLOUD_AWS_USERNAME }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            docker pull ${{ secrets.DOCKER_USERNAME }}/my-react-app:latest
+            docker stop my-react-app || true
+            docker rm my-react-app || true
+            docker run -d -p 84:3000 --name my-react-app ${{ secrets.DOCKER_USERNAME }}/my-react-app:latest

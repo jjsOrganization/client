@@ -16,6 +16,8 @@ COPY . .
 # 앱 빌드
 RUN npm run build
 
+RUN ls -al /app/build
+
 # 앱 실행을 위한 포트 설정
 EXPOSE 3000
 
