@@ -1,5 +1,5 @@
-# Node.js 공식 이미지를 사용
-FROM node:latest
+# Node.js 버전을 고정하여 사용 (18-alpine은 경량화된 버전)
+FROM node:18-alpine
 
 # 작업 디렉토리 설정
 WORKDIR /app
@@ -8,10 +8,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # npm을 사용하여 종속성 설치
-RUN npm install
-
-# 필요한 경우 추가 패키지 설치
-RUN npm install @material-tailwind/react @mui/material
+RUN npm install --frozen-lockfile
 
 # 나머지 소스 파일 복사
 COPY . .
