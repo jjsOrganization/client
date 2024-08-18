@@ -14,7 +14,7 @@ RUN npm install --frozen-lockfile
 COPY . .
 
 # 앱 빌드
-RUN npm run build
+RUN npm run build:prod
 
 RUN ls -al /app/build
 
