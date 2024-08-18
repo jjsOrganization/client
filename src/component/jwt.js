@@ -26,7 +26,7 @@ const setRefreshToken = (token) => {
 }
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000',
+  baseURL: '3.38.125.50'
 });
 
 instance.interceptors.request.use(
