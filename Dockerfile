@@ -10,9 +10,11 @@ COPY package.json package-lock.json ./
 # npm을 사용하여 종속성 설치
 RUN npm install --frozen-lockfile
 
+# .env.production 파일을 복사
+COPY .env.production /app/.env.production
+
 # 나머지 소스 파일 복사
 COPY . .
-COPY .env.production /app/.env.production
 
 # 앱 빌드
 RUN npm run build:prod
