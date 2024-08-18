@@ -12,6 +12,7 @@ RUN npm install --frozen-lockfile
 
 # 나머지 소스 파일 복사
 COPY . .
+COPY .env.production /.env.production
 
 # 앱 빌드
 RUN npm run build:prod
