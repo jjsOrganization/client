@@ -294,7 +294,6 @@ const Purchaser_Mypage = () => {
 
   const connect = () => {
     const socket = new SockJS("http://3.38.128.50:8080/ws/chat");
-    // "http://3.38.128.50:8080/ws/chat"
     const stompClient = Stomp.over(socket);
 
     if (stompClient && stompClient.connected) {
