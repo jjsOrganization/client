@@ -9,108 +9,126 @@ import {
 import { useNavigate } from "react-router-dom";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import { useMutation, useQuery } from "react-query";
+import store from "../store.js";
 
 const Purchaser_Mypage = () => {
-  const [orderList, setOrderList] = useState([]);
-  const [open, setOpen] = useState(true);
-  const [customerShoppingBasket, setCustomerShoppingBasket] = useState([]);
   let navigate = useNavigate();
+  const [customerShoppingBasket, setCustomerShoppingBasket] = useState([]);
+  const {
+    requestN,
+    orderList,
+    open,
+    // customerShoppingBasket,
+    purchaserOrderProducts,
+    purchaserReformProducts,
+    showMore,
+    showMoreForReform,
+    msg,
+    messages,
+    stompClient,
+    roomId,
+    purchaserEmail,
+    connected,
+    chatOpen,
+    messageData,
+    estimateNumber,
+    requestNumberEstimate,
 
-  const [purchaserOrderProducts, setPurchaserOrderProducts] = useState([]);
-  const [purchaserReformProducts, setPurchaserReformProducts] = useState([]);
-  const [showMore, setShowMore] = useState(false);
+    setRequestN,
+    setOrderList,
+    setOpen,
+    // setCustomerShoppingBasket,
+    setPurchaserOrderProducts,
+    setPurchaserReformProducts,
+    setShowMore,
+    setShowMoreForReform,
+    setMsg,
+    setMessages,
+    setStompClient,
+    setRoomId,
+    setPurchaserEmail,
+    setConnected,
+    setChatOpen,
+    setMessageData,
+    setEstimateNumber,
+    setRequestNumberEstimate,
+  } = store.usePurchaserMypageStore();
 
-  const [msg, setMsg] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [stompClient, setStompClient] = useState(null);
-  const [roomId, setRoomId] = useState();
-  const [purchaserEmail, setPurchaserEmail] = useState();
-  const [connected, setConnected] = useState(false);
-  const [chatOpen, setChatOpen] = useState(false);
-  const [messageData, setMessageData] = useState([]);
-  const [estimateNumber, setEstimateNumber] = useState(null);
-  const [requestNumberEstimate, setRequestNumberEstimate] = useState(null);
-
-  useEffect(() => {
-    const fetchOrderList = async () => {
-      try {
-        const responsePurchase = await getAxios("/order/purchaser-list", {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        console.log(responsePurchase);
-
-        const responseReform = await getAxios(
-          "/reform/purchaser/requests/all",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
-
-        const reformData = responseReform.data.data;
-        const reformArray = [];
-        for (const reformRequest of reformData) {
-          if (reformRequest.requestStatus !== "REQUEST_REJECTED") {
-            reformArray.push(reformRequest);
-          }
-        }
-        setPurchaserReformProducts(reformArray);
-
-        const purchaseData = responsePurchase.data.data;
-        console.log(purchaseData);
-        setPurchaserOrderProducts(purchaseData);
-      } catch (error) {}
-    };
-
-    const fetchProducts = async () => {
-      try {
-        const response = await getAxios("/cart/purchaser", {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        const data = response.data;
-        setCustomerShoppingBasket(
-          data.data.map((product) => ({
-            ...product,
-            totalPrice: product.price,
-            checked: false, // 기본적으로 모든 상품은 체크되지 않은 상태로 설정
-          }))
-        );
-      } catch (error) {}
-    };
-
-    fetchOrderList();
-    fetchProducts();
-    test();
-  }, []);
-
-  const test = async () => {
-    try {
-      const fetchData = await getAxios(`/progress/img/1`, {
+  const {
+    isLoading: isPurchaseLoading,
+    data: purchaseData,
+    error: purchaseError,
+  } = useQuery({
+    queryKey: ["purchaserList"],
+    queryFn: () =>
+      getAxios("/order/purchaser-list", {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-      });
-      console.log(fetchData);
-    } catch (err) {}
-  };
+      }),
+    onSuccess: (response) => {
+      setPurchaserOrderProducts(response.data.data);
+    },
+  });
+
+  const {
+    isLoading: isReformLoading,
+    data: reformData,
+    error: reformError,
+  } = useQuery({
+    queryKey: ["reformRequests"],
+    queryFn: () =>
+      getAxios("/reform/purchaser/requests/all", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
+    onSuccess: (response) => {
+      const reformArray = response.data.data.filter(
+        (reformRequest) => reformRequest.requestStatus !== "REQUEST_REJECTED"
+      );
+      setPurchaserReformProducts(reformArray);
+    },
+  });
+
+  const {
+    isLoading: isCartPurchaseLoading,
+    data: cartData,
+    error: cartError,
+  } = useQuery({
+    queryKey: ["cartPurchase"],
+    queryFn: () =>
+      getAxios("/cart/purchaser", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
+    onSuccess: (response) => {
+      const data = response.data;
+      setCustomerShoppingBasket(
+        data.data.map((product) => ({
+          ...product,
+          totalPrice: product.price,
+          checked: false,
+        }))
+      );
+    },
+  });
 
   const handleShowMore = () => {
     setShowMore(true);
+  };
+
+  const handleShowMoreForReform = () => {
+    setShowMoreForReform(true);
   };
 
   const handlePurchaserInfoEdit = () => {
     navigate("/mypage/purchaserInfoEdit");
   };
 
-  // 각 주문 상태에 대한 렌더링 함수
   function renderOrderStatus(orderStatus) {
     switch (orderStatus) {
       case "ORDER_COMPLETE":
@@ -128,12 +146,11 @@ const Purchaser_Mypage = () => {
     }
   }
 
-  const handleOrder = async () => {
-    try {
+  const { mutate: handleOrder } = useMutation({
+    mutationFn: () => {
       const selectedProducts = customerShoppingBasket.filter(
         (product) => product.checked
       );
-
       const orderDTO = {
         orderDetails: selectedProducts.map((product) => ({
           productId: product.id,
@@ -146,31 +163,40 @@ const Purchaser_Mypage = () => {
         deliveryRequest: "",
       };
 
-      await postAxios(`/cart/purchaser/order`, orderDTO, {
+      postAxios(`/cart/purchaser/order`, orderDTO, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
+
+      return selectedProducts;
+    },
+    onSuccess: (selectedProducts) => {
       for (const product of selectedProducts) {
-        await handleDelete(product.id);
+        console.log(product.id);
+        handleDelete(product.id);
       }
       navigate("/PurchaserInfo");
-    } catch (error) {}
-  };
+    },
+    onError: (error) => {},
+  });
 
-  const handleDelete = async (productId) => {
-    try {
-      await deleteAxios(`/cart/purchaser/delete/${productId}`, {
+  const { mutate: handleDelete } = useMutation({
+    mutationFn: (productId) => {
+      deleteAxios(`/cart/purchaser/delete/${productId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-
+      return productId;
+    },
+    onSuccess: (productId) => {
       setCustomerShoppingBasket((prevBasket) =>
         prevBasket.filter((product) => product.id !== productId)
       );
-    } catch (error) {}
-  };
+    },
+    onError: (error) => {},
+  });
 
   const totalPriceOfCheckedItems = customerShoppingBasket
     .filter((product) => product.checked)
@@ -214,28 +240,36 @@ const Purchaser_Mypage = () => {
     });
   };
 
-  const fetchRoomData = async (requestN) => {
-    try {
-      const response = await getAxios(`/chatroom`, {
+  const {
+    isLoading: isFetchRoomDataLoading,
+    data: fetchRoomData,
+    error: fetchRoomDataError,
+  } = useQuery(
+    ['fetchRoomData', requestN],
+    async () => {
+      const response = await getAxios('/chatroom', {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
       });
-      const roomDataArray = response.data.data;
-      for (const roomData of roomDataArray) {
-        if (requestN === roomData.requestId) {
-          setPurchaserEmail(roomData.purchaserEmail);
-          setRoomId(roomData.roomId);
-          setConnected(true);
-          break;
+      return response
+    },
+    {
+      onSuccess: (response) => {
+        const roomDataArray = response.data.data;
+        for (const roomData of roomDataArray) {
+          console.log(roomData);
+          if (requestN === roomData.requestId) {
+            setPurchaserEmail(roomData.purchaserEmail);
+            setRoomId(roomData.roomId);
+            setConnected(true);
+            break;
+          }
         }
-      }
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    fetchRoomData();
-  }, [roomId]);
+      },
+    }
+  );
 
   const headers = {
     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -259,7 +293,7 @@ const Purchaser_Mypage = () => {
   }, [connected, messageData]);
 
   const connect = () => {
-    const socket = new SockJS("석수동");
+    const socket = new SockJS("http://3.38.128.50:8080/ws/chat");
     const stompClient = Stomp.over(socket);
 
     if (stompClient && stompClient.connected) {
@@ -274,6 +308,29 @@ const Purchaser_Mypage = () => {
       });
     });
   };
+
+  // const {
+  //   isLoading: isFetchMessageDataLoading,
+  //   data: fetchMessageDa,
+  //   error: fetchMessageDataError,
+  // } = useQuery(
+  //   ['fetchMessageDa', roomId],
+  //   async () => {
+  //     const response = await getAxios(`/chatroom/${roomId}`, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+  //       },
+  //     });
+  //     return response
+  //   },
+  //   {
+  //     onSuccess: (response) => {
+  //       console.log(response);
+  //       setMessageData(response.data.data);
+  //     },
+  //   }
+  // );
 
   const fetchMessageData = async () => {
     try {
@@ -314,6 +371,29 @@ const Purchaser_Mypage = () => {
       console.error("WebSocket 연결이 없습니다.");
     }
   };
+
+  // const {
+  //   isLoading: isFetchEstimateDataLoading,
+  //   data: fetchEstimateData,
+  //   error: fetchEstimateDataError,
+  // } = useQuery(
+  //   ['fetchEstimateData', requestNumber],
+  //   async () => {
+  //     const response = await getAxios(`/estimate/purchaser/estimateForm/${requestNumber}`, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+  //       },
+  //     });
+  //     return response
+  //   },
+  //   {
+  //     onSuccess: (response) => {
+  //       console.log(response);
+  //       setMessageData(response.data.data);
+  //     },
+  //   }
+  // );
 
   const fetchEstimateData = async (requestNumber, event) => {
     try {
@@ -380,10 +460,9 @@ const Purchaser_Mypage = () => {
     } catch (error) {}
   };
 
-  const openChat = (requestN) => {
-    fetchRoomData(requestN);
-    setChatOpen(true);
-  };
+  // const openChat = (requestN) => {
+  //   setChatOpen(true);
+  // };
 
   const closeChat = () => {
     disconnectWebSocket();
@@ -401,14 +480,16 @@ const Purchaser_Mypage = () => {
         purchaserEmail={purchaserEmail}
         purchaserOrderProducts={purchaserOrderProducts}
         showMore={showMore}
+        showMoreForReform={showMoreForReform}
         renderOrderStatus={renderOrderStatus}
         handleShowMore={handleShowMore}
+        handleShowMoreForReform={handleShowMoreForReform}
         purchaserReformProducts={purchaserReformProducts}
         fetchEstimateData={fetchEstimateData}
         requestNumberEstimate={requestNumberEstimate}
         estimateAccept={estimateAccept}
         estimateReject={estimateReject}
-        openChat={openChat}
+        // openChat={openChat}
         estimateNumber={estimateNumber}
         open={open}
         setOpen={setOpen}
@@ -419,6 +500,7 @@ const Purchaser_Mypage = () => {
         totalPriceOfCheckedItems={totalPriceOfCheckedItems}
         handleOrder={handleOrder}
         handlePurchaserInfoEdit={handlePurchaserInfoEdit}
+        postMessage={postMessage}
       />
     </div>
   );

@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "../../atoms/Button.js";
 import { useNavigate } from "react-router-dom";
+import store from "../../../store.js";
 
-const OrderList = ({
+const ReformList = ({
   purchaserReformProducts = [],
-  showMore,
+  showMoreForReform,
   fetchEstimateData,
-  handleShowMore,
+  handleShowMoreForReform,
   requestNumberEstimate,
   estimateAccept,
   estimateReject,
@@ -14,13 +15,15 @@ const OrderList = ({
   estimateNumber
 }) => {
   let navigate = useNavigate();
+  const { requestN, setRequestN, setChatOpen } = store.usePurchaserMypageStore();
+
   return (
     <div>
       <div className="purchaserReformedProduct">
         <h4>리폼목록</h4>
-        <hr></hr>
+        <hr />
         {purchaserReformProducts
-          .slice(0, showMore ? undefined : 2)
+          .slice(0, showMoreForReform ? undefined : 2)
           .map((product) => (
             <div key={product.id}>
               <h5>리폼 의뢰를 요청한 디자이너 : {product.designerName}</h5>
@@ -40,12 +43,12 @@ const OrderList = ({
                 <button
                   className="OrderedBTN"
                   onClick={(event) => {
-                    fetchEstimateData(product.id, event);
+                    fetchEstimateData(requestN, event);
                   }}
                 >
                   자세히
                 </button>
-                {requestNumberEstimate === product.id && (
+                {requestNumberEstimate === requestN && (
                   <>
                     <button
                       className="OrderedBTN"
@@ -69,11 +72,12 @@ const OrderList = ({
               </p>
 
               <p>
-                1대1 채팅 : {product.id}{" "}
+                1대1 채팅 : {" "}
                 <button
                   className="OrderedBTN"
                   onClick={() => {
-                    openChat(product.id);
+                    setRequestN(product.id);
+                    setChatOpen(true);
                   }}
                 >
                   시작
@@ -91,11 +95,11 @@ const OrderList = ({
                   자세히
                 </button>
               </p>
-              <hr></hr>
+              <hr />
             </div>
           ))}
-        {!showMore && (
-          <button className="OrderedMoreBTN" onClick={handleShowMore}>
+        {!showMoreForReform && (
+          <button className="OrderedMoreBTN" onClick={handleShowMoreForReform}>
             더보기
           </button>
         )}
@@ -104,4 +108,4 @@ const OrderList = ({
   );
 };
 
-export default OrderList;
+export default ReformList;
