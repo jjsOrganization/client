@@ -41,7 +41,7 @@ export const getAxios = async (url) => {
 
 export const deleteAxios = async (url) => {
     try{
-        const fetchData = await axiosInstance.get(`${url}`,)
+        const fetchData = await axiosInstance.delete(`${url}`,)
         return fetchData
     }
     catch(err){

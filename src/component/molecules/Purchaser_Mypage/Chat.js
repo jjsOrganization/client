@@ -1,6 +1,6 @@
 import React from "react";
 
-const Chat = ({ chatOpen = true, messageData=[], msg, setMsg, closeChat, purchaserEmail }) => {
+const Chat = ({ chatOpen = true, messageData=[], msg, setMsg, closeChat, purchaserEmail, postMessage }) => {
   return (
     <div>
       {chatOpen ? (

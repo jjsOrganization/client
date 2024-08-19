@@ -12,11 +12,14 @@ const Purchaser_Mypage = ({
   setMsg,
   closeChat,
   purchaserEmail,
+  postMessage,
 
   purchaserOrderProducts,
   showMore,
+  showMoreForReform,
   renderOrderStatus,
   handleShowMore,
+  handleShowMoreForReform,
 
   purchaserReformProducts,
   fetchEstimateData,
@@ -54,6 +57,8 @@ const Purchaser_Mypage = ({
           requestNumberEstimate={requestNumberEstimate}
           estimateAccept={estimateAccept}
           estimateReject={estimateReject}
+          showMoreForReform={showMoreForReform}
+          handleShowMoreForReform={handleShowMoreForReform}
         />
 
         <Chat
@@ -65,6 +70,7 @@ const Purchaser_Mypage = ({
           purchaserEmail={purchaserEmail}
           openChat={openChat}
           estimateNumber={estimateNumber}
+          postMessage = {postMessage}
         />
 
         <Shopping_Basket
