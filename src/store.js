@@ -1,5 +1,5 @@
 import create from "zustand";
-import devtools from "zustand/middleware";
+import { persist } from 'zustand/middleware';
 
 const useProgressStore = create((set) => ({
   progressNumber: null,
@@ -14,6 +14,19 @@ export const useBtnStore = create((set) => ({
 export const useEndPointStore = create((set) => ({
   Endpoint: "https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/",
 }));
+
+export const useTokenStore = create(persist(
+  (set) => ({
+    accessToken: '',
+    refreshToken: '',
+    setAccessToken: (token) => set({ accessToken: token }),
+    setRefreshToken: (token) => set({ refreshToken: token }),
+    clearTokens: () => set({ accessToken: '', refreshToken: '' })
+  }),
+  {
+    name: 'token-storage', 
+  }
+));
 
 const useOrderInfoStore = create((set) => ({
   orderInfo: {

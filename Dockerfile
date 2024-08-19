@@ -1,30 +1,28 @@
-# Node.js 공식 이미지를 사용
-FROM node:latest
+# Node.js 버전을 고정하여 사용 (18-alpine은 경량화된 버전)
+FROM node:18-alpine
 
 # 작업 디렉토리 설정
 WORKDIR /app
 
-# Yarn 설치
-RUN yarn install
+# package.json과 package-lock.json을 먼저 복사
+COPY package.json package-lock.json ./
 
-# Yarn 버전을 Berry로 업그레이드
-RUN yarn set version berry
+# npm을 사용하여 종속성 설치
+RUN npm install --frozen-lockfile
 
-# package.json과 yarn.lock을 먼저 복사
-COPY package.json yarn.lock ./
+# .env.production 파일을 복사
+COPY .env.production /app/.env.production
 
-# 앱 종속성 설치
-RUN yarn install
-
-# 필요한 경우 추가 패키지 설치
-RUN yarn add @material-tailwind/react @mui/material
-
-# 나머지 파일 복사
+# 나머지 소스 파일 복사
 COPY . .
 
 # 앱 빌드
-RUN yarn build
+RUN npm run build:prod
+
+RUN ls -al /app/build
+
+# 앱 실행을 위한 포트 설정
+EXPOSE 3000
 
 # 앱 실행
-EXPOSE 3000
-CMD ["yarn", "start"]
+CMD ["npm", "start"]

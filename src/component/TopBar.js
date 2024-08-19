@@ -4,22 +4,21 @@ import axiosInstance from "../component/jwt.js";
 import "../css/TopBar.css";
 import logo from "../images/logo.png";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
+import { useTokenStore } from "../store.js";
+import { useToken } from "antd/es/theme/internal.js";
 
 export default function TopBar() {
   let navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState("");
+  const clearTokens = useTokenStore((state) => state.clearTokens)
+  const accessToken = useTokenStore((state) => state.accessToken)
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       setIsLoggedIn(true);
       axiosInstance
-        .get("/user/role", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        })
+        .get("/user/role")
         .then(async (response) => {
           setRole(response.data.data.role);
           localStorage.setItem("role", response.data.data.role);
@@ -34,6 +33,8 @@ export default function TopBar() {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
+    document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    clearTokens()
     setIsLoggedIn(false);
     navigate("/login");
   };

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Dropdown from "../component/dropdown";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
-import LikeComponent from "../component/likeComponent.js";
+import {LikeComponent} from "../component/likeComponent.js"
 import Modal from "react-modal";
 import {TailWindButton} from "../component/atoms/Button.js"
 import { useBtnStore } from "../store.js";
@@ -31,7 +31,6 @@ function Detail(props) {
   const [choiceColor, setChoiceColor] = useState(null);
   const {borderSkyBlue} = useBtnStore(state => state)
   
-
   let BasicBtn = styled.button`
   padding: 1%;
   background: black;
@@ -74,40 +73,32 @@ function Detail(props) {
       } catch (error) {
       }
     };
-
+  
+  //좋아요 개수 get
   const productLikeGet = async () => {
     try {
-      const productLikeCount = await axiosInstance.get(
-        `/product/all/detail/${productid}/like-count`
-      );
+      const productLikeCount = await axiosInstance.get(`/product/all/detail/${productid}/like-count`);
       setProductLike(productLikeCount.data.data);
     } catch (error) {
     }
   };
   
-  const roleCheck = async () => {
-    if(localStorage.getItem('role') == 'ROLE_PURCHASER'){
-      const LikeCheckGet = async () => {
-        try {
-          const likeStateInfo = await axiosInstance.get(
-            `/product/all/detail/${productid}/like-status`);
-            setLikeState(likeStateInfo.data.data);
-        } 
-        catch (error) {
-          console.log(error)
-        }};
-        LikeCheckGet();}
-      else{
-        setLikeState(false);}
+  const memberRoleCheck = (els) => {
+    if(localStorage.getItem('role') !== 'ROLE_PURCHASER'){
+      alert('일반 회원으로 로그인 해주세요')
+    }
+    else{
+      els()
+    }
   }
   
   const getAllProductInfo = () => {
-    return Promise.all([fetchDetailData(), roleCheck(), productLikeGet()]);
-};
+    return Promise.all([fetchDetailData(),productLikeGet()]);
+  };
 
   useEffect(() => {
     getAllProductInfo();
-}, []);
+  }, []);
 
   useEffect(() => {
     if(productDetailInfo){
@@ -117,21 +108,22 @@ function Detail(props) {
 
   const handleLike = async () => {
     try {
-      if (localStorage.getItem('role') != 'ROLE_PURCHASER') {
-        return alert('일반 회원만 가능한 기능입니다.')
-      }else if(likeState) {
-        await axiosInstance.delete(`/product/all/detail/${productid}/like`);
-      } else {
-        await axiosInstance.post(`/product/all/detail/${productid}/like`);
-      }
-      const likeStateInfo = await axiosInstance.get(
-        `/product/all/detail/${productid}/like-status`
-      );
-      setLikeState(likeStateInfo.data.data);
-      productLikeGet();
+        if (localStorage.getItem('role') !== 'ROLE_PURCHASER') {
+            return alert('일반 회원만 가능한 기능입니다.');
+        }
+        setLikeState(!likeState);
+        setProductLike(likeState ? productLike - 1 : productLike + 1);
+        if (likeState) {
+            await axiosInstance.delete(`/product/all/detail/${productid}/like`);
+        } else {
+            await axiosInstance.post(`/product/all/detail/${productid}/like`);
+        }
     } catch (error) {
+        setLikeState(!likeState);
+        setProductLike(likeState ? productLike + 1 : productLike - 1);
+        console.error(error);
     }
-  };
+};
   
   if (!productDetailInfo) {
     return <div>데이터를 로드하는 중입니다...</div>;
@@ -242,15 +234,13 @@ function Detail(props) {
               w0th: "100%",
               width: "100%",
               }}>
-              <BasicBtn onClick={handleOrder}>
+              <BasicBtn onClick={() => {memberRoleCheck(handleOrder)}}>
                 주문하기
               </BasicBtn>
-              <BasicBtn>
-                <Link to={reFormLink} style={{ textDecoration: "none", color: "white" }}>
-                  의뢰하기
-                </Link>
+              <BasicBtn onClick={() => memberRoleCheck(() => navigate(reFormLink))}>
+                의뢰하기
               </BasicBtn>
-              <BasicBtn onClick={addToCart}>
+              <BasicBtn onClick={() => {memberRoleCheck(addToCart)}}>
                 장바구니
               </BasicBtn>
             </div>
@@ -323,15 +313,9 @@ function Detail(props) {
           },
         }}>
             <TailWindButton
-              className = {`${borderSkyBlue} mt-10`}
+              className = {`${borderSkyBlue} ml-20 mt-10`}
               onClick = {closeModal} >
               쇼핑 계속하기
-            </TailWindButton>
-
-            <TailWindButton
-              className={`${borderSkyBlue} ml-10`}
-              onClick = {() => {navigate('/PurchaserMyPage')}}>
-              장바구니 이동
             </TailWindButton>
 
             <TailWindButton

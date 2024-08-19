@@ -35,7 +35,6 @@ function ConfigurationManagement(){
 
         let test = useQuery([`imageGet`],async ()=>{
             const getImg = await getAxios(`/progress/img/${estimateId}`)
-            console.log(getImg.data)
             return getImg
         })
 

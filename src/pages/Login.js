@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import axiosInstance from "../component/jwt.js";
 import { useNavigate } from "react-router-dom";
 import logo from "../images/logo.png";
+import { useTokenStore } from "../store.js";
 
 function Login() {
   let navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
+  const setAccessToken = useTokenStore((state) => state.setAccessToken);
+  const setRefreshToken = useTokenStore((state) => state.setRefreshToken);
 
   const handleLogin = async () => {
     try {
@@ -14,11 +17,14 @@ function Login() {
         memberId: userEmail,
         password: password,
       });
-      if (response.data && response.data.data.accessToken) {
+      if (response.data.data.accessToken) {
+        const accessToken = response.data.data.accessToken;
+        const refreshToken = response.data.data.refreshToken;
         localStorage.setItem("memberId", userEmail);
-        localStorage.setItem("accessToken", response.data.data.accessToken);
-        localStorage.setItem("refreshToken", response.data.data.refreshToken);
-        document.cookie = `accessToken=${response.data.data.accessToken}; path=/;`;
+        setAccessToken(accessToken)
+        setRefreshToken(refreshToken)
+        document.cookie = `accessToken=${accessToken}; path=/;`;
+        console.log(`로그인시 저장한 쿠키 ${document.cookie}`)
         navigate("/");
       } else {
       }
