@@ -6,8 +6,8 @@ import { useNavigate,Link } from 'react-router-dom';
 import TopBar from "../component/TopBar.js";
 import { useEndPointStore } from '../store.js';
 import { TailWindButton } from '../component/atoms/Button.js';
-import { useTokenStore } from '../store.js';
-import { postRefreshToken } from '../component/jwt.js';
+
+
 
 
 function Main(){
@@ -16,7 +16,7 @@ function Main(){
     const [productInfo,setProductInfo] = useState([])
     const [productDesc,setProductDesc] = useState([]);
     const {Endpoint} = useEndPointStore(state => state)
-    const accessToken = useTokenStore((state) => state.accessToken)
+    
     
     useEffect(() => {
         const fetchData = async () => {
