@@ -18,7 +18,7 @@ import DesignerMypage from "./pages/DesignerMypage.js";
 import ModifyPortfolio from "./pages/ModifyPortfolio.js";
 import RegisterPortfolio from "./pages/RegisterPortfolio.js";
 import Signup from "./pages/Signup.js";
-import Detail from "./pages/Detail.js";
+import Detail from "./pages/Detail/Detail.jsx";
 import ProductUpdate from "./pages/productRegistration.js";
 import StockUpdater from "./pages/stockUpdater.js";
 import MyPages from "./pages/mypage/mypage.js";
