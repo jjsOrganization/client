@@ -1,14 +1,14 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Carousel } from 'antd';
-import axiosInstance from "../component/jwt.js";
+import styled from "styled-components";
+
+import axiosInstance from "../../component/jwt.js";
 import { useNavigate,Link } from 'react-router-dom';
-import TopBar from "../component/TopBar.js";
-import { useEndPointStore } from '../store.js';
-import { TailWindButton } from '../component/atoms/Button.js';
-
-
-
+import TopBar from "../../component/TopBar.js";
+import { useEndPointStore } from '../../store.js';
+import { TailWindButton } from '../../component/atoms/Button.js';
+import CarouselComponent from './Carousel.jsx';
+import ProductGrid from './ProductGrid.jsx';
 
 function Main(){
     let navigate = useNavigate();
@@ -32,19 +32,6 @@ function Main(){
         fetchData();
     }, []);
 
-    const contentStyle = {
-        height: '400px', 
-        width: '100%', 
-        color: '#fff',
-        background: 'white',
-    };
-
-    let carouselImage = ([
-    "https://i.postimg.cc/jd4cY735/3.png",
-    "https://i.postimg.cc/zv1C9znK/1.png",
-    "https://i.postimg.cc/JnX36DBR/2.png",
-    "https://i.postimg.cc/66dLCZX0/4.png",])
-
     return(
     <div>
         <div>
@@ -52,67 +39,44 @@ function Main(){
         </div>
         <div className = 'mainContainer' style ={{marginLeft: '20%', marginRight: '20%'}}>
             <div>
-                <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+                <CarouselComponent product = {productInfo}/>
             </div>
             <div className="min-h-[300px] h-pull mainProduct">
                 {sort ?
                     <div>
                     <TailWindButton className = 'bg-white border-0'>✔최신순</TailWindButton><TailWindButton className = 'bg-white border-0' onClick = {() => {setSort(!sort)}}>인기순</TailWindButton>
-                    <MainProduct 
+                    <ProductGrid
                     product = {productInfo}
                     navigate = {navigate}
                     Endpoint = {Endpoint}/>
                     </div> :
                     <div>
                     <TailWindButton className = 'bg-white border-0' onClick = {() => {setSort(!sort)}}>최신순</TailWindButton><TailWindButton className = 'bg-white border-0'>✔인기순</TailWindButton> 
-                    <MainProduct 
+                    <ProductGrid
                     product = {productDesc}
                     navigate = {navigate}
                     Endpoint = {Endpoint}/>
                     </div>
-                } 
+                }
+                <ButtonWrapper>
+                <button className="bg-transparent hover:bg-blue-500 text-black-700 font-semibold hover:text-white py-2 px-4 border1 border-black-500 hover:border-transparent rounded"
+                onClick = {() => {navigate('/products')}} >
+                    더보기 
+                </button>
+                </ButtonWrapper>
             </div>
             <div className = 'designerCarousel'>
                 <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
-                <CarouselC product = {productInfo} carouselStyle = {contentStyle} carouselImage = {carouselImage}/>
+                <CarouselComponent product = {productInfo}/>
             </div>
         </div>
     </div>
     )
 }
 
-function MainProduct(props){
-    return(
-    <div className = 'row'>
-    {
-        props.product.slice(0,6).map(function(a, i){ 
-        return(
-            <div className="col-6 col-md-4 rounded-lg" key={i} style = {{ height : '300px'}}>     
-    {   
-        props.product[i].imgUrl ?
-        (<img width = '100%' height = '70%' src = {props.Endpoint + props.product[i].imgUrl} style = {{marginRight : '5%'}} onClick={() => { props.navigate(`detail/${props.product[i].id}`) }}/>) : 
-        (<p onClick={() => { props.navigate(`detail/${props.product[i].id}`) }} > 이미지 준비중 </p>)}
-        <h4>{props.product[i].productName}</h4>
-        </div>
-        )})
-    }
-</div>
-    )
-}
+const ButtonWrapper = styled.div`
+    text-align: center;
+`
 
-function CarouselC(props)
-{
-    return(
-    <Carousel autoplay speed = {2500}>
-        {props.carouselImage.map((image, index) => (
-        <div key={index}>
-            <h3 style={props.carouselStyle}>
-            <img src={image} style={{ width: '100%', height: '100%' }} />
-            </h3>
-        </div>
-        ))}
-    </Carousel>
-    )
-}
 
 export default Main;
