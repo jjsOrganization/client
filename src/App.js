@@ -5,7 +5,7 @@ import PurchaserAddressEdit from "./component/PurchaserAddressEdit.js";
 import PurchaserPasswordEdit from "./component/PurchaserPasswordEdit.js";
 import PurchaserPNumberEdit from "./component/PurchaserPNumberEdit.js";
 import PurchaserInfoEdit from "./pages/PurchaserInfoEdit.js";
-import PurchaserMyPage from "./pages/PurchaserMyPage.js";
+import PurchaserMyPage from "./service/Purchaser_Mypage.js";
 import PurchaserInfo from "./pages/PurchaserInfo.js";
 import Login from "./pages/Login.js";
 import Visual from "./pages/Visual.js";
@@ -67,7 +67,7 @@ const App = () => {
             <Route path="/reform" element={<Reform />} />
             <Route path="/PurchaserInfo" element={<PurchaserInfo />} />
             <Route path="/PurchaserReformInfo/:estimateNumber" element={<PurchaserReformInfo />} />
-            <Route path="/PurchaserMyPage" element={<Test />} />
+            <Route path="/PurchaserMyPage" element={<PurchaserMyPage />} />
             <Route path="/reformCompleted/:progressNumber" element={<ReformCompleted />} />
             <Route path="/Mypage/PurchaserInfoEdit" element={<PurchaserInfoEdit />} />
             <Route path="/Mypage/PurchaserInfoEdit/PurchaserPNumberEdit" element={<PurchaserPNumberEdit />} />
