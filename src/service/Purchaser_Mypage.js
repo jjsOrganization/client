@@ -11,6 +11,7 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { useMutation, useQuery } from "react-query";
 import store from "../store.js";
+import useTokenStore from "../store.js"
 
 const Purchaser_Mypage = () => {
   let navigate = useNavigate();
@@ -57,6 +58,9 @@ const Purchaser_Mypage = () => {
     setRequestNumberEstimate,
   } = store.usePurchaserMypageStore();
 
+  const {accessToken} = store.useTokenStore();
+
+
   const {
     isLoading: isPurchaseLoading,
     data: purchaseData,
@@ -67,7 +71,7 @@ const Purchaser_Mypage = () => {
       getAxios("/order/purchaser-list", {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       }),
     onSuccess: (response) => {
@@ -84,7 +88,7 @@ const Purchaser_Mypage = () => {
     queryFn: () =>
       getAxios("/reform/purchaser/requests/all", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       }),
     onSuccess: (response) => {
@@ -104,7 +108,7 @@ const Purchaser_Mypage = () => {
     queryFn: () =>
       getAxios("/cart/purchaser", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       }),
     onSuccess: (response) => {
@@ -167,7 +171,7 @@ const Purchaser_Mypage = () => {
 
       postAxios(`/cart/purchaser/order`, orderDTO, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
@@ -187,7 +191,7 @@ const Purchaser_Mypage = () => {
     mutationFn: (productId) => {
       deleteAxios(`/cart/purchaser/delete/${productId}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
       return productId;
@@ -252,7 +256,7 @@ const Purchaser_Mypage = () => {
       const response = await getAxios("/chatroom", {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
       return response;
@@ -274,7 +278,7 @@ const Purchaser_Mypage = () => {
   );
 
   const headers = {
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    Authorization: `Bearer ${accessToken}`,
   };
 
   useEffect(() => {
@@ -315,7 +319,7 @@ const Purchaser_Mypage = () => {
     try {
       const response = await getAxios(`/chatroom/${roomId}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
       setMessageData(response.data.data);
@@ -358,7 +362,7 @@ const Purchaser_Mypage = () => {
         `/estimate/purchaser/estimateForm/${requestNumber}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -402,7 +406,7 @@ const Purchaser_Mypage = () => {
         `/estimate/purchaser/${estimateNumber}/reject`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -416,7 +420,7 @@ const Purchaser_Mypage = () => {
         `/estimate/purchaser/${estimateNumber}/accept`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );

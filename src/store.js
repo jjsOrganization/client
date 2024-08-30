@@ -123,6 +123,7 @@ const store = {
   useEndPointStore,
   useLoginStore,
   usePurchaserMypageStore,
+  useTokenStore
 };
 
 export default store;
