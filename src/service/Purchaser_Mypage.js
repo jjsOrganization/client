@@ -265,7 +265,6 @@ const Purchaser_Mypage = () => {
       onSuccess: (response) => {
         const roomDataArray = response.data.data;
         for (const roomData of roomDataArray) {
-          console.log(roomData);
           if (requestN === roomData.requestId) {
             setPurchaserEmail(roomData.purchaserEmail);
             setRoomId(roomData.roomId);
@@ -323,7 +322,6 @@ const Purchaser_Mypage = () => {
         },
       });
       setMessageData(response.data.data);
-      console.log(response);
     } catch (error) {}
   };
 
