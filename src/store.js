@@ -88,7 +88,9 @@ const usePurchaserMypageStore = create((set) => ({
   messageData: [],
   estimateNumber: null,
   requestNumberEstimate: null,
+  isNull : null,
 
+  setIsNull : (isNull) => set({isNull}),
   setRequestN : (requestN) => set({requestN}),
   setOrderList: (orderList) => set({ orderList }),
   setOpen: (open) => set({ open }),
