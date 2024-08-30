@@ -79,16 +79,22 @@ const usePurchaserMypageStore = create((set) => ({
   showMore: false,
   showMoreForReform: false,
   msg: "",
-  messages: [],
-  stompClient: null,
-  roomId: null,
+
+
+
   purchaserEmail: null,
-  connected: false,
+
   chatOpen: false,
   messageData: [],
   estimateNumber: null,
   requestNumberEstimate: null,
+  isNull : null,
 
+
+
+
+
+  setIsNull : (isNull) => set({isNull}),
   setRequestN : (requestN) => set({requestN}),
   setOrderList: (orderList) => set({ orderList }),
   setOpen: (open) => set({ open }),
@@ -101,16 +107,29 @@ const usePurchaserMypageStore = create((set) => ({
   setShowMore: (showMore) => set({ showMore }),
   setShowMoreForReform: (showMoreForReform) => set({ showMoreForReform }),
   setMsg: (msg) => set({ msg }),
-  setMessages: (messages) => set({ messages }),
-  setStompClient: (stompClient) => set({ stompClient }),
-  setRoomId: (roomId) => set({ roomId }),
+
+
+
   setPurchaserEmail: (email) => set({ purchaserEmail: email }),
-  setConnected: (connected) => set({ connected }),
+
   setChatOpen: (chatOpen) => set({ chatOpen }),
   setMessageData: (messageData) => set({ messageData }),
   setEstimateNumber: (estimateNumber) => set({ estimateNumber }),
   setRequestNumberEstimate: (requestNumberEstimate) =>
     set({ requestNumberEstimate}),
+}));
+
+const useChatStore = create((set) => ({
+  messages: [],
+  stompClient: null,
+  roomId: null,
+  connected: false,
+
+  setMessages: (newMessages) => set((state) => ({ messages: [...state.messages, ...newMessages] })),
+  setStompClient: (client) => set({ stompClient: client }),
+  setRoomId: (id) => set({ roomId: id }),
+  setConnected: (status) => set({ connected: status }),
+  clearMessages: () => set({ messages: [] }),
 }));
 
 const store = {
@@ -121,6 +140,7 @@ const store = {
   useEndPointStore,
   useLoginStore,
   usePurchaserMypageStore,
+  useChatStore,
 };
 
 export default store;
