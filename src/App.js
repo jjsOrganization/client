@@ -67,7 +67,7 @@ const App = () => {
             <Route path="/reform" element={<Reform />} />
             <Route path="/PurchaserInfo" element={<PurchaserInfo />} />
             <Route path="/PurchaserReformInfo/:estimateNumber" element={<PurchaserReformInfo />} />
-            <Route path="/PurchaserMyPage" element={<PurchaserMyPage />} />
+            <Route path="/PurchaserMyPage" element={<Test />} />
             <Route path="/reformCompleted/:progressNumber" element={<ReformCompleted />} />
             <Route path="/Mypage/PurchaserInfoEdit" element={<PurchaserInfoEdit />} />
             <Route path="/Mypage/PurchaserInfoEdit/PurchaserPNumberEdit" element={<PurchaserPNumberEdit />} />
