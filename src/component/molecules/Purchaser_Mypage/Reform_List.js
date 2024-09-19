@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import store from "../../../store.js";
+import { getAxios } from "../../Axios.js";
 
 const ReformList = ({
   purchaserReformProducts = [],
@@ -12,11 +13,13 @@ const ReformList = ({
   estimateReject,
   estimateNumber,
 }) => {
+  const { accessToken } = store.useTokenStore();
   const { setRequestN, setChatOpen } = store.usePurchaserMypageStore();
   let navigate = useNavigate();
 
   const [clickedProducts, setClickedProducts] = useState({});
   const [productIsNull, setProductIsNull] = useState({});
+  const [listData, setListData] = useState({});
 
   const handleDetailClick = async (productId, event) => {
     const response = await fetchEstimateData(productId, event);
@@ -33,6 +36,38 @@ const ReformList = ({
     }));
   };
 
+  const listForRequest = async (requestNumber) => {
+    try {
+      const response = await getAxios(
+        `/estimate/purchaser/estimateForm/${requestNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const status = response.data.data.estimateStatus;
+      return status;
+    } catch (error) {
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      const newListData = {};
+      for (let product of purchaserReformProducts) {
+        const status = await listForRequest(product.id);
+        newListData[product.id] = status;
+      }
+      setListData(newListData);
+    };
+
+    if (purchaserReformProducts.length > 0) {
+      fetchListData();
+    }
+  }, [purchaserReformProducts]);
+
   return (
     <div>
       <div className="purchaserReformedProduct">
@@ -40,95 +75,108 @@ const ReformList = ({
         <hr />
         {purchaserReformProducts
           .slice(0, showMoreForReform ? undefined : 2)
-          .map((product) => (
-            <div key={product.id}>
-              <h5>리폼 의뢰를 요청한 디자이너 : {product.designerName}</h5>
-              <img
-                src={`${product.requestImg[0].imgUrl}`}
-                alt={product.name}
-                onLoad={() => {
-                  fetchEstimateData(product.id);
-                }}
-              />
-              <p>요청부위 : {product.requestPart}</p>
-              <p>요청사항 : {product.requestInfo}</p>
-              <p>가격 : {product.requestPrice}원</p>
-              <p>상태 : {product.requestStatus}</p>
-              <p>
-                견적서 확인 :
-                {product.requestStatus === "REQUEST_WAITING" && (
-                  <>
-                    {clickedProducts[product.id] ? (
-                      productIsNull[product.id] ? (
-                        <p>견적서 작성 중</p>
-                      ) : (
-                        <>
-                          <button
-                            className="OrderedBTN"
-                            onClick={() => {
-                              estimateAccept();
-                            }}
-                          >
-                            수락
-                          </button>
-
-                          <button
-                            className="OrderedBTN"
-                            onClick={() => {
-                              estimateReject();
-                            }}
-                          >
-                            거절
-                          </button>
-                        </>
-                      )
-                    ) : (
+          .map((product) => {
+            const productStatus = listData[product.id];
+            return (
+              <div key={product.id}>
+                <h5>리폼 의뢰를 요청한 디자이너 : {product.designerName}</h5>
+                <img
+                  src={`${product.requestImg[0].imgUrl}`}
+                  alt={product.name}
+                  onLoad={() => {
+                    fetchEstimateData(product.id);
+                  }}
+                />
+                <p>요청부위 : {product.requestPart}</p>
+                <p>요청사항 : {product.requestInfo}</p>
+                <p>가격 : {product.requestPrice}원</p>
+                <p>
+                  견적서 확인 :
+                  {productStatus === "REQUEST_WAITING" && (
+                    <>
                       <button
                         className="OrderedBTN"
-                        onClick={(event) => handleDetailClick(product.id, event)}
+                        onClick={(event) =>
+                          handleDetailClick(product.id, event)
+                        }
                       >
                         자세히
                       </button>
-                    )}
-                  </>
-                )}
-                {product.requestStatus === "REQUEST_ACCEPTED" && (
+                      <button
+                        className="OrderedBTN"
+                        onClick={() => {
+                          estimateAccept();
+                        }}
+                      >
+                        수락
+                      </button>
+
+                      <button
+                        className="OrderedBTN"
+                        onClick={() => {
+                          estimateReject();
+                        }}
+                      >
+                        거절
+                      </button>
+                    </>
+                  )}
+                  <div>
+                  {productStatus === "REQUEST_ACCEPTED" && (
+                    <>
+                      <div>
+                        <button
+                          className="OrderedBTN"
+                          onClick={(event) =>
+                            handleDetailClick(product.id, event)
+                          }
+                        >
+                          자세히
+                        </button>
+                      </div>
+                    </>
+                  )}
+                  </div>
+                  {productStatus === null && (
+                    <p>디자이너가 견적서를 작성중입니다.</p>
+                  )}
+                </p>
+                <div>
+                  {productStatus === "REQUEST_ACCEPTED" && (
+                    <>
+                      <div>
+                        <p>
+                          1대1 채팅 :{" "}
+                          <button
+                            className="OrderedBTN"
+                            onClick={() => {
+                              setRequestN(product.id);
+                              setChatOpen(true);
+                            }}
+                          >
+                            시작
+                          </button>
+                        </p>
+                      </div>
+                    </>
+                  )}
+                  </div>
+
+                <p>
+                  리폼 현황 :
                   <button
+                    onClick={() => {
+                      navigate(`/ConfigurationManagement/${estimateNumber}`);
+                    }}
                     className="OrderedBTN"
-                    onClick={(event) => handleDetailClick(product.id, event)}
                   >
                     자세히
                   </button>
-                )}
-              </p>
-
-              <p>
-                1대1 채팅 :{" "}
-                <button
-                  className="OrderedBTN"
-                  onClick={() => {
-                    setRequestN(product.id);
-                    setChatOpen(true);
-                  }}
-                >
-                  시작
-                </button>
-              </p>
-
-              <p>
-                리폼 현황 :
-                <button
-                  onClick={() => {
-                    navigate(`/ConfigurationManagement/${estimateNumber}`);
-                  }}
-                  className="OrderedBTN"
-                >
-                  자세히
-                </button>
-              </p>
-              <hr />
-            </div>
-          ))}
+                </p>
+                <hr />
+              </div>
+            );
+          })}
         {!showMoreForReform && (
           <button className="OrderedMoreBTN" onClick={handleShowMoreForReform}>
             더보기
