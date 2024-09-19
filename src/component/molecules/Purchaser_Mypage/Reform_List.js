@@ -11,7 +11,6 @@ const ReformList = ({
   requestNumberEstimate,
   estimateAccept,
   estimateReject,
-  estimateNumber,
 }) => {
   const { accessToken } = store.useTokenStore();
   const { setRequestN, setChatOpen } = store.usePurchaserMypageStore();
@@ -20,6 +19,7 @@ const ReformList = ({
   const [clickedProducts, setClickedProducts] = useState({});
   const [productIsNull, setProductIsNull] = useState({});
   const [listData, setListData] = useState({});
+  const [estimateNumbers, setEstimateNumbers] = useState({});
 
   const handleDetailClick = async (productId, event) => {
     const response = await fetchEstimateData(productId, event);
@@ -53,16 +53,40 @@ const ReformList = ({
     }
   };
 
+  const listForEstimate = async (requestNumber) => {
+    try {
+      const response = await getAxios(
+        `/estimate/purchaser/estimateForm/${requestNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const estimateNumber = response.data.data.estimateNumber;
+      return estimateNumber;
+    } catch (error) {
+      return null;
+    }
+  };
+
   useEffect(() => {
     const fetchListData = async () => {
       const newListData = {};
+      const newEstimateNumbers = {};
+  
       for (let product of purchaserReformProducts) {
         const status = await listForRequest(product.id);
+        const estimateNumber = await listForEstimate(product.id);
+  
         newListData[product.id] = status;
+        newEstimateNumbers[product.id] = estimateNumber;
       }
+  
       setListData(newListData);
+      setEstimateNumbers(newEstimateNumbers);
     };
-
+  
     if (purchaserReformProducts.length > 0) {
       fetchListData();
     }
@@ -77,6 +101,7 @@ const ReformList = ({
           .slice(0, showMoreForReform ? undefined : 2)
           .map((product) => {
             const productStatus = listData[product.id];
+            const number = listForEstimate(product.id);
             return (
               <div key={product.id}>
                 <h5>리폼 의뢰를 요청한 디자이너 : {product.designerName}</h5>
@@ -166,7 +191,7 @@ const ReformList = ({
                   리폼 현황 :
                   <button
                     onClick={() => {
-                      navigate(`/ConfigurationManagement/${estimateNumber}`);
+                      navigate(`/ConfigurationManagement/${estimateNumbers[product.id]}`);
                     }}
                     className="OrderedBTN"
                   >
