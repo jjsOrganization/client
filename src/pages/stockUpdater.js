@@ -8,7 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { putAxios } from "../component/Axios.js";
 import { ImgUpload } from "../component/molecules/imgUpload.js";
 import { Input_Label } from "../component/molecules/Input_Label.js";
-import { TailWindDropdown } from "../component/organism/DropDown.js";
+import axiosInstance from "../component/jwt.js";
+import { Listbox, Transition } from '@headlessui/react'
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import { PhotoIcon } from '@heroicons/react/24/solid'
+
 
 function StockUpdater() {
   let { productid } = useParams();
@@ -63,6 +67,13 @@ function StockUpdater() {
     setImgFiles(newImgFiles);
     setImg(newImg);
   }
+  const dropdownRef = useRef(null);
+  const handleDropdownToggle = (open) => {
+    if (open && dropdownRef.current) {
+      // 드롭다운이 열릴 때 스크롤 조정
+      dropdownRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  };
 
   const thumbnailImageUpload = (event) => {
     const file = event.target.files[0];
@@ -143,15 +154,65 @@ function StockUpdater() {
           </div>
         </div>
 
+        
         <div className="mt-6 flex justify-between items-center">
-          <TailWindDropdown
-          handleCategoryChange = {handleCategoryChange}
-          categoryId = {categoryId}
-          selectedCategory = {selectedCategory}
-          setSelectedCategory = {setSelectedCategory}
-          setCategoryId = {setCategoryId}
-          dropdownMenu = {dropdownMenu}
-          />
+          <div>
+            <Listbox value={selectedCategory} onChange={handleCategoryChange}>
+              {({ open }) => (
+                <>
+                  <div className="relative mt-2">
+                    <Listbox.Button className="relative cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6" style={{ width: '120px' }}>
+                      <span className="block truncate">{selectedCategory}</span>
+                      <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                        <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                      </span>
+                    </Listbox.Button>
+                    <Transition
+                      show={open}
+                      as={Fragment}
+                      leave="transition ease-in duration-100"
+                      leaveFrom="opacity-100"
+                      leaveTo="opacity-0"
+                      afterEnter={() => handleDropdownToggle(open)}
+                    >
+                      <Listbox.Options className="list-none absolute z-10 mt-1 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm pl-2 " style={{ width: '120px' }} ref={dropdownRef}>
+                        {dropdownMenu.map((category, index) => (
+                          <Listbox.Option
+                            key={index}
+                            className={({ active }) =>
+                              classNames(
+                                active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                                'relative cursor-default select-none py-2 pl-2 pr-9'
+                              )
+                            }
+                            value={category}
+                          >
+                            {({ selected, active }) => (
+                              <>
+                                <span className={classNames(selected ? 'font-semibold' : 'font-normal', 'block truncate')}>
+                                  {category}
+                                </span>
+                                {selected ? (
+                                  <span
+                                    className={classNames(
+                                      active ? 'text-white' : 'text-indigo-600',
+                                      'absolute inset-y-0 right-0 flex items-center pr-4'
+                                    )}
+                                  >
+                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                  </span>
+                                ) : null}
+                              </>
+                            )}
+                          </Listbox.Option>
+                        ))}
+                      </Listbox.Options>
+                    </Transition>
+                  </div>
+                </>
+              )}
+            </Listbox> 
+          </div>
           <div className="flex gap-x-6">
             <div 
               type="button" 
@@ -166,18 +227,21 @@ function StockUpdater() {
               type="button"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               onClick={() => {
-                stockHandler()
+                stockHandler();
               }}
             >
               수정
             </div>
           </div>
-        </div>
+          </div>
       </form>
     </div>
   );
 }
 
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
 
 
 export default StockUpdater;
