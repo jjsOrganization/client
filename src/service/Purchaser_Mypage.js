@@ -11,7 +11,11 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { useMutation, useQuery } from "react-query";
 import store from "../store.js";
+<<<<<<< HEAD
 import { useTokenStore } from "../store.js";
+=======
+import useTokenStore from "../store.js"
+>>>>>>> c3c01d38077123f2689334153e12bb0c890246d3
 
 const Purchaser_Mypage = () => {
   let navigate = useNavigate();
@@ -37,7 +41,9 @@ const Purchaser_Mypage = () => {
     messageData,
     estimateNumber,
     requestNumberEstimate,
+    isNull,
 
+    setIsNull,
     setRequestN,
     setOrderList,
     setOpen,
@@ -57,6 +63,9 @@ const Purchaser_Mypage = () => {
     setEstimateNumber,
     setRequestNumberEstimate,
   } = store.usePurchaserMypageStore();
+
+  const {accessToken} = store.useTokenStore();
+
 
   const {
     isLoading: isPurchaseLoading,
@@ -166,7 +175,15 @@ const Purchaser_Mypage = () => {
         deliveryRequest: "",
       };
 
+<<<<<<< HEAD
       postAxios(`/cart/purchaser/order`, orderDTO, {});
+=======
+      postAxios(`/cart/purchaser/order`, orderDTO, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+>>>>>>> c3c01d38077123f2689334153e12bb0c890246d3
 
       return selectedProducts;
     },
@@ -183,6 +200,12 @@ const Purchaser_Mypage = () => {
   const { mutate: handleDelete } = useMutation({
     mutationFn: (productId) => {
       deleteAxios(`/cart/purchaser/delete/${productId}`, {
+<<<<<<< HEAD
+=======
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+>>>>>>> c3c01d38077123f2689334153e12bb0c890246d3
       });
       return productId;
     },
@@ -241,21 +264,24 @@ const Purchaser_Mypage = () => {
     data: fetchRoomData,
     error: fetchRoomDataError,
   } = useQuery(
-    ['fetchRoomData', requestN],
+    ["fetchRoomData", requestN],
     async () => {
-      const response = await getAxios('/chatroom', {
+      const response = await getAxios("/chatroom", {
         headers: {
+<<<<<<< HEAD
           'Content-Type': 'multipart/form-data',
+=======
+          "Content-Type": "multipart/form-data",
+>>>>>>> c3c01d38077123f2689334153e12bb0c890246d3
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      return response
+      return response;
     },
     {
       onSuccess: (response) => {
         const roomDataArray = response.data.data;
         for (const roomData of roomDataArray) {
-          console.log(roomData);
           if (requestN === roomData.requestId) {
             setPurchaserEmail(roomData.purchaserEmail);
             setRoomId(roomData.roomId);
@@ -305,29 +331,6 @@ const Purchaser_Mypage = () => {
     });
   };
 
-  // const {
-  //   isLoading: isFetchMessageDataLoading,
-  //   data: fetchMessageDa,
-  //   error: fetchMessageDataError,
-  // } = useQuery(
-  //   ['fetchMessageDa', roomId],
-  //   async () => {
-  //     const response = await getAxios(`/chatroom/${roomId}`, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-  //       },
-  //     });
-  //     return response
-  //   },
-  //   {
-  //     onSuccess: (response) => {
-  //       console.log(response);
-  //       setMessageData(response.data.data);
-  //     },
-  //   }
-  // );
-
   const fetchMessageData = async () => {
     try {
       const response = await getAxios(`/chatroom/${roomId}`, {
@@ -368,29 +371,6 @@ const Purchaser_Mypage = () => {
     }
   };
 
-  // const {
-  //   isLoading: isFetchEstimateDataLoading,
-  //   data: fetchEstimateData,
-  //   error: fetchEstimateDataError,
-  // } = useQuery(
-  //   ['fetchEstimateData', requestNumber],
-  //   async () => {
-  //     const response = await getAxios(`/estimate/purchaser/estimateForm/${requestNumber}`, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-  //       },
-  //     });
-  //     return response
-  //   },
-  //   {
-  //     onSuccess: (response) => {
-  //       console.log(response);
-  //       setMessageData(response.data.data);
-  //     },
-  //   }
-  // );
-
   const fetchEstimateData = async (requestNumber, event) => {
     try {
       const response = await getAxios(
@@ -402,8 +382,14 @@ const Purchaser_Mypage = () => {
         }
       );
       const data = response.data.data;
-      setEstimateNumber(data.estimateNumber);
-      setRequestNumberEstimate(data.requestNumber);
+
+      if (data !== null) {
+        setIsNull(false); // 견적서가 있는 경우
+        setEstimateNumber(data.estimateNumber);
+        setRequestNumberEstimate(data.requestNumber);
+      } else {
+        setIsNull(true); // 견적서가 없는 경우
+      }
 
       if (!event) {
         return response;
@@ -424,7 +410,9 @@ const Purchaser_Mypage = () => {
       } else {
         alert("견적서가 아직 제출되지 않았습니다.");
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("견적서 데이터를 가져오는 중 오류 발생:", error);
+    }
   };
 
   const estimateReject = async () => {

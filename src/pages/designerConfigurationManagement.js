@@ -7,7 +7,7 @@ import UserDivision from '../component/molecules/UserDivision.js';
 import ImageForm from '../component/molecules/ImgForm.js';
 import { useQuery } from 'react-query'  
 import { getAxios } from '../component/Axios.js';
-import {useProgressStore} from '../store.js';
+import store from '../store.js';
 
 function ConfigurationManagement(){
     let {estimateId} = useParams();
@@ -19,8 +19,8 @@ function ConfigurationManagement(){
     const [title, setTitle] = useState();
     const [explanation, setExplanation] = useState();
     const Endpoint = 'https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/'
-    const progressNumber = useProgressStore((state) => state.progressNumber);
-    const setProgressNumber = useProgressStore((state) => state.setProgressNumber);
+    const progressNumber = store.useProgressStore((state) => state.progressNumber);
+    const setProgressNumber = store.useProgressStore((state) => state.setProgressNumber);
     const [check, setCheck] = useState();
     let navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);

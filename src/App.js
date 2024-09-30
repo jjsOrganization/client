@@ -5,7 +5,7 @@ import PurchaserAddressEdit from "./component/PurchaserAddressEdit.js";
 import PurchaserPasswordEdit from "./component/PurchaserPasswordEdit.js";
 import PurchaserPNumberEdit from "./component/PurchaserPNumberEdit.js";
 import PurchaserInfoEdit from "./pages/PurchaserInfoEdit.js";
-import PurchaserMyPage from "./pages/PurchaserMyPage.js";
+import PurchaserMyPage from "./service/Purchaser_Mypage.js";
 import PurchaserInfo from "./pages/PurchaserInfo.js";
 import Login from "./pages/Login.js";
 import Visual from "./pages/Visual.js";
@@ -28,7 +28,7 @@ import PurchaserReformInfo from "./pages/PurchaserReformInfo.js";
 import ConfigurationManagement from "./pages/designerConfigurationManagement.js";
 import ReformCompleted from "./pages/reformComplete.js";
 import DesignerSelect from "./pages/DesignerSelect.js";
-import Test from "./service/Purchaser_Mypage.js";
+import T1 from "./pages/PurchaserMyPage.js";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const App = () => {
@@ -77,7 +77,7 @@ const App = () => {
             <Route path="/Mypage/Designer/Estimate/:requestNumber" element={<DesignerWriteEstimate />} />
             <Route path="ConfigurationManagement/:estimateId" element={<ConfigurationManagement />} />
             <Route path="designer/:designerName" element={<DesignerSelect />} />
-            <Route path="/test" element={<Test />} />
+            {/* <Route path="/test" element={<Test />} /> */}
           </Routes>
         </div>
       </div>
