@@ -22,6 +22,7 @@ function Main(){
         const fetchData = async () => {
             try {
                 const response = await axiosInstance.get('/product/all');
+                console.log(response)
                 const resopnseLikeDesc = await axiosInstance.get(`/product/all/like/desc`,)
                     setProductInfo(response.data);
                     setProductDesc(resopnseLikeDesc.data.data);

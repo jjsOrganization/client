@@ -202,7 +202,7 @@ export function DesignerMypage() {
   }, [chatInfo, roomExist]);
 
   const connect = () => {
-    const socket = new SockJS("석수동");
+    const socket = new SockJS("http://3.38.128.50:8080/ws/chat");
     const stompClient = Stomp.over(socket);
 
     if (stompClient && stompClient.connected) {

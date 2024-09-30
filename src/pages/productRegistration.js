@@ -73,8 +73,9 @@ function ProductUpdate(props) {
     }
     setImgFiles(newImgFiles);
     setImg(newImg);
+    console.log(newImgFiles)
   }
-
+  
   const handleDropdownToggle = (open) => {
     if (open && dropdownRef.current) {
       // 드롭다운이 열릴 때 스크롤 조정

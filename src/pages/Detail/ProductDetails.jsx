@@ -23,8 +23,7 @@ function ProductDetails({
     const ColorList = ["검정", "아이보리", "그레이", "챠콜"];
     const size = "Size";
     const color = "Color";
-    
-    const [salePrice, setSalePrice] = useState();
+    const [salePrice, setSalePrice] = useState(0);
     const [productLike, setProductLike] = useState();
     const [likeState, setLikeState] = useState();
     const [choiceSize, setChoiceSize] = useState(null);
@@ -40,7 +39,7 @@ function ProductDetails({
         } catch (error) {
         }
     };
-
+    
     useEffect(() => {
         setSalePrice(productDetailInfo.price * 0.75)
         productLikeGet();
@@ -149,7 +148,7 @@ function ProductDetails({
             </p>
             <p style={{ fontWeight: "800", color: "red" }}>25%</p>
             <p style={{ fontWeight: "bold" }}>
-              할인가 : {salePrice }{" "}
+              할인가 : {salePrice.toLocaleString() }{" "}
             </p>
             <div className="productLikeContainer" style={{ marginTop: "-3%" }}>
               <LikeComponent
@@ -202,7 +201,7 @@ function ProductDetails({
           <div className="buyInfo" style={{ marginLeft: "7%" }}>
             <h4>제품명 : {productDetailInfo.productName}</h4>
             <p style={{ marginBottom: "2%" }}>
-              결제 예정 금액 : {}{" "}
+              결제 예정 금액 : {}{`${(salePrice * amount).toLocaleString()}`}
             </p>
             <p>수량 : {amount}</p>
             <div className="selectOpt">
