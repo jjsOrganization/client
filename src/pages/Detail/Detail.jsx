@@ -1,7 +1,5 @@
 import React from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Modal from "react-modal";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from 'react-query';
 
@@ -45,34 +43,7 @@ const DetailWrapper = styled.div`
   margin : 0 15% 0 15%
 `
 
-/*<Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          style={{
-            display : 'block',
-            overlay: { backgroundColor: "rgba(0, 0, 0, 0.4)", zIndex: 1000 },
-            content: {
-              width: "35%",
-              height: "20%",
-              margin: "auto",
-              border: "3px solid",
-              borderRadius: "5px",
-              zIndex: 1001,
-              borderColor: "#374d9a",
-            },
-          }}>
-              <TailWindButton
-                className = {`${borderSkyBlue} ml-20 mt-10`}
-                onClick = {closeModal} >
-                쇼핑 계속하기
-              </TailWindButton>
-
-              <TailWindButton
-                className={`${borderSkyBlue} ml-10`}
-                onClick = {() => {navigate('/PurchaserMyPage')}}>
-                장바구니 이동
-              </TailWindButton>
-          </Modal>*/
+/**/
 
 
 export default Detail;

@@ -2,10 +2,13 @@ import { useQuery } from 'react-query'
 import styled from "styled-components";
 import { useNavigate} from 'react-router-dom';
 import { useEffect, useState } from "react";
+import Modal from "react-modal";
 
 import axiosInstance from "../../component/jwt.js"
 import Dropdown from "../../component/dropdown.js"
 import {LikeComponent} from "../../component/likeComponent.js"
+import { TailWindButton } from '../../component/atoms/Button.js';
+import { borderSkyBlue } from '../../styles/buttonStyle.js';
 
 
 function ProductDetails({
@@ -37,14 +40,10 @@ function ProductDetails({
         } catch (error) {
         }
     };
-    
-    const getAllProductInfo = () => {
-        return Promise.all([productLikeGet()]);
-    };
 
     useEffect(() => {
         setSalePrice(productDetailInfo.price * 0.75)
-        getAllProductInfo();
+        productLikeGet();
     }, []);
 
     const memberRoleCheck = (els) => {
@@ -221,9 +220,39 @@ function ProductDetails({
             </div>
           </div>
         </div>
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          style={{
+            display : 'block',
+            overlay: { backgroundColor: "rgba(0, 0, 0, 0.4)", zIndex: 1000 },
+            content: {
+              width: "35%",
+              height: "20%",
+              margin: "auto",
+              border: "3px solid",
+              borderRadius: "5px",
+              zIndex: 1001,
+              borderColor: "#374d9a",
+            },
+          }}>
+              <TailWindButton
+                className = {`${borderSkyBlue} ml-16 mt-10`}
+                onClick = {closeModal} >
+                쇼핑 계속하기
+              </TailWindButton>
+
+              <TailWindButton
+                className={`${borderSkyBlue} ml-16`}
+                onClick = {() => {navigate('/PurchaserMyPage')}}>
+                장바구니 이동
+              </TailWindButton>
+</Modal>
     </div>
     )
 }
+
+
 
 let BasicBtn = styled.button`
   padding: 1%;

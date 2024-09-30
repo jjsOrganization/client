@@ -11,10 +11,16 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { useMutation, useQuery } from "react-query";
 import store from "../store.js";
+<<<<<<< HEAD
+import { useTokenStore } from "../store.js";
+=======
 import useTokenStore from "../store.js"
+>>>>>>> c3c01d38077123f2689334153e12bb0c890246d3
 
 const Purchaser_Mypage = () => {
   let navigate = useNavigate();
+  const accessToken = useTokenStore((state) => state.accessToken)
+  
   const [customerShoppingBasket, setCustomerShoppingBasket] = useState([]);
   const {
     requestN,
@@ -169,11 +175,15 @@ const Purchaser_Mypage = () => {
         deliveryRequest: "",
       };
 
+<<<<<<< HEAD
+      postAxios(`/cart/purchaser/order`, orderDTO, {});
+=======
       postAxios(`/cart/purchaser/order`, orderDTO, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
+>>>>>>> c3c01d38077123f2689334153e12bb0c890246d3
 
       return selectedProducts;
     },
@@ -190,9 +200,12 @@ const Purchaser_Mypage = () => {
   const { mutate: handleDelete } = useMutation({
     mutationFn: (productId) => {
       deleteAxios(`/cart/purchaser/delete/${productId}`, {
+<<<<<<< HEAD
+=======
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
+>>>>>>> c3c01d38077123f2689334153e12bb0c890246d3
       });
       return productId;
     },
@@ -255,7 +268,11 @@ const Purchaser_Mypage = () => {
     async () => {
       const response = await getAxios("/chatroom", {
         headers: {
+<<<<<<< HEAD
+          'Content-Type': 'multipart/form-data',
+=======
           "Content-Type": "multipart/form-data",
+>>>>>>> c3c01d38077123f2689334153e12bb0c890246d3
           Authorization: `Bearer ${accessToken}`,
         },
       });
@@ -469,6 +486,7 @@ const Purchaser_Mypage = () => {
         handlePurchaserInfoEdit={handlePurchaserInfoEdit}
         postMessage={postMessage}
       />
+      <button onClick = {console.log(accessToken)}>dad</button>
     </div>
   );
 };

@@ -22,7 +22,7 @@ import Detail from "./pages/Detail/Detail.jsx";
 import ProductUpdate from "./pages/productRegistration.js";
 import StockUpdater from "./pages/stockUpdater.js";
 import MyPages from "./pages/mypage/mypage.js";
-import Main from "./pages/main.js";
+import Main from "./pages/Main/main.jsx";
 import DesignerWriteEstimate from "./component/DesignerWriteEstimate.js";
 import PurchaserReformInfo from "./pages/PurchaserReformInfo.js";
 import ConfigurationManagement from "./pages/designerConfigurationManagement.js";
