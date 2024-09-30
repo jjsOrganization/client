@@ -32,6 +32,10 @@ function Main(){
         fetchData();
     }, []);
 
+    if(!productInfo){
+        return(<div>데이터 로드중..</div>)
+    }
+
     return(
     <div>
         <div>

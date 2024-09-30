@@ -11,7 +11,7 @@ function ProductGrid(props){
         props.product[i].imgUrl ?
         (<img width = '100%' height = '70%' src = {props.Endpoint + props.product[i].imgUrl} style = {{marginRight : '5%'}} onClick={() => { props.navigate(`detail/${props.product[i].id}`) }}/>) : 
         (<p onClick={() => { props.navigate(`detail/${props.product[i].id}`) }} > 이미지 준비중 </p>)}
-        <h4>{props.product[i].productName}</h4>
+        <h4 style = {{marginTop: '10px'}}>{props.product[i].productName}</h4>
         </div>
         )})
     }

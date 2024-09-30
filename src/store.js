@@ -1,7 +1,7 @@
 import create from "zustand";
 import { persist } from 'zustand/middleware';
 
-const useProgressStore = create((set) => ({
+export const useProgressStore = create((set) => ({
   progressNumber: null,
   setProgressNumber: (progress) => set({ progressNumber: progress }),
 }));

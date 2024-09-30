@@ -7,7 +7,7 @@ import UserDivision from '../component/molecules/UserDivision.js';
 import ImageForm from '../component/molecules/ImgForm.js';
 import { useQuery } from 'react-query'  
 import { getAxios } from '../component/Axios.js';
-import useProgressStore from '../store.js';
+import {useProgressStore} from '../store.js';
 
 function ConfigurationManagement(){
     let {estimateId} = useParams();

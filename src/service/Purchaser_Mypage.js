@@ -11,9 +11,12 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { useMutation, useQuery } from "react-query";
 import store from "../store.js";
+import { useTokenStore } from "../store.js";
 
 const Purchaser_Mypage = () => {
   let navigate = useNavigate();
+  const accessToken = useTokenStore((state) => state.accessToken)
+  
   const [customerShoppingBasket, setCustomerShoppingBasket] = useState([]);
   const {
     requestN,
@@ -65,7 +68,7 @@ const Purchaser_Mypage = () => {
       getAxios("/order/purchaser-list", {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       }),
     onSuccess: (response) => {
@@ -82,7 +85,7 @@ const Purchaser_Mypage = () => {
     queryFn: () =>
       getAxios("/reform/purchaser/requests/all", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       }),
     onSuccess: (response) => {
@@ -102,7 +105,7 @@ const Purchaser_Mypage = () => {
     queryFn: () =>
       getAxios("/cart/purchaser", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       }),
     onSuccess: (response) => {
@@ -163,11 +166,7 @@ const Purchaser_Mypage = () => {
         deliveryRequest: "",
       };
 
-      postAxios(`/cart/purchaser/order`, orderDTO, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
+      postAxios(`/cart/purchaser/order`, orderDTO, {});
 
       return selectedProducts;
     },
@@ -184,9 +183,6 @@ const Purchaser_Mypage = () => {
   const { mutate: handleDelete } = useMutation({
     mutationFn: (productId) => {
       deleteAxios(`/cart/purchaser/delete/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
       });
       return productId;
     },
@@ -250,7 +246,7 @@ const Purchaser_Mypage = () => {
       const response = await getAxios('/chatroom', {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
       return response
@@ -272,7 +268,7 @@ const Purchaser_Mypage = () => {
   );
 
   const headers = {
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    Authorization: `Bearer ${accessToken}`,
   };
 
   useEffect(() => {
@@ -336,7 +332,7 @@ const Purchaser_Mypage = () => {
     try {
       const response = await getAxios(`/chatroom/${roomId}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
       setMessageData(response.data.data);
@@ -401,7 +397,7 @@ const Purchaser_Mypage = () => {
         `/estimate/purchaser/estimateForm/${requestNumber}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -437,7 +433,7 @@ const Purchaser_Mypage = () => {
         `/estimate/purchaser/${estimateNumber}/reject`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -451,7 +447,7 @@ const Purchaser_Mypage = () => {
         `/estimate/purchaser/${estimateNumber}/accept`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -502,6 +498,7 @@ const Purchaser_Mypage = () => {
         handlePurchaserInfoEdit={handlePurchaserInfoEdit}
         postMessage={postMessage}
       />
+      <button onClick = {console.log(accessToken)}>dad</button>
     </div>
   );
 };
