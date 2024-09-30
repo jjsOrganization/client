@@ -20,7 +20,7 @@ function Reform() {
   const searchParams = new URLSearchParams(location.search);
   const productId = searchParams.get("productId");
   let navigate = useNavigate();
-
+  
   const encodeImageFile = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -45,7 +45,7 @@ function Reform() {
   }
 
   const cancelHandler = () => {
-    navigate("/detail:productid");
+    navigate(`/detail/${productId}`);
   }
 
   const registerHandler = async () => {

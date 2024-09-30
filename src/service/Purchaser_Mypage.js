@@ -462,7 +462,6 @@ const Purchaser_Mypage = () => {
         handlePurchaserInfoEdit={handlePurchaserInfoEdit}
         postMessage={postMessage}
       />
-      <button onClick = {console.log(accessToken)}>dad</button>
     </div>
   );
 };
