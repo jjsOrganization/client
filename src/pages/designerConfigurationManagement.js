@@ -135,7 +135,7 @@ function ConfigurationManagement(){
                 <div className = 'beforeImage' style = {{margin : '0% 20% 0 15%'}}>
                     <h4>리폼 전 이미지</h4>
                     <div style={{ border: '2px solid #ccc', borderRadius: '10px', padding: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', textAlign: 'center' }}>
-                        <img src = {Endpoint + beforeImage} height = '300px' width = '100%'></img>
+                        <img src = {Endpoint + beforeImage} height = '400px' width = '100%'></img>
                     </div>
                 </div>
                 

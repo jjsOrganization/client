@@ -43,10 +43,10 @@ function Main(){
             <TopBar />
         </div>
         <div className = 'mainContainer' style ={{marginLeft: '20%', marginRight: '20%'}}>
-            <div>
+            <div style = {{marginBottom : '10px'}}>
                 <CarouselComponent product = {productInfo}/>
             </div>
-            <div className="min-h-[300px] h-pull mainProduct">
+            <div className="min-h-[300px] h-pull mainProduct ">
                 {sort ?
                     <div>
                     <TailWindButton className = 'bg-white border-0'>✔최신순</TailWindButton><TailWindButton className = 'bg-white border-0' onClick = {() => {setSort(!sort)}}>인기순</TailWindButton>
@@ -68,12 +68,10 @@ function Main(){
                 onClick = {() => {navigate('/products')}} >
                     더보기 
                 </button>
+                <hr style = {{border : '1px solid gray'}}/>
                 </ButtonWrapper>
             </div>
-            <div className = 'designerCarousel'>
-                <h4 style = {{fontWeight : '700',textAlign : 'center', marginBottom : '2%'}}>인기 디자이너</h4>
-                <CarouselComponent product = {productInfo}/>
-            </div>
+            
         </div>
     </div>
     )
