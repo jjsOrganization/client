@@ -8,8 +8,12 @@ import { TailWindButton } from "../component/atoms/Button.js";
 import { TailWindDropdown } from "../component/organism/DropDown.js";
 import {Card,CardBody,CardHeader,Typography,Tooltip,} from "@material-tailwind/react";
 import { PencilIcon } from "@heroicons/react/24/solid";
+import store from "../store.js";
+import { useTokenStore } from "../store.js";
+
 
 export function DesignerMypage() {
+  const accessToken = useTokenStore((state) => state.accessToken)
   const [isRegister, setIsRegister] = useState(true);
   const [designerProfile, setDesignerProfile] = useState([]);
   const [designerPortfolioResult, setDesignerPortfolioresult] = useState([]);
@@ -44,7 +48,7 @@ export function DesignerMypage() {
   }
 
   const headers = {
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    Authorization: `Bearer ${accessToken}`,
   };
 
   const fetchDesignerMypage = async () => {
@@ -64,7 +68,7 @@ export function DesignerMypage() {
       const response = await axiosInstance.get("/product/all", {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
       const data = response.data;
@@ -83,7 +87,7 @@ export function DesignerMypage() {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -106,7 +110,7 @@ export function DesignerMypage() {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -121,7 +125,7 @@ export function DesignerMypage() {
     try {
       const response = await axiosInstance.get(`/chatroom`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
       const roomDataArray = response.data.data;
@@ -149,7 +153,7 @@ export function DesignerMypage() {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -185,7 +189,7 @@ export function DesignerMypage() {
             {
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                Authorization: `Bearer ${accessToken}`,
               },
             }
           );
@@ -221,7 +225,7 @@ export function DesignerMypage() {
     try {
       const response = await axiosInstance.get(`/chatroom/${roomIds}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
       setMessageData(response.data.data);
@@ -285,7 +289,7 @@ export function DesignerMypage() {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -299,7 +303,7 @@ export function DesignerMypage() {
         `/estimate/designer/estimateForm/${requestNumber}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
