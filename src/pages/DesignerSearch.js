@@ -133,7 +133,10 @@ const DesignerSearch = () => {
                       디자이너명 : {designer.designerName}
                     </p>
                     <p style={{ color: "black" }}>
-                      소개 : {designer.explanation}
+                      소개 :{" "}
+                      {designer.explanation.length > 15
+                        ? designer.explanation.substring(0, 15) + "..."
+                        : designer.explanation}
                     </p>
                   </Link>
                 </div>
