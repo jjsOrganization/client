@@ -83,9 +83,9 @@ const ProductList = () => {
   return (
     <div>
       <TopBar />
-      <div className="sortButtons">
-        <button onClick={handleSortByLatest}>최신순</button>
-        <button onClick={handleSortByPopular}>인기순</button>
+      <div className="sortButtons" style={{ height: '35px',display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <button className="bg-transparent h-100 text-black-700 font-semibold  py-2 px-4 border1 border-black-500  rounded" onClick={handleSortByLatest}>최신순</button>
+        <button className="bg-transparent h-100 text-black-700 font-semibold  py-2 px-4 border1 border-black-500  rounded" onClick={handleSortByPopular}>인기순</button>
       </div>
 
       <div className="findProduct">
