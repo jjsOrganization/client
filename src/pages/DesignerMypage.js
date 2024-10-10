@@ -16,6 +16,7 @@ import {
 import { PencilIcon } from "@heroicons/react/24/solid";
 import store from "../store.js";
 import { useTokenStore } from "../store.js";
+import { data } from "autoprefixer";
 
 export function DesignerMypage() {
   const [estimateStatus, setEstimateStatus] = useState([]);
@@ -35,7 +36,7 @@ export function DesignerMypage() {
   const [chatOpen, setChatOpen] = useState(false);
   const [messageData, setMessageData] = useState([]);
   const [reformList, setReformList] = useState();
-  const estimateId = [];
+  const [estimateId, setEstimateId] = useState([]);
   const [dropdownMenu, setDropDownMenu] = useState([
     "리폼 요청",
     "리폼 승인",
@@ -320,7 +321,13 @@ export function DesignerMypage() {
       );
       const data = response.data.data;
       const R = data.estimateStatus;
-      estimateId[Id] = data.estimateNumber;
+      setEstimateId[Id] = data.estimateNumber;
+
+      setEstimateId((prevEstimateId) => ({
+        ...prevEstimateId,
+        [Id]: data.estimateNumber,
+      }));
+
       setEstimateStatus((prevEstimateStatus) => ({
         ...prevEstimateStatus,
         [data.requestNumber]: data.estimateStatus,
@@ -360,7 +367,6 @@ export function DesignerMypage() {
   if (!reformList) {
     return <div>이미지 로드중</div>;
   }
-  console.log(estimateStatus);
   return (
     <div>
       <TopBar />
@@ -487,9 +493,11 @@ export function DesignerMypage() {
                         </div>
                       ) : status === "REQUEST_WAITING" ? (
                         <div>
-                          <h5>견적서가 제출되고 최증승인을 기다리고 있습니다.</h5>
+                          <h5>
+                            견적서가 제출되고 최증승인을 기다리고 있습니다.
+                          </h5>
                         </div>
-                      ):null}
+                      ) : null}
 
                       {/* Dropdown for status changes */}
                       {reform.requestStatus !== "REQUEST_ACCEPTED" &&
