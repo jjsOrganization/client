@@ -115,6 +115,7 @@ const ModifyPortfolio = (props) => {
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-900">포트폴리오 수정</h2>
+            <h3 className="text-base font-semibold leading-7 text-gray-900">이미지는 jpg, png 파일만 가능합니다.</h3>
             <p className="mt-1 text-sm leading-6 text-gray-600">
               등록한 디자이너 포트폴리오 정보가 구매자들에게 나타납니다. 
             </p>
