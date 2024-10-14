@@ -14,8 +14,8 @@ import { Input_Label } from "../component/molecules/Input_Label.js";
 function ProductUpdate(props) {
   const [titleValue, setTitleValue] = useState();
   const [contentValue, setContentValue] = useState();
-  const [priceValue, setPriceValue] = useState();
-  const [amountValue, setAmountValue] = useState();
+  const [priceValue, setPriceValue] = useState(0);
+  const [amountValue, setAmountValue] = useState(0);
   const [thumbnailImage, setThumbnailImage] = useState();
   const [thumbnailImageFile, setThumbnailImageFile] = useState();
   const [imgFiles, setImgFiles] = useState([]);
@@ -31,11 +31,13 @@ function ProductUpdate(props) {
   };
 
   const saveAmount = (event) => {
-    setAmountValue(event.target.value);
+    const numericValue = parseFloat(event.target.value);
+    setAmountValue(numericValue);
   };
 
   const savePrice = (event) => {
-    setPriceValue(event.target.value);
+    const numericValue = parseFloat(event.target.value);
+    setPriceValue(numericValue);
   };
 
   const saveTitle = (event) => {
@@ -84,6 +86,16 @@ function ProductUpdate(props) {
   };
 
   const productRegisterHandler = async () => {
+    if(typeof priceValue !== 'number' ){
+      return alert('가격에는 숫자만 입력이 가능합니다.')
+    }
+    if(typeof amountValue !== 'number' ){
+      return alert('수량에는 숫자만 입력이 가능합니다.')
+    }
+    if(amountValue === 0 || priceValue === 0 || !titleValue || !priceValue  || !amountValue || !categoryId || !selectedCategory || !thumbnailImageFile){
+      return alert('모든 상품 정보를 입력해주세요')
+    }
+
     try {
       const formData = new FormData();
       setContentValue('test');
