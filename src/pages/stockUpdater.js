@@ -30,11 +30,13 @@ function StockUpdater() {
   const dropdownMenu = ["상의","아우터","바지","스커트","원피스","모자",];
 
   const saveAmount = (event) => {
-    setAmountValue(event.target.value);
+    const numericValue = parseFloat(event.target.value);
+    setAmountValue(numericValue);
   };
 
   const savePrice = (event) => {
-    setPriceValue(event.target.value);
+    const numericValue = parseFloat(event.target.value);
+    setPriceValue(numericValue);
   };
 
   const saveTitle = (event) => {
@@ -87,6 +89,16 @@ function StockUpdater() {
   };
 
   const stockHandler = async () => {
+    if(typeof priceValue !== 'number' ){
+      return alert('가격에는 숫자만 입력이 가능합니다.')
+    }
+    if(typeof amountValue !== 'number' ){
+      return alert('수량에는 숫자만 입력이 가능합니다.')
+    }
+    if(amountValue === 0 || priceValue === 0 || !titleValue || !priceValue  || !amountValue || !categoryId || !selectedCategory || !thumbnailImageFile){
+      return alert('모든 상품 정보를 입력해주세요')
+    }
+
     try {
       const formData = new FormData();
       formData.append("productName", titleValue);
@@ -213,6 +225,27 @@ function StockUpdater() {
                 </>
               )}
             </Listbox> 
+            
+          </div>
+          <div className="flex gap-x-6">
+            <div 
+              type="button" 
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={() => {
+                
+              }}
+            >
+              취소
+            </div>
+            <div
+              type="button"
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={() => {
+                stockHandler();
+              }}
+            >
+              수정
+            </div>
           </div>
           </div>
       </form>
