@@ -207,12 +207,9 @@ function ProductDetails({
             <div className="selectOpt">
               {myArray.map(function (choice, index) {
                 return (
-                  <div
-                    className="user-choice"
-                    style={{ w0th: "180px", marginBottom: "10px" }}
-                  >
-                    {choice.size + choice.color}{" "}
-                    <button className="choice-cancel">✖</button>
+                  <div className="user-choice" style={{ w0th: "180px", marginBottom: "10px" }}>
+                    {choice.color} / {choice.size}  
+                    <button onClick={() => { setMyArray(myArray.filter((_, i) => i !== index)); setAmount(amount - 1)}} className="choice-cancel" style={{ background: 'none', border: 'none' }}><img width="15" height="15" src="https://img.icons8.com/ios-glyphs/30/delete-sign.png" alt="delete-sign"/></button>
                   </div>
                 );
               })}
