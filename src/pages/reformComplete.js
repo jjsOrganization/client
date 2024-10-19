@@ -17,10 +17,18 @@ function ReformCompleted() {
     margin: "2% 4% 4% 4%",
 };
 
-  const containerStyle = {
-    display: 'flex',
-    alignItems: 'center'
-  };
+const containerStyle = {
+  display: 'flex',
+  alignItems: 'center', // 세로로 가운데 정렬
+  flexDirection: 'row',
+  padding: '20px'
+};
+
+const textStyle = {
+  display: 'flex',
+  flexDirection: 'column', // 텍스트를 세로로 정렬
+  marginLeft: '10px',
+};
 
   const reformcompleted = async () => {
     try {
@@ -50,9 +58,6 @@ function ReformCompleted() {
     getAllReformInfo();
   }, []);
 
-  console.log(reformData);
-  console.log(detailReformData)
-
   if (!detailReformData) {
     return <div>데이터 로드중...</div>;
   }
@@ -63,14 +68,18 @@ function ReformCompleted() {
       <div className="reformCompleted-Container">
         <Card>
           <Typography variant="h6" color="blue-gray" className="mt-2 ml-8">
-            <h1>UI추후 수정 예정 
-            어캐 만들어야할지 모르겠음...</h1>
+            리폼 전 상품 이미지
           </Typography>
           <CardHeader className="mb-5">
         <div style={containerStyle}> 
+            <div className='imageWrapper' style={{ display: 'flex' }}>
             <img src={Endpoint + reformData.productImgUrl} style={style} alt="Product" />
-            <div>
-                <h3>상품명: {detailReformData.productName}</h3>
+            </div>
+        <div>
+                <div style = {textStyle}>
+                <div style = {{display: 'inline'}}>상품명: {detailReformData.productName}</div>
+                <div style = {{display: 'inline'}}>디자이너: {detailReformData.designerName}</div>
+                </div>
             </div>
         </div>
     </CardHeader>
@@ -79,9 +88,14 @@ function ReformCompleted() {
             고객 요청 
           </Typography>
           <CardHeader>
-            <div style = {{containerStyle}}> 
-              <img src={reformData.reformRequestImgUrl} style={style}></img>
-              <div style = {{display : 'inline'}}>요청사항 : {detailReformData.reformRequestInfo}</div>
+            <div style = {containerStyle}> 
+              <div className='imageWrapper' style={{ display: 'flex' }}>
+                  <img src={reformData.reformRequestImgUrl} style={{width: '300px', height: '300px'}} />
+              </div>
+              
+              <div style = {textStyle}>
+                <div style={{ display: 'inline' }}>요청사항 : {detailReformData.reformRequestInfo}</div>
+              </div>
             </div>
           </CardHeader>
 
@@ -89,18 +103,30 @@ function ReformCompleted() {
             예상 결과물
           </Typography>
           <CardHeader>
-            <div style = {{containerStyle}}>
-              <img src={reformData.estimateImgUrl} style={style}></img>
-              <div style = {{display : 'inline'}}> 리폼 가격 : {detailReformData.price}</div>
-              <div style = {{display : 'inline'}}> 견적서 내용 : {detailReformData.estimateInfo}</div>
+            <div style={containerStyle}>
+              <div className='imageWrapper' style={{ display: 'flex',  }}>
+                <img src={reformData.estimateImgUrl} style={style} />
+              </div>
+              <div style={textStyle}>
+                <div style={{ display: 'inline' }}>리폼 가격 : {detailReformData.price}</div>
+                <div style={{ display: 'inline' }}>견적서 내용 : {detailReformData.estimateInfo}</div>
+              </div>
             </div>
           </CardHeader>
 
           <Typography variant="h6" color="blue-gray" className="mt-2 ml-8">
-            리폼 후
+            리폼된 상품 이미지
           </Typography>
           <CardHeader>
-            <img src={reformData.completeImgUrl} style={style}></img>
+            <div style={containerStyle}>
+              <div className='imageWrapper' style={{ display: 'flex' }}>
+              <img src={reformData.completeImgUrl} style={style}></img>
+              </div>
+
+              <div style = {textStyle}>
+                <div style={{ display: 'inline' }}>리폼 내용: {reformData.explanation}</div>
+              </div>
+            </div>
           </CardHeader>
         </Card>
       </div>
