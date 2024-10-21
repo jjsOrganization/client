@@ -132,7 +132,7 @@ const ProductList = () => {
                     <p style={{ color: "black" }}>
                       상품명 : {product.productName}
                     </p>
-                    <p style={{ color: "black" }}>가격 : {product.price}</p>
+                    <p style={{ color: "black" }}>가격 : {parseInt(product.price).toLocaleString()}</p>
                   </Link>
                 </div>
                 <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
