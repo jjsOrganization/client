@@ -15,7 +15,6 @@ export default function TopBar() {
   const accessToken = useTokenStore((state) => state.accessToken)
   
   useEffect(() => {
-    console.log(accessToken)
     if (accessToken) {
       setIsLoggedIn(true);
       axiosInstance
