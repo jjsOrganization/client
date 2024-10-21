@@ -26,7 +26,6 @@ function Visual() {
       });
       const data = response.data.data;
       setWaterData(data);
-      console.log(data);
     } catch (error) {
       console.error("Error fetching water data:", error);
     }
