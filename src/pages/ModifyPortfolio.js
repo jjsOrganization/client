@@ -13,6 +13,7 @@ const ModifyPortfolio = (props) => {
   const [priceThumbnailImageFile, setPriceThumbnailImageFile] = useState();
   const [designerProfile, setDesignerProfile] = useState({});
   const [designerEmail,setDesignerEmail] = useState('');
+  const [portfolioId,setPortfolioId] = useState('');
   let navigate = useNavigate();
 
   const saveName = (event) => {
@@ -54,7 +55,7 @@ const ModifyPortfolio = (props) => {
       formData.append("designerEmail", designerEmail);
       formData.append("priceImage", priceThumbnailImageFile);
       const response = await axiosInstance.put(
-        "/portfolio/designer/5",
+        `/portfolio/designer/${portfolioId}`,
         formData,
         {
           headers: {
@@ -77,6 +78,7 @@ const ModifyPortfolio = (props) => {
     try {
       const responseDesignerInfo = await axiosInstance.get("/portfolio/designer");
       const infoData = responseDesignerInfo.data;
+      setPortfolioId(infoData.portfolioId);
   
       setDesignerName(infoData.designerName);
       setDesignerIntro(infoData.explanation);

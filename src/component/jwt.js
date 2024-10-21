@@ -52,7 +52,6 @@ export const postRefreshToken = async () => {
   const accessToken = getAccessToken();
   const refreshToken = getRefreshToken();
   const response = await instance.post('/auth/reissue',{ accessToken , refreshToken});
-  console.log(response)
   if(response.data.state === 400){
     return 
   }
@@ -67,7 +66,6 @@ instance.interceptors.response.use(
   async (response) => { ;return response;},
   async(error) => { 
     if(error.response.status === 403){
-      console.log(error,'에러')
       const response = await postRefreshToken();
       instance.defaults.headers.common.Authorization = `Bearer ${response.data.data.accessToken}`;          
       error.config.headers.Authorization = `Bearer ${response.data.data.accessToken}`;
