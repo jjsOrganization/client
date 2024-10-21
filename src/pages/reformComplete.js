@@ -3,9 +3,10 @@ import { useParams } from "react-router-dom";
 import axiosInstance from "../component/jwt.js";
 import TopBar from "../component/TopBar.js";
 import {Card,CardHeader,Typography,ooltip,} from "@material-tailwind/react";
+import { useNavigate } from 'react-router-dom';
 
 function ReformCompleted() {
-  
+  const navigate = useNavigate();
   const Endpoint = "https://jjs-stock-bucket.s3.ap-northeast-2.amazonaws.com/";
   const [reformData, setReformData] = useState();
   const [detailReformData, setDetailReformData] = useState();
@@ -46,6 +47,8 @@ const textStyle = {
       const response = await axiosInstance.get(`/portfolio/reformOutput/upload/${progressNumber}`)
       setDetailReformData(response.data.data)
     }catch(error){
+      alert("로그인이 되지 않았거나 오류가 발생했습니다. 다시 시도해주세요.");
+      navigate(`/`);
       console.log(error)
     }
   }
