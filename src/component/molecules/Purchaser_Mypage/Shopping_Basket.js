@@ -50,6 +50,7 @@ const Shopping_Basket = ({
                           </Dialog.Title>
                           <div className="ml-3 flex h-7 items-center">
                             <button
+                              style = {{background : 'none', border: 'none'}}
                               type="button"
                               className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
                               onClick={() => setOpen(false)}
@@ -160,6 +161,7 @@ const Shopping_Basket = ({
                                         </label>
 
                                         <button
+                                        style = {{background : 'none', border: 'none', marginLeft: '-7px'}}
                                           type="button"
                                           className="font-medium text-indigo-600 hover:text-indigo-500"
                                           onClick={() =>
@@ -194,19 +196,6 @@ const Shopping_Basket = ({
                           >
                             주문하기
                           </a>
-                        </div>
-                        <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-                          <p>
-                            or{" "}
-                            <button
-                              type="button"
-                              className="font-medium text-indigo-600 hover:text-indigo-500"
-                              onClick={() => setOpen(false)}
-                            >
-                              장바구니 닫기
-                              <span aria-hidden="true"> &rarr;</span>
-                            </button>
-                          </p>
                         </div>
                       </div>
                     </div>
