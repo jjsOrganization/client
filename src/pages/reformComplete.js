@@ -20,15 +20,16 @@ function ReformCompleted() {
 
 const containerStyle = {
   display: 'flex',
-  alignItems: 'center', // 세로로 가운데 정렬
+  alignItems: 'center', 
   flexDirection: 'row',
   padding: '20px'
 };
 
 const textStyle = {
   display: 'flex',
-  flexDirection: 'column', // 텍스트를 세로로 정렬
-  marginLeft: '10px',
+  flexDirection: 'column',
+  marginLeft: '1%',
+  width: '200px'
 };
 
   const reformcompleted = async () => {
@@ -37,6 +38,7 @@ const textStyle = {
         `/portfolio/reformOutput/detail/${progressNumber}`,
       );
       setReformData(response.data.data);
+      console.log(response)
     } catch (error) {
       console.error("에러", error);
     }
@@ -44,8 +46,9 @@ const textStyle = {
 
   const reformInfo = async () => {
     try{
-      const response = await axiosInstance.get(`/portfolio/reformOutput/upload/${progressNumber}`)
+      const response = await axiosInstance.get(`/portfolio/reformOutput/get/${progressNumber}`)
       setDetailReformData(response.data.data)
+      console.log(response)
     }catch(error){
       alert("로그인이 되지 않았거나 오류가 발생했습니다. 다시 시도해주세요.");
       navigate(`/`);
@@ -78,11 +81,13 @@ const textStyle = {
             <div className='imageWrapper' style={{ display: 'flex' }}>
             <img src={Endpoint + reformData.productImgUrl} style={style} alt="Product" />
             </div>
-        <div>
-                <div style = {textStyle}>
+
+            <div style = {textStyle}>
                 <div style = {{display: 'inline'}}>상품명: {detailReformData.productName}</div>
                 <div style = {{display: 'inline'}}>디자이너: {detailReformData.designerName}</div>
                 </div>
+        <div>
+                
             </div>
         </div>
     </CardHeader>
