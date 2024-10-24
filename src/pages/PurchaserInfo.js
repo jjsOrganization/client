@@ -23,6 +23,14 @@ function PurchaserInfo() {
   };
 
   const handleOrder = async () => {
+    if(
+      orderInfo.address.length === 0 || 
+      orderInfo.postCode.length === 0 || 
+      orderInfo.detailAddress.length === 0 ||
+      orderInfo.phoneNumber.length === 0 ||
+      orderInfo.deliveryRequest.length === 0){
+        return alert("모든 정보를 입력해주세요");
+      }
     try {
       await axiosInstance.put(`/cart/purchaser/order`, orderInfo, {
         headers: {
