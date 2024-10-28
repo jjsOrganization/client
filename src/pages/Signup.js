@@ -31,6 +31,13 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+   
+    const phoneRegex = /^010\d{8}$/;
+    const phoneNumber = formData.phoneNumber
+    if (!phoneRegex.test(phoneNumber)) {
+      window.alert("전화번호 형식이 올바르지 않습니다.");
+      return; 
+    }
     try {
       const response = await axiosInstance.post(`/auth/join-${userType}`, formData);
       if (response.data) {
