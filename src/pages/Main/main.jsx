@@ -9,31 +9,41 @@ import { useEndPointStore } from '../../store.js';
 import { TailWindButton } from '../../component/atoms/Button.js';
 import CarouselComponent from './Carousel.jsx';
 import ProductGrid from './ProductGrid.jsx';
+import { useQuery } from '@tanstack/react-query';
 
 function Main(){
     let navigate = useNavigate();
-    const [sort, setSort] = useState(true);
+    const [sortType, setSortType] = useState('최신순');
     const [productInfo,setProductInfo] = useState([])
     const [productDesc,setProductDesc] = useState([]);
     const {Endpoint} = useEndPointStore(state => state)
-    
-    
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axiosInstance.get('/product/all');
-                const resopnseLikeDesc = await axiosInstance.get(`/product/all/like/desc`,)
-                    setProductInfo(response.data);
-                    setProductDesc(resopnseLikeDesc.data.data);
-                }
-            catch(error) {
-            }
-        };
-        fetchData();
-    }, []);
 
-    if(!productInfo){
-        return(<div>데이터 로드중..</div>)
+    const getAllList = async() => {
+        if(sortType === '최신순'){
+            const response = await axiosInstance.get('/product/all');
+            return response;
+        }else{
+            const response = await axiosInstance.get(`/product/all/like/desc`,)
+            return response;
+        }
+        
+    }
+
+    const {isLoading, error, data, isFetching} = useQuery({
+        queryKey:[sortType],
+        queryFn: getAllList
+    })
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+    
+    if (!data) {
+        return <div>No data available</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
     }
 
     return(
@@ -46,18 +56,18 @@ function Main(){
                 <CarouselComponent product = {productInfo}/>
             </div>
             <div className="min-h-[300px] h-pull mainProduct ">
-                {sort ?
+                {sortType === '최신순' ?
                     <div>
-                    <TailWindButton className = 'bg-white border-0'>✔최신순</TailWindButton><TailWindButton className = 'bg-white border-0' onClick = {() => {setSort(!sort)}}>인기순</TailWindButton>
+                    <TailWindButton className = 'bg-white border-0'>✔최신순</TailWindButton><TailWindButton className = 'bg-white border-0' onClick = {() => {setSortType('인기순')}}>인기순</TailWindButton>
                     <ProductGrid
-                    product = {productInfo}
+                    product = {data?.data}
                     navigate = {navigate}
                     Endpoint = {Endpoint}/>
                     </div> :
                     <div>
-                    <TailWindButton className = 'bg-white border-0' onClick = {() => {setSort(!sort)}}>최신순</TailWindButton><TailWindButton className = 'bg-white border-0'>✔인기순</TailWindButton> 
+                    <TailWindButton className = 'bg-white border-0' onClick = {() => {setSortType('최신순')}}>최신순</TailWindButton><TailWindButton className = 'bg-white border-0'>✔인기순</TailWindButton> 
                     <ProductGrid
-                    product = {productDesc}
+                    product = {data?.data?.data}
                     navigate = {navigate}
                     Endpoint = {Endpoint}/>
                     </div>
