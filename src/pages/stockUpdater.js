@@ -30,14 +30,17 @@ function StockUpdater() {
   const dropdownMenu = ["상의","아우터","바지","스커트","원피스","모자",];
 
   const saveAmount = (event) => {
-    const numericValue = parseFloat(event.target.value);
+    const inputValue = event.target.value;
+    const numericValue = inputValue ? parseFloat(inputValue) : 0;
     setAmountValue(numericValue);
   };
 
   const savePrice = (event) => {
-    const numericValue = parseFloat(event.target.value);
+    const inputValue = event.target.value;
+    const numericValue = inputValue ? parseFloat(inputValue) : 0;
     setPriceValue(numericValue);
   };
+
 
   const saveTitle = (event) => {
     setTitleValue(event.target.value);
