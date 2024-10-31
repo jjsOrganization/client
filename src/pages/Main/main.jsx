@@ -12,7 +12,7 @@ import ProductGrid from './ProductGrid.jsx';
 import { useQuery } from '@tanstack/react-query';
 
 function Main(){
-    //
+    ///
     let navigate = useNavigate();
     const [sortType, setSortType] = useState('최신순');
     const [productInfo,setProductInfo] = useState([])
