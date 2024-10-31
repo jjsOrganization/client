@@ -34,13 +34,7 @@ function Main(){
         queryFn: getAllList
     })
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-    
-    if (!data) {
-        return <div>No data available</div>;
-    }
+   
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -51,7 +45,7 @@ function Main(){
         <div>
             <TopBar />
         </div>
-        <div className = 'mainContainer' style ={{marginLeft: '20%', marginRight: '20%'}}>
+        {/* <div className = 'mainContainer' style ={{marginLeft: '20%', marginRight: '20%'}}>
             <div style = {{marginBottom : '10px'}}>
                 <CarouselComponent product = {productInfo}/>
             </div>
@@ -81,7 +75,7 @@ function Main(){
                 </ButtonWrapper>
             </div>
             
-        </div>
+        </div> */}
     </div>
     )
 }
