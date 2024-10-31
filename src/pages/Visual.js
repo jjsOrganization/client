@@ -5,7 +5,7 @@ import TopBar from "../component/TopBar.js";
 import { Doughnut, Bar, Chart } from "react-chartjs-2";
 
 import { Chart as ChartJS } from "chart.js/auto";
-//
+////
 function Visual() {
   const [showWaterSaved, setShowWaterSaved] = useState(false);
   const [waterData, setWaterData] = useState({});
